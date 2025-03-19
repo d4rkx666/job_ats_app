@@ -2,16 +2,16 @@ import React, { useState } from "react";
 //import { useAuth } from "../contexts/AuthContext";
 import LoginForm from "../components/forms/LoginForm";
 import SignUpForm from "../components/forms/SignUpForm";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { signInWithEmailAndPassword} from "firebase/auth";
 import { auth, db} from "../services/firebase"
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import {fetchLogin} from "../services/Auth"
+import { doc, getDoc } from "firebase/firestore";
 import { useAuth } from "../contexts/AuthContext";
 import { useConfig } from "../contexts/ConfigContext";
 import { useNavigate } from "react-router-dom";
+import {signup} from "../services/SetUser"
 
 function Login() {
-   const { login, logout } = useAuth(); // Get the login function from AuthContext
+   const { login, logout, resendVerificationEmail } = useAuth(); // Get the login function from AuthContext
    const [isLoading, setIsLoading] = useState(false);
    const [error, setError] = useState("");
    const navigate = useNavigate(); // For redirecting after login
@@ -24,28 +24,35 @@ function Login() {
    const [showForgetPassword, setShowForgetPassword] = useState(false);
 
 
+   // Firebase login function
+   async function firebase_login(email, password){
+      // Log in user from firebase
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userId = await userCredential.user.uid;
+      const idToken = await userCredential.user.getIdToken();
+
+      // Get info from firestore
+      const userDoc = await getDoc(doc(db, "users", userId));
+
+      if (userDoc.exists()) {
+         const newData = userDoc.data();
+         newData.token = idToken; //asign additional data (id token) to the user data 
+         console.log(newData)
+         await login(newData); // set user info to localstorage
+         await navigate("/dashboard"); // Redirect to the dashboard
+      } else {
+         throw new Error("User data not found in Firestore.");
+      } 
+   }
+
+
    // Login actions
    const handleLogin = async (data) => {
       setIsLoading(true);
       setError("");
       try {
          // Log in user from firebase
-         const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
-         const userId = await userCredential.user.uid;
-         const idToken = await userCredential.user.getIdToken();
-
-         // Get info from firestore
-         const userDoc = await getDoc(doc(db, "users", userId));
-
-         if (userDoc.exists()) {
-            const newData = userDoc.data();
-            newData.token = idToken; //asign additional data (id token) to the user data 
-            await login(newData); // set user info to localstorage
-            await fetchLogin(); //validates login through BACKEND
-            await navigate("/dashboard"); // Redirect to the dashboard
-         } else {
-            throw new Error("User data not found in Firestore.");
-         } 
+         await firebase_login(data.email, data.password);
       } catch (error) {
          await logout()
          setError(error.message)
@@ -59,28 +66,23 @@ function Login() {
       setIsLoading(true);
       setError("");
       try {
-         const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
-         const user = await userCredential.user;
 
-         await setDoc(doc(db, "users", user.uid), {
-            name: data.name,
-            country: data.country,
-            email: user.email,
-            maximumImprovements: 10,
-            resumeImprovements: 0, // Initialize usage limit
-            createdAt: new Date(),
+         // Sign up user 
+         await signup(data.name, data.country, data.email, data.password)
+         .then(response => {
+            firebase_login(data.email, data.password);
+            resendVerificationEmail();
+            navigate("/dashboard"); // Redirect to the dashboard
+         })
+         .catch(error => {
+            setError(error.message);
          });
 
+
          //Send verification
-         await sendEmailVerification(user);
+         //await sendEmailVerification(user);
 
          // Get info from firestore
-         const userDoc = await getDoc(doc(db, "users", user.uid));
-         if (userDoc.exists()) {
-            const newData = userDoc.data();
-            await login(newData);
-            await navigate("/dashboard"); // Redirect to the dashboard
-         }
          
       } catch (error) {
          setError(error.message)

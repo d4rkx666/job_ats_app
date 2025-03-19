@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ResumeForm from "../components/forms/ImproveResumeForm";
 import {getImprovedResume} from "../services/GetImprovedResume"
 import { useConfig } from "../contexts/ConfigContext";
@@ -11,36 +11,7 @@ function ResumePage() {
    const {config, language} = useConfig();
    const labels = config.labels[language];
 
-   const improvements = [
-      {
-        "category": "Keywords",
-        "suggestions": [
-          "Add 'JavaScript' to the skills section.",
-          "Include 'Agile Methodology' in the experience section."
-        ]
-      },
-      {
-        "category": "Formatting",
-        "suggestions": [
-          "Use consistent bullet points for all job descriptions.",
-          "Increase font size for section headings."
-        ]
-      },
-      {
-        "category": "Experiences",
-        "suggestions": [
-          "Quantify achievements in the 'Senior Software Engineer' role (e.g., 'Increased system performance by 30%').",
-          "Add more details about the 'Software Engineer' role at XYZ Inc."
-        ]
-      },
-      {
-        "category": "something",
-        "suggestions": [
-          "test",
-          "test"
-        ]
-      }
-    ];
+   const navigate = useNavigate();
 
    const handleSubmit = async (data) => {
       setIsLoading(true);
@@ -52,9 +23,21 @@ function ResumePage() {
       formData.append("job_description", data.job_description);
 
       try {
-         const response = await getImprovedResume(formData);
-         console.log("Form submitted successfully:", response);
-         return <Navigate to="/improved" state={{ improvements }} />;
+         await getImprovedResume(formData)
+         .then((response) => {
+            // send json in text
+            const response_text = response.optimized_resume;
+            navigate("/improved",{ state:{ response_text }});
+         })
+         .catch(error => {
+            switch(error.status){
+               case 403: setError("Please verify your email before using this service."); break;
+               default: setError("An error occurred. Please try again")
+            }
+            
+         });
+
+         
       } catch (error) {
          setError("Failed to submit resume. Please try again.");
       } finally {

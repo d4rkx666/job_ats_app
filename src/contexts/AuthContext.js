@@ -1,25 +1,68 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { auth } from "../services/firebase"; // Adjust the import path as needed
-import { onAuthStateChanged, sendEmailVerification } from "firebase/auth";
+import { auth, db } from "../services/firebase";
+import { onAuthStateChanged, sendEmailVerification, reload, getIdToken  } from "firebase/auth";
+import { doc, onSnapshot } from "firebase/firestore"; // Import Firestore functions
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null); // Store the logged-in user
   const [verified, setVerified] = useState(false);
+  const [improvementsLeft, setImprovementsLeft] = useState(0);
 
   // Check if user is verified
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      if (firebaseUser && firebaseUser.emailVerified) {
-        setVerified(true);
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+
+      if (firebaseUser){
+        // Reload the user to get the latest email verification status
+        await reload(firebaseUser);
+        const newToken = await getIdToken(firebaseUser, true); // Force token refresh
+
+        if(firebaseUser.emailVerified) {
+          setVerified(true);
+        }
+
+        // Listen to Firestore updates for the user's document
+        const userRef = doc(db, "users", firebaseUser.uid);
+        const unsubscribeFirestore = onSnapshot(userRef, (doc) => {
+          if (doc.exists()) {
+            const userData = doc.data();
+            const { resumeImprovements, maximumImprovements } = userData.settings;
+
+            // Calculate improvements left
+            const improvementsLeft = maximumImprovements - resumeImprovements;
+            setImprovementsLeft(improvementsLeft);
+
+            // Update the user state with the latest Firestore data and new token
+            const newUserData = {
+              ...userData,
+              token: newToken, // Use the new token
+            };
+            
+            localStorage.setItem("data_user", JSON.stringify(newUserData));
+            setUser((prevUser) => ({
+              ...prevUser,
+              ...newUserData, // Merge Firestore data with existing user data
+            }));
+            console.log(newUserData);
+          } else {
+            console.log("User document not found in Firestore");
+          }
+        });
+
+        // Clean up the Firestore listener when the component unmounts
+        return () => unsubscribeFirestore();
       }
     });
+
+    
 
     const storedUser = JSON.parse(localStorage.getItem("data_user"));
     if (storedUser != null) {
       setUser(storedUser); // Restore user data
     }
+
 
     return () => unsubscribe(); // Cleanup subscription
   }, []);
@@ -27,14 +70,14 @@ export function AuthProvider({ children }) {
 
   // Resend verification email
   const resendVerificationEmail = async () => {
-    if (auth.currentUser) {
+    if (auth.currentUser && !verified) {
       try {
         await sendEmailVerification(auth.currentUser);
       } catch (error) {
         
       }
     } else {
-      alert("No user is signed in.");
+      console.log("No user is signed in.");
     }
   };
 
@@ -51,7 +94,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, auth, verified, login, logout, resendVerificationEmail }}>
+    <AuthContext.Provider value={{ user, auth, verified, improvementsLeft, login, logout, resendVerificationEmail }}>
       {children}
     </AuthContext.Provider>
   );
