@@ -12,12 +12,12 @@ function LoginForm({ onSubmit, isLoading, onSwitchToLogin, labels}) {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-          {labels.form_signup.name.label}
+          {labels.formSignup.name.label}
         </label>
         <input
           type="text"
           id="name"
-          {...register("name", { required: labels.form_signup.name.required })}
+          {...register("name", { required: labels.formSignup.name.required })}
           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
         />
         {errors.name && (
@@ -27,15 +27,15 @@ function LoginForm({ onSubmit, isLoading, onSwitchToLogin, labels}) {
 
       <div>
         <label htmlFor="country" className="block text-sm font-medium text-gray-700">
-          {labels.form_signup.country.label}
+          {labels.formSignup.country.label}
         </label>
         <select
           id="country"
-          {...register("country", { required: labels.form_signup.country.required })}
+          {...register("country", { required: labels.formSignup.country.required })}
           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
         >
-          <option value="" selected disabled>{labels.form_signup.country.placeholder}</option>
-          {labels.form_signup.country.countries.map((c) => (
+          <option value="" selected disabled>{labels.formSignup.country.placeholder}</option>
+          {labels.formSignup.country.countries.map((c) => (
             <option value={c.value}>{c.label}</option>
           ))}
         </select>
@@ -46,12 +46,12 @@ function LoginForm({ onSubmit, isLoading, onSwitchToLogin, labels}) {
 
       <div>
         <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-          {labels.form_signup.email.label}
+          {labels.formSignup.email.label}
         </label>
         <input
           type="email"
           id="email"
-          {...register("email", { required: labels.form_signup.email.required })}
+          {...register("email", { required: labels.formSignup.email.required })}
           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
         />
         {errors.email && (
@@ -61,12 +61,12 @@ function LoginForm({ onSubmit, isLoading, onSwitchToLogin, labels}) {
 
       <div>
         <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-          {labels.form_signup.password.label}
+          {labels.formSignup.password.label}
         </label>
         <input
           type="password"
           id="password"
-          {...register("password", { required: labels.form_signup.password.required })}
+          {...register("password", { required: labels.formSignup.password.required })}
           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
         />
         {errors.password && (
@@ -79,7 +79,7 @@ function LoginForm({ onSubmit, isLoading, onSwitchToLogin, labels}) {
         disabled={isLoading}
         className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
-        {isLoading ? labels.form_signup.signup_btn.loading : labels.form_signup.signup_btn.label}
+        {isLoading ? labels.formSignup.signupBtn.loading : labels.formSignup.signupBtn.label}
       </button>
 
       <p className="text-center text-sm text-gray-600">
@@ -88,7 +88,7 @@ function LoginForm({ onSubmit, isLoading, onSwitchToLogin, labels}) {
           onClick={onSwitchToLogin}
           className="text-blue-600 hover:underline"
         >
-          Login Here
+          { labels.formSignup.loginHere }
         </button>
       </p>
     </form>

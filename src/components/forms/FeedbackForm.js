@@ -20,17 +20,17 @@ function FeedbackForm({ onSubmit, isLoading, submitted, labels}) {
   return (
     <div className="bg-gray-50 p-6 rounded-lg">
       <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-        Your Feedback
+        {labels.formFeedback.title}
       </h2>
       {submitted ? (
-        <p className="text-green-600 text-lg">Thank you for your feedback!</p>
+        <p className="text-green-600 text-lg">{labels.formFeedback.titleSubmitted}</p>
       ) : (
 
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Rating */}
         <div className="mb-6">
           <label className="block text-lg text-gray-700 mb-2">
-            How would you rate your experience?
+            {labels.formFeedback.titleRate}
           </label>
           <div className="flex justify-center space-x-2">
             {[1, 2, 3, 4, 5].map((star) => (
@@ -54,7 +54,7 @@ function FeedbackForm({ onSubmit, isLoading, submitted, labels}) {
         {/* Comment */}
         <div className="mb-6">
           <label className="block text-lg text-gray-700 mb-2">
-            Any comments or suggestions?
+            {labels.formFeedback.titleSuggestions}
           </label>
           <input
             type="hidden"

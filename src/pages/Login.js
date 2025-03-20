@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-//import { useAuth } from "../contexts/AuthContext";
 import LoginForm from "../components/forms/LoginForm";
 import SignUpForm from "../components/forms/SignUpForm";
 import { signInWithEmailAndPassword} from "firebase/auth";
@@ -11,13 +10,15 @@ import { useNavigate } from "react-router-dom";
 import {signup} from "../services/SetUser"
 
 function Login() {
+
+   // Language
+   const {config, language} = useConfig();
+   const labels = config.labels[language];
+
    const { login, logout, resendVerificationEmail } = useAuth(); // Get the login function from AuthContext
    const [isLoading, setIsLoading] = useState(false);
    const [error, setError] = useState("");
    const navigate = useNavigate(); // For redirecting after login
-
-   const {config, language} = useConfig();
-   const labels = config.labels[language];
 
    const [showLoginForm, setShowLoginForm] = useState(true);
    const [showSignUpForm, setShowSignUpForm] = useState(false);
@@ -41,7 +42,7 @@ function Login() {
          await login(newData); // set user info to localstorage
          await navigate("/dashboard"); // Redirect to the dashboard
       } else {
-         throw new Error("User data not found in Firestore.");
+         throw new Error(labels.error.userNotFound);
       } 
    }
 
@@ -55,7 +56,7 @@ function Login() {
          await firebase_login(data.email, data.password);
       } catch (error) {
          await logout()
-         setError("Email or password incorrect. Please try again.")
+         setError(labels.error.userNotFound)
       } finally {
          setIsLoading(false);
       }
@@ -66,18 +67,19 @@ function Login() {
       setIsLoading(true);
       setError("");
       try {
-
+         let isError = false;
          // Sign up user 
          await signup(data.name, data.country, data.email, data.password)
          .catch(error => {
-            setError("User already exists. Please use a different one.");
+            setError(labels.error.userAlreadyInUse);
+            isError = true;
          });
 
-         
-         await firebase_login(data.email, data.password);
-         await resendVerificationEmail();
-         navigate("/dashboard"); // Redirect to the dashboard
-         
+         if(!isError){
+            await firebase_login(data.email, data.password);
+            await resendVerificationEmail();
+            navigate("/dashboard");
+         }
       } catch (error) {
          setError(error.message)
       } finally {

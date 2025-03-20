@@ -11,37 +11,36 @@ function Header() {
   const {user, logout} = useAuth();
   
   return (
-    <header className="flex justify-between items-center p-4 bg-blue-600 text-white">
+    <header className="flex justify-between items-center p-4 bg-blue-600 text-white shadow-lg">
+      {/* App Name */}
       <div className="text-2xl font-bold">
-        <Link to="/" className="text-white no-underline">
+        <Link to="/" className="text-white no-underline hover:text-blue-200 transition duration-300">
           {config.appName}
         </Link>
       </div>
-      <nav className="flex items-center gap-4">
-        <Link to="/" className="text-white no-underline hover:text-blue-200">
+
+      {/* Navigation Links */}
+      <nav className="flex items-center gap-6">
+        <Link to="/" className="text-white no-underline hover:text-blue-200 transition duration-300">
           {labels.menu.home}
         </Link>
-        <Link
-          to="/resume"
-          className="text-white no-underline hover:text-blue-200"
-        >
+        <Link to="/resume" className="text-white no-underline hover:text-blue-200 transition duration-300">
           {labels.menu.resume}
         </Link>
         {!user ? (
-          <Link
-            to="/login"
-            className="text-white no-underline hover:text-blue-200"
-          >
+          <Link to="/login" className="text-white no-underline hover:text-blue-200 transition duration-300">
             {labels.menu.login}
           </Link>
         ) : (
           <button
             onClick={logout}
-            className="text-white no-underline hover:text-blue-200 bg-transparent border-none cursor-pointer"
+            className="text-white no-underline hover:text-blue-200 bg-transparent border-none cursor-pointer transition duration-300"
           >
             {labels.menu.logout}
           </button>
         )}
+
+        {/* Language Switcher */}
         <LanguageSwitcher />
       </nav>
     </header>

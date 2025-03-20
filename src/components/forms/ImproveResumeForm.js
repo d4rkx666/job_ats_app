@@ -53,14 +53,14 @@ function ImproveResumeForm({ onSubmit, isLoading, labels, error}) {
   return (
     <div className="max-w-2xl mx-auto p-8 bg-white rounded-lg shadow-2xl">
       <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
-        {labels.form_improve_resume.title}
+        {labels.formImproveResume.title}
       </h1>
       {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Resume Upload */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            {labels.form_improve_resume.resume_file.label}
+            {labels.formImproveResume.resumeFile.label}
           </label>
           <div
             className={`flex items-center justify-center w-full ${
@@ -86,7 +86,7 @@ function ImproveResumeForm({ onSubmit, isLoading, labels, error}) {
                 ></path>
               </svg>
               <span className="text-blue-600 font-semibold">
-                {filePreview ? filePreview : labels.form_improve_resume.resume_file.placeholder}
+                {filePreview ? filePreview : labels.formImproveResume.resumeFile.placeholder}
               </span>
               <input
                 type="file"
@@ -97,14 +97,14 @@ function ImproveResumeForm({ onSubmit, isLoading, labels, error}) {
                 ref={(e) => {
                   // Merge react-hook-form's ref with your custom ref
                   register("resume", {
-                    required: labels.form_improve_resume.resume_file.required,
+                    required: labels.formImproveResume.resumeFile.required,
                     validate: () =>{
                       let file = inputFileRef.current.files[0];
                       if(file.type !== "application/pdf"){
-                        return labels.form_improve_resume.resume_file.invalid_type
+                        return labels.formImproveResume.resumeFile.invalidType
                       }
                       if(file.size > 5 * 1024 * 1024){
-                        return labels.form_improve_resume.resume_file.invalid_size
+                        return labels.formImproveResume.resumeFile.invalidSize
                       }
                       return true
                     },
@@ -124,15 +124,15 @@ function ImproveResumeForm({ onSubmit, isLoading, labels, error}) {
         {/* Job title */}
         <div>
           <label htmlFor="job_title" className="block text-sm font-medium text-gray-700 mb-2">
-            {labels.form_improve_resume.job_title.label}
+            {labels.formImproveResume.jobTitle.label}
           </label>
           <input
             type="text"
             id="job_title"
             {...register("job_title", {
-              required: labels.form_improve_resume.job_title.required,
+              required: labels.formImproveResume.jobTitle.required,
             })}
-            placeholder={labels.form_improve_resume.job_title.placeholder}
+            placeholder={labels.formImproveResume.jobTitle.placeholder}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
           {errors.job_title && (
@@ -143,16 +143,16 @@ function ImproveResumeForm({ onSubmit, isLoading, labels, error}) {
         {/* Job Description */}
         <div>
           <label htmlFor="job_description" className="block text-sm font-medium text-gray-700 mb-2">
-            {labels.form_improve_resume.job_description.label}
+            {labels.formImproveResume.jobDescription.label}
           </label>
           <textarea
             id="job_description"
             {...register("job_description", {
-              required: labels.form_improve_resume.job_description.required,
+              required: labels.formImproveResume.jobDescription.required,
             })}
             rows="6"
             maxLength={500}
-            placeholder={labels.form_improve_resume.job_description.placeholder}
+            placeholder={labels.formImproveResume.jobDescription.placeholder}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
           {errors.job_description && (
@@ -166,7 +166,7 @@ function ImproveResumeForm({ onSubmit, isLoading, labels, error}) {
           disabled={isLoading}
           className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300"
         >
-          {isLoading ? labels.form_improve_resume.upload_btn.loading : labels.form_improve_resume.upload_btn.label}
+          {isLoading ? labels.formImproveResume.uploadBtn.loading : labels.formImproveResume.uploadBtn.label}
         </button>
       </form>
     </div>

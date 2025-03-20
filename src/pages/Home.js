@@ -19,13 +19,13 @@ function Home() {
       <div className="bg-gradient-to-r from-blue-600 to-blue-400 py-20">
         <div className="container mx-auto px-6 text-center">
           <h1 className="text-5xl font-bold text-white mb-4">
-            Improve Your Resume, Land Your Dream Job
+            {labels.home.header.title}
           </h1>
           <p className="text-xl text-blue-100 mb-8">
-            Optimize your resume with AI-powered tools and stand out to employers.
+            {labels.home.header.subtitle}
           </p>
           <button onClick={handleClick} className="bg-white text-blue-600 font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-blue-50 transition duration-300">
-            Get Started
+            {labels.home.getStartedBtn}
           </button>
         </div>
       </div>
@@ -33,7 +33,7 @@ function Home() {
       {/* Features Section */}
       <div className="container mx-auto px-6 py-16">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
-          Why Choose Us?
+          {labels.home.chooseUs.title}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Feature 1 */}
@@ -55,11 +55,10 @@ function Home() {
               </svg>
             </div>
             <h3 className="text-xl font-semibold text-gray-800 mb-4">
-              AI-Powered Optimization
+              {labels.home.chooseUs.cardOne.title}
             </h3>
             <p className="text-gray-600">
-              Our AI analyzes your resume and suggests improvements to make it
-              stand out.
+              {labels.home.chooseUs.cardOne.body}
             </p>
           </div>
 
@@ -82,10 +81,10 @@ function Home() {
               </svg>
             </div>
             <h3 className="text-xl font-semibold text-gray-800 mb-4">
-              Tailored for Your Industry
+              {labels.home.chooseUs.cardTwo.title}
             </h3>
             <p className="text-gray-600">
-              Get industry-specific recommendations to match job requirements.
+              {labels.home.chooseUs.cardTwo.body}
             </p>
           </div>
 
@@ -108,15 +107,16 @@ function Home() {
               </svg>
             </div>
             <h3 className="text-xl font-semibold text-gray-800 mb-4">
-              Fast and Easy
+              {labels.home.chooseUs.cardThree.title}
             </h3>
             <p className="text-gray-600">
-              Upload your resume and get results in minutes.
+              {labels.home.chooseUs.cardThree.body}
             </p>
           </div>
         </div>
       </div>
 
+      
       {/* Testimonials Section */}
       <div className="bg-gray-100 py-16">
         <div className="container mx-auto px-6">
@@ -173,13 +173,13 @@ function Home() {
       <div className="bg-gradient-to-r from-blue-600 to-blue-400 py-20">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
-            Ready to Improve Your Resume?
+            {labels.home.footer.title}
           </h2>
           <p className="text-xl text-blue-100 mb-8">
-            Sign up now and start optimizing your resume today!
+            {labels.home.footer.subtitle}
           </p>
           <button onClick={handleClick} className="bg-white text-blue-600 font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-blue-50 transition duration-300">
-            Get Started
+            {labels.home.getStartedBtn}
           </button>
         </div>
       </div>

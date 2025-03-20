@@ -1,7 +1,12 @@
 import React, {useState, useEffect, useRef} from "react";
 import { useAuth } from "../../contexts/AuthContext";
+import { useConfig } from "../../contexts/ConfigContext";
 
 const VerifiEmailReminder = () => {
+
+  // Language
+  const {config, language} = useConfig();
+  const labels = config.labels[language];
 
   const auth = useAuth();
   const [disabled, setDisabled] = useState(false);
@@ -60,8 +65,8 @@ const VerifiEmailReminder = () => {
     { !auth.verified && 
       <div className="text-center rounded-xl bg-white p-3 m-5 shadow-lg outline outline-black/5 dark:bg-slate-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10">
         <div>
-          <div className="text-sm font-medium text-black dark:text-white">Please verify your email</div>
-          <p className="text-gray-500 dark:text-gray-400">We have sent you an email at: {auth.user.email}</p>
+          <div className="text-sm font-medium text-black dark:text-white">{labels.verifyEmailReminder.title}</div>
+          <p className="text-gray-500 dark:text-gray-400">{labels.verifyEmailReminder.subtitle} {auth.user.email}</p>
           <button onClick={handleResendEmail} disabled={disabled} className="w-full rounded-xl bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-700">
             {successful} {interval.current ? (String(counter.minutes).padStart(2, '0') + ":" + String(counter.seconds).padStart(2, '0')) : ""}
             </button>

@@ -31,15 +31,15 @@ function ResumePage() {
          })
          .catch(error => {
             switch(error.status){
-               case 403: setError("Please verify your email before using this service."); break;
-               default: setError("An error occurred. Please try again")
+               case 403: setError(labels.error.userNotVerified); break;
+               default: setError(labels.error.universalError)
             }
             
          });
 
          
       } catch (error) {
-         setError("Failed to submit resume. Please try again.");
+         setError(labels.error.resumeNotUploaded);
       } finally {
          setIsLoading(false);
       }
