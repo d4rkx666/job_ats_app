@@ -1,11 +1,37 @@
 import {useAuth} from "../contexts/AuthContext"
 import FeedbackForm from "../components/forms/FeedbackForm"
+import {feedback} from "../services/SetFeedback"
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 
 function Dashboard() {
 
   const auth = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect (()=>{
+    if(auth.user.feedback){
+      setSubmitted(true);
+    }
+    
+  },[]);
+
+  // Feedback actions
+  const handleFeedback = async (data) => {
+    setIsLoading(true);
+    setError("");
+    try {
+      await feedback(data.rate, data.feedback);
+      setSubmitted(true);
+    } catch (error) {
+        setError("An error has occured");
+    } finally {
+       setIsLoading(false);
+    }
+  };
   
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg">
@@ -21,7 +47,7 @@ function Dashboard() {
       {/* Improvements Left */}
       <div className="text-center mb-8">
         <h2 className="text-2xl font-semibold text-gray-800">
-          Resume Improvements Left
+          Here are your resume improvements left
         </h2>
         <p className="text-6xl font-bold text-blue-600">{auth.user.settings.maximumImprovements - auth.user.settings.resumeImprovements}</p>
       </div>
@@ -34,7 +60,7 @@ function Dashboard() {
           Previous Improvements
         </h2>
         <div className="space-y-4">
-          {auth.user.improvements.map((improvement) => (
+          {auth.user.improvements?.map((improvement) => (
             <Link to="/improved" state={{ response_text: improvement.ai_improvements }} className="text-white no-underline">
               <div
                 key={improvement.id}
@@ -64,7 +90,7 @@ function Dashboard() {
                     </p>
                     <span
                       className={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${
-                        improvement.status === "Completed"
+                        improvement.status === "completed"
                           ? "bg-green-100 text-green-800"
                           : "bg-yellow-100 text-yellow-800"
                       }`}
@@ -82,7 +108,8 @@ function Dashboard() {
       <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"/>
 
       {/* Feedback Form */}
-      <FeedbackForm/>
+      {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+      <FeedbackForm onSubmit={handleFeedback} isLoading={isLoading} submitted={submitted}/>
     </div>
   );
 }

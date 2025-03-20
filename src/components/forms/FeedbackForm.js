@@ -1,22 +1,20 @@
 import React, {useState} from "react";
 import { useForm } from "react-hook-form";
 
-function FeedbackForm({ onSubmit, isLoading, onSwitchToLogin, labels}) {
+function FeedbackForm({ onSubmit, isLoading, submitted, labels}) {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue
   } = useForm();
-
-  const [feedback, setFeedback] = useState("");
+  
   const [rating, setRating] = useState(0);
-  const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmitFeedback = (e) => {
+  const ratting = (e, star) => {
     e.preventDefault();
-    // Simulate feedback submission
-    console.log("Feedback submitted:", { feedback, rating });
-    setSubmitted(true);
+    setValue("rate", star);
+    setRating(star);
   };
 
   return (
@@ -28,7 +26,7 @@ function FeedbackForm({ onSubmit, isLoading, onSwitchToLogin, labels}) {
         <p className="text-green-600 text-lg">Thank you for your feedback!</p>
       ) : (
 
-      <form onSubmit={handleSubmitFeedback}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         {/* Rating */}
         <div className="mb-6">
           <label className="block text-lg text-gray-700 mb-2">
@@ -42,12 +40,15 @@ function FeedbackForm({ onSubmit, isLoading, onSwitchToLogin, labels}) {
                 className={`text-3xl ${
                   rating >= star ? "text-yellow-400" : "text-gray-300"
                 } hover:text-yellow-500 focus:outline-none`}
-                onClick={() => setRating(star)}
+                onClick={(e) => ratting(e, star)}
               >
                 ★
               </button>
             ))}
           </div>
+          {errors.rate && (
+            <p className="text-red-500 text-sm mt-1">{errors.rate.message}</p>
+          )}
         </div>
 
         {/* Comment */}
@@ -55,13 +56,22 @@ function FeedbackForm({ onSubmit, isLoading, onSwitchToLogin, labels}) {
           <label className="block text-lg text-gray-700 mb-2">
             Any comments or suggestions?
           </label>
+          <input
+            type="hidden"
+            id="rate"
+            {...register("rate", { required: "Required" })}
+          >
+          </input>
           <textarea
-            value={feedback}
-            onChange={(e) => setFeedback(e.target.value)}
+            id="feedback"
+            {...register("feedback", { required: "Required" })}
             placeholder="We'd love to hear from you!"
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             rows="4"
           />
+          {errors.feedback && (
+            <p className="text-red-500 text-sm mt-1">{errors.feedback.message}</p>
+          )}
         </div>
 
         {/* Submit Button */}
@@ -69,7 +79,7 @@ function FeedbackForm({ onSubmit, isLoading, onSwitchToLogin, labels}) {
           type="submit"
           className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-          Submit Feedback
+          {isLoading ? "Sending feedback..." : "Send feedback"}
         </button>
       </form>)}
     </div>

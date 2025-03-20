@@ -3,7 +3,6 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import ResumePage from "./pages/ResumePage";
-import PreviewResumePage from "./pages/PreviewResumePage";
 import Layout from "./components/layout/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import HideLoginPage from "./components/HideLoginPage";

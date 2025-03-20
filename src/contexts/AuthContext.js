@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { auth, db } from "../services/firebase";
-import { onAuthStateChanged, sendEmailVerification, reload, getIdToken  } from "firebase/auth";
+import { onAuthStateChanged, sendEmailVerification, signOut, reload, getIdToken  } from "firebase/auth";
 import { doc, onSnapshot } from "firebase/firestore"; // Import Firestore functions
 
 const AuthContext = createContext();
@@ -45,9 +45,7 @@ export function AuthProvider({ children }) {
               ...prevUser,
               ...newUserData, // Merge Firestore data with existing user data
             }));
-            console.log(newUserData);
           } else {
-            console.log("User document not found in Firestore");
           }
         });
 
@@ -70,11 +68,11 @@ export function AuthProvider({ children }) {
 
   // Resend verification email
   const resendVerificationEmail = async () => {
-    if (auth.currentUser && !verified) {
+    if (auth.currentUser && !auth.currentUser.emailVerified) {
       try {
         await sendEmailVerification(auth.currentUser);
       } catch (error) {
-        
+        console.log(error)
       }
     } else {
       console.log("No user is signed in.");
@@ -89,6 +87,7 @@ export function AuthProvider({ children }) {
 
   // Logout function
   const logout = () => {
+    signOut(auth);
     localStorage.removeItem("data_user");
     setUser(null); // Clear the user data
   };

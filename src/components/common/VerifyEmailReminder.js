@@ -49,6 +49,7 @@ const VerifiEmailReminder = () => {
   useEffect(()=>{
     if(counter.minutes === 0 && counter.seconds === 0){
       clearInterval(interval.current);
+      interval.current = null;
       setSuccessful("Send again");
       setDisabled(false);
     }
@@ -62,7 +63,7 @@ const VerifiEmailReminder = () => {
           <div className="text-sm font-medium text-black dark:text-white">Please verify your email</div>
           <p className="text-gray-500 dark:text-gray-400">We have sent you an email at: {auth.user.email}</p>
           <button onClick={handleResendEmail} disabled={disabled} className="w-full rounded-xl bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-700">
-            {successful} {interval.current ? String(counter.minutes).padStart(2, '0') + ":" + String(counter.seconds).padStart(2, '0') : ""}
+            {successful} {interval.current ? (String(counter.minutes).padStart(2, '0') + ":" + String(counter.seconds).padStart(2, '0')) : ""}
             </button>
         </div>
       </div>

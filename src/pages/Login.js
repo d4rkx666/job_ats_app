@@ -55,7 +55,7 @@ function Login() {
          await firebase_login(data.email, data.password);
       } catch (error) {
          await logout()
-         setError(error.message)
+         setError("Email or password incorrect. Please try again.")
       } finally {
          setIsLoading(false);
       }
@@ -69,20 +69,14 @@ function Login() {
 
          // Sign up user 
          await signup(data.name, data.country, data.email, data.password)
-         .then(response => {
-            firebase_login(data.email, data.password);
-            resendVerificationEmail();
-            navigate("/dashboard"); // Redirect to the dashboard
-         })
          .catch(error => {
-            setError(error.message);
+            setError("User already exists. Please use a different one.");
          });
 
-
-         //Send verification
-         //await sendEmailVerification(user);
-
-         // Get info from firestore
+         
+         await firebase_login(data.email, data.password);
+         await resendVerificationEmail();
+         navigate("/dashboard"); // Redirect to the dashboard
          
       } catch (error) {
          setError(error.message)
