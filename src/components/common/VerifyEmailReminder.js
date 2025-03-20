@@ -19,7 +19,7 @@ const VerifiEmailReminder = () => {
     try {
       await auth.resendVerificationEmail();
       setDisabled(true);
-      setSuccessful("Email has sent. Send again in: ");
+      setSuccessful(labels.msg.emailSent);
 
       // countdown
       let min = (Math.floor(wait / 60));
@@ -45,8 +45,8 @@ const VerifiEmailReminder = () => {
       }, 1000);
       
     } catch (error) {
-      console.error("Error resending verification email:", error.message);
-      alert(error.message);
+      //console.error("Error resending verification email:", error.message);
+      //alert(error.message);
     }
   }
 
@@ -55,7 +55,7 @@ const VerifiEmailReminder = () => {
     if(counter.minutes === 0 && counter.seconds === 0){
       clearInterval(interval.current);
       interval.current = null;
-      setSuccessful("Send again");
+      setSuccessful(labels.msg.emailSendAgain);
       setDisabled(false);
     }
   });

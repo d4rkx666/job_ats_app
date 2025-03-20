@@ -68,6 +68,7 @@ function FeedbackForm({ onSubmit, isLoading, submitted, labels}) {
             placeholder="We'd love to hear from you!"
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             rows="4"
+            maxLength={200}
           />
           {errors.feedback && (
             <p className="text-red-500 text-sm mt-1">{errors.feedback.message}</p>

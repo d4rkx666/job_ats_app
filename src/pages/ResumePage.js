@@ -29,12 +29,12 @@ function ResumePage() {
             const response_text = response.optimized_resume;
             navigate("/improved",{ state:{ response_text }});
          })
-         .catch(error => {
-            switch(error.status){
-               case 403: setError(labels.error.userNotVerified); break;
-               default: setError(labels.error.universalError)
-            }
-            
+         .catch(err => {
+            if(err.response?.data?.detail === "403: Email not verified"){
+               setError(labels.error.userNotVerified);
+             }else{
+               setError(labels.error.universalError);
+             }
          });
 
          

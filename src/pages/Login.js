@@ -30,15 +30,12 @@ function Login() {
       // Log in user from firebase
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const userId = await userCredential.user.uid;
-      const idToken = await userCredential.user.getIdToken();
 
       // Get info from firestore
       const userDoc = await getDoc(doc(db, "users", userId));
 
       if (userDoc.exists()) {
          const newData = userDoc.data();
-         newData.token = idToken; //asign additional data (id token) to the user data 
-         console.log(newData)
          await login(newData); // set user info to localstorage
          await navigate("/dashboard"); // Redirect to the dashboard
       } else {
@@ -78,7 +75,6 @@ function Login() {
          if(!isError){
             await firebase_login(data.email, data.password);
             await resendVerificationEmail();
-            navigate("/dashboard");
          }
       } catch (error) {
          setError(error.message)

@@ -17,8 +17,6 @@ function Dashboard() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
 
-  console.log(auth.verified);
-
   useEffect (()=>{
     if(auth.user.feedback){
       setSubmitted(true);
@@ -33,9 +31,12 @@ function Dashboard() {
     try {
       await feedback(data.rate, data.feedback);
       setSubmitted(true);
-    } catch (error) {
-      console.log(error)
-      setError(labels.error.universalError);
+    } catch (err) {
+      if(err.response?.data?.detail === "403: Email not verified"){
+        setError(labels.error.userNotVerified);
+      }else{
+        setError(labels.error.universalError);
+      }
     } finally {
        setIsLoading(false);
     }

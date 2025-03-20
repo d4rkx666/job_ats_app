@@ -149,6 +149,10 @@ export const config = {
             userNotVerified: "Please verify your email before using this service.",
             resumeNotUploaded: "Failed to submit resume. Please try again.",
             universalError: "Something went wrong. Please try again later!",
+         },
+         msg:{
+            emailSendAgain: "Send again",
+            emailSent: "Email has sent. Send again in: "
          }
       },
       es: {
@@ -287,6 +291,17 @@ export const config = {
          verifyEmailReminder:{
             title: "Por favor verifica tu correo electrónico",
             subtitle: "Te hemos enviado un correo a:",
+         },
+         error:{
+            userNotFound: "Correo o contraseña incorrecta. Por favor inténtalo de nuevo.",
+            userAlreadyInUse: "Usuario ya existe, por favor usa uno diferente.",
+            userNotVerified: "Por favor verifica tu correo electrónico antes de usar este servicio.",
+            resumeNotUploaded: "Falló al subir curriculum. Por favor inténtalo de nuevo.",
+            universalError: "Algo salió mal. Por favor inténtalo más tarde!",
+         },
+         msg:{
+            emailSendAgain: "Enviar de nuevo",
+            emailSent: "Correo enviado. Podrás enviar el correo nuevamente en: "
          }
       },
    },
