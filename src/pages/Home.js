@@ -116,59 +116,6 @@ function Home() {
         </div>
       </div>
 
-      
-      {/* Testimonials Section */}
-      <div className="bg-gray-100 py-16">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
-            What Our Users Say
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Testimonial 1 */}
-            <div className="bg-white p-8 rounded-lg shadow-md">
-              <div className="flex items-center mb-4">
-                <img
-                  src="https://via.placeholder.com/50"
-                  alt="User"
-                  className="w-12 h-12 rounded-full mr-4"
-                />
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800">
-                    John Doe
-                  </h3>
-                  <p className="text-gray-600">Software Engineer</p>
-                </div>
-              </div>
-              <p className="text-gray-600">
-                "This service helped me tailor my resume for the tech industry.
-                I landed multiple interviews within weeks!"
-              </p>
-            </div>
-
-            {/* Testimonial 2 */}
-            <div className="bg-white p-8 rounded-lg shadow-md">
-              <div className="flex items-center mb-4">
-                <img
-                  src="https://via.placeholder.com/50"
-                  alt="User"
-                  className="w-12 h-12 rounded-full mr-4"
-                />
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800">
-                    Jane Smith
-                  </h3>
-                  <p className="text-gray-600">Marketing Specialist</p>
-                </div>
-              </div>
-              <p className="text-gray-600">
-                "The AI suggestions were spot-on. My resume now highlights my
-                strengths perfectly."
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Call-to-Action Section */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-400 py-20">
         <div className="container mx-auto px-6 text-center">
