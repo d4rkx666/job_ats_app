@@ -51,9 +51,9 @@ export function AuthProvider({ children }) {
         try {
 
           const newToken = await generateNewToken(auth.currentUser);
+          updateCurrentUserToken(newToken);
   
           if (auth.currentUser.emailVerified) {
-            updateCurrentUserToken(newToken);
             setVerified(auth.currentUser.emailVerified);
             clearInterval(intervalId); // Stop polling once verified
           }
@@ -103,7 +103,6 @@ export function AuthProvider({ children }) {
 
   // Get new token
   async function generateNewToken(firebaseUser){
-    console.log("generateNewToken");
     // Reload the user to get the latest email verification status
     await reload(firebaseUser);
     const newToken = await getIdToken(firebaseUser, true); // Force token refresh
@@ -112,7 +111,6 @@ export function AuthProvider({ children }) {
 
   //update token
   function updateCurrentUserToken(newToken){
-    console.log("updateCurrentUserToken");
     const storedUser = JSON.parse(localStorage.getItem("data_user"));
     storedUser.token = newToken;
     localStorage.setItem("data_user", JSON.stringify(storedUser));
@@ -120,7 +118,6 @@ export function AuthProvider({ children }) {
 
   // Prevent user data lost from refreshing
   function preventUserDataLostRefreshing(){
-    console.log("preventUserDataLostRefreshing");
     const storedUser = JSON.parse(localStorage.getItem("data_user"));
     if (storedUser != null) {
       setUser(storedUser); // Restore user data
