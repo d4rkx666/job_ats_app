@@ -148,6 +148,7 @@ export const config = {
             userAlreadyInUse: "User already exists. Please use a different one.",
             userNotVerified: "Please verify your email before using this service.",
             resumeNotUploaded: "Failed to submit resume. Please try again.",
+            withoutImprovements: "You don't have improvements left :(! Please upgrade your plan...",
             universalError: "Something went wrong. Please try again later!",
          },
          msg:{
@@ -297,6 +298,7 @@ export const config = {
             userAlreadyInUse: "Usuario ya existe, por favor usa uno diferente.",
             userNotVerified: "Por favor verifica tu correo electrónico antes de usar este servicio.",
             resumeNotUploaded: "Falló al subir curriculum. Por favor inténtalo de nuevo.",
+            withoutImprovements: "¡No quedan más mejoras :(! Por favor mejora tu plan...",
             universalError: "Algo salió mal. Por favor inténtalo más tarde!",
          },
          msg:{

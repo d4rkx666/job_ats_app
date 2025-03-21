@@ -32,7 +32,9 @@ function ResumePage() {
          .catch(err => {
             if(err.response?.data?.detail === "403: Email not verified"){
                setError(labels.error.userNotVerified);
-             }else{
+            }else if(err.response?.data?.detail === "203: You have not improvements left."){
+               setError(labels.error.withoutImprovements);
+            }else{
                setError(labels.error.universalError);
              }
          });

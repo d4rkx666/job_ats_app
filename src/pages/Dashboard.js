@@ -58,7 +58,15 @@ function Dashboard() {
         <h2 className="text-2xl font-semibold text-gray-800">
           {labels.dashboardPage.improvementsLeft}
         </h2>
-        <p className="text-6xl font-bold text-blue-600">{auth.user.settings.maximumImprovements - auth.user.settings.resumeImprovements}</p>
+          {(() => {
+            const improvementsLeft = auth.user.settings.maximumImprovements - auth.user.settings.resumeImprovements;
+
+            if(improvementsLeft !== 0){
+              return <p className="text-6xl font-bold text-blue-600">{improvementsLeft}</p>
+            }else{
+              return <p className="text-6xl font-bold text-red-600">{improvementsLeft}</p>
+            }
+          })()}
       </div>
 
       <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"/>
