@@ -2,7 +2,6 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { auth, db } from "../services/firebase";
 import { onAuthStateChanged, sendEmailVerification, signOut, reload, getIdToken  } from "firebase/auth";
 import { doc, onSnapshot } from "firebase/firestore"; // Import Firestore functions
-import firebase from "firebase/compat/app";
 
 const AuthContext = createContext();
 
@@ -82,7 +81,8 @@ export function AuthProvider({ children }) {
   };
 
   // Login function
-  const login = (userData) => {
+  const login = (userData, token) => {
+    userData.token = token;
     localStorage.setItem("data_user", JSON.stringify(userData));
     setUser(userData); // Set the user data
   };
