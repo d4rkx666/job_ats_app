@@ -9,6 +9,8 @@ export const config = {
             logout: "Logout",
             dashboard: "Dashboard",
             resume: "Boost Resume",
+            createResume: "Create new resume",
+            profile: "Profile",
          },
          home:{
             header:{
@@ -163,6 +165,8 @@ export const config = {
             logout: "Salir",
             dashboard: "Mi panel",
             resume: "Mejorar curriculum",
+            createResume: "Crear curriculum",
+            profile: "Perfil",
          },
          home:{
             header:{

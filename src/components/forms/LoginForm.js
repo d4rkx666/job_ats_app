@@ -18,7 +18,12 @@ function LoginForm({ onSubmit, onSwitchToSignUp, isLoading, labels}) {
           type="email"
           id="email"
           placeholder={ labels.formLogin.email.placeholder }
-          {...register("email", { required: labels.formLogin.email.required })}
+          {...register("email", {
+            required: labels.formLogin.email.required,
+            pattern: {
+              value: /\S+@\S+\.\S+/,
+              message: "Entered value does not match email format",
+          }, })}
           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
         />
         {errors.email && (

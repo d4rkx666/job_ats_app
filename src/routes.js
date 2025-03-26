@@ -3,6 +3,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import ResumePage from "./pages/ResumePage";
+import Profile from "./pages/ProfilePage";
+import CreateResume from "./pages/CreateResume";
 import Layout from "./components/layout/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import HideLoginPage from "./components/HideLoginPage";
@@ -22,9 +24,17 @@ function AppRoutes() {
               <ProtectedRoute>
                 <Dashboard />
               </ProtectedRoute>} />
+            <Route path="/profile" element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>} />
             <Route path="/resume" element={
               <ProtectedRoute>
                 <ResumePage />
+              </ProtectedRoute>} />
+            <Route path="/create-resume" element={
+              <ProtectedRoute>
+                <CreateResume />
               </ProtectedRoute>} />
             <Route path="/improved" element={
               <ProtectedRoute>
