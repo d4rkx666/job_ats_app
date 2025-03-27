@@ -1,6 +1,6 @@
-import React from "react";
+import React, {useState} from "react";
 import ProfileForm from "../components/forms/ProfileForm"
-import {save_profile} from "../services/SetProfile"
+import {save_profile, save_personal_information, save_skills} from "../services/SetProfile"
 import {useAuth} from "../contexts/AuthContext"
 
 
@@ -9,25 +9,61 @@ function CreateResume() {
   // Auth to autofill
   const auth = useAuth();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   // Handler for form submission (manual save)
   const handleSubmit = async (data) => {
-    console.log('Form Data (Manual Save):', data);
-    save_profile(data).then(response =>{
+    setIsLoading(true);
 
-    }).catch(error =>{
-      console.log(error)
-    })
-    // Save data to backend or state management here
+    try {
+      await save_profile({educations: data.educations, jobs: data.jobs, projects: data.projects}).then(response =>{
+      }).catch(error =>{
+        console.log(error)
+      })
+    } catch (error) {
+    } finally {
+        setIsLoading(false);
+    }
   };
 
-  // Auto-save function (simulate API call)
-  const autoSave = (field, value) => {
-    console.log(`Auto-saving ${field}:`, value);
-    // Simulate API call or save to state management
+  // Auto-save function for personal information
+  const autoSavePersonalInformation = async (data) => {
+    setIsLoading(true);
+
+    try {
+      await save_personal_information(data).then(response =>{
+      }).catch(error =>{
+        console.log(error)
+      })
+    } catch (error) {
+    } finally {
+        setIsLoading(false);
+    }
+  };
+
+  // Auto-save function for personal information
+  const autoSaveSkills = async (data) => {
+    setIsLoading(true);
+
+    try {
+      await save_skills({skills:data}).then(response =>{
+      }).catch(error =>{
+        console.log(error)
+      })
+    } catch (error) {
+    } finally {
+        setIsLoading(false);
+    }
   };
 
   return (
-    <ProfileForm onSubmit={handleSubmit} autoSave={autoSave} userData={auth.user}/>
+    <ProfileForm
+    onSubmit={handleSubmit}
+    autoSavePersonalInformation={autoSavePersonalInformation}
+    autoSaveSkills={autoSaveSkills}
+    userData={auth.user}
+    isLoading={isLoading}
+    />
   );
 }
 

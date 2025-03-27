@@ -1,35 +1,74 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import WorkExperienceSection from "../common/JobEntry"
 import EducationSection from "../common/EducationEntry"
 
 
-function CreateResumeForm({ onSubmit, autoSave, isLoading, labels, error, userData}) {
-  const { register, handleSubmit, control, watch, reset, setValue, trigger, formState:{errors} } = useForm({
+function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkills, isLoading, labels, error, userData}) {
+  const { register, handleSubmit, control, reset, watch, setValue, trigger, formState:{errors} } = useForm({
     defaultValues: {
-      jobs: [{}], // Initialize with one empty job
-      educations: [{}] // Initialize with one empty education
+      jobs: userData.profile?.jobs || [{}], // Initialize with one empty job
+      educations: userData.profile?.education || [{}], // Initialize with one empty education
+      personalData: {
+        email: userData.email || "",
+        phone: userData.phone || "",
+        linkedin: userData.linkedin || "",
+        website: userData.website || ""
+      }
     },
     mode: "all",
   });
 
-  useEffect(()=>{
-    setValue("email", userData.email || "");
-    setValue("phone", userData.phone || "");
-    setValue("linkedin", userData.linkedin || "");
-    setValue("website", userData.website || "");
-    
-  },[autoSave]);
+  const [recentlySaved, setRecentlySaved] = useState("" || null);
+  const [skillSaved, setSkillSaved] = useState("" || null);
 
   useEffect(()=>{
-    reset({
-      educations: userData.profile?.education || [{}],
-      jobs: userData.profile?.jobs || [{}]
-    });
     setValue('skills', userData.profile?.skills || []);
     setValue('projects', userData.profile?.projects || []);
     
   },[userData, reset]);
+
+  // Watch personalData && skills fields
+  const personalData = watch("personalData");
+
+  // Generic onBlur handler for personalData fields
+  const handlePersonalDataBlur = async (fieldName) => {
+    await trigger(`personalData.${fieldName}`);
+    if (!errors.personalData?.[fieldName]) {
+      const currentValue = personalData[fieldName];
+      if (currentValue !== userData?.[fieldName]) {
+        setRecentlySaved(fieldName);
+        await autoSavePersonalInformation(personalData);
+        setTimeout(() => setRecentlySaved(null), 2000); // Reset after 2 seconds
+      }
+    }
+  };
+
+  // Handle onclick for skills
+  const handleActionSkills = async (action, field, index, e)=>{
+    await trigger("skills");
+    if(action === "delete"){
+      const newSkills = field.value.filter((_, i) => i !== index);
+      setValue('skills', newSkills);
+
+      setRecentlySaved(field.name);
+      await autoSaveSkills(newSkills);
+      setTimeout(() => setRecentlySaved(null), 2000); // Reset after 2 seconds
+    }else if(action === "insert"){
+      if (e.key === 'Enter' || e.key === ',') {
+        e.preventDefault();
+        const newSkill = e.target.value.trim();
+        if (newSkill && !field.value.includes(newSkill)) {
+          setValue('skills', [...field.value, newSkill]);
+          e.target.value = '';
+          setRecentlySaved(field.name);
+          setSkillSaved(newSkill)
+          await autoSaveSkills([...field.value, newSkill]);
+          setTimeout(() => setRecentlySaved(null), 3000); // Reset after 2 seconds
+        }
+      }
+    }
+  }
   
 
   return (
@@ -48,52 +87,59 @@ function CreateResumeForm({ onSubmit, autoSave, isLoading, labels, error, userDa
               className={`w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
             />
             <input
-              {...register('email', { required: "Required",
+              {...register('personalData.email', { required: "Required",
                 pattern: {
                   value: /\S+@\S+\.\S+/,
                   message: "Entered value does not match email format",
                 },
               })}
-              onBlur={async (e) => {
-                await trigger('email'); // Validate first
-                if (!errors.email) {    // Only save if valid
-                  autoSave('email', e.target.value);
-                }
-              }}
+              onBlur={() => handlePersonalDataBlur('email')}
               type="email"
               placeholder={userData.email || "Email"}
-              className={`w-full p-2 border rounded ${ errors.email ? "border-red-500" : "border-green-500"} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+              className={`w-full p-2 border rounded ${ errors.personalData?.email ? "border-red-500" : "border-green-500"} ${recentlySaved === 'email' ? 'ring-2 ring-green-500 animate-pulse-once' : 'ring-1 ring-gray-300'} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
             />
             <input
-              {...register('phone', { required: "Required" }, {
-                onBlur: (e) => autoSave('phone', e.target.value),
-              })}
+              {...register('personalData.phone', { required: "Required",
+                pattern: {
+                value: /^(\+\d{1,3}[- ]?)?\d{10}$/,
+                message: "Entered value does not match phone format",
+              }},)}
+              onBlur={() => handlePersonalDataBlur('phone')}
               type="tel"
-              placeholder="Phone"
-              className={`w-full p-2 border rounded ${ errors.phone ? "border-red-500" : "border-green-500"} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+              placeholder={userData.phone || "Phone"}
+              className={`w-full p-2 border rounded ${ errors.personalData?.phone ? "border-red-500" : "border-green-500"} ${recentlySaved === 'phone' ? 'ring-2 ring-green-500 animate-pulse-once' : 'ring-1 ring-gray-300'} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
             />
             <input
-              {...register('linkedin', {
-                onBlur: (e) => autoSave('linkedin', e.target.value),
+              {...register('personalData.linkedin', {
+                pattern: {
+                  value: /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,
+                  message: 'Invalid URL format'
+                }
               })}
+              onBlur={() => handlePersonalDataBlur('linkedin')}
               type="url"
-              placeholder="LinkedIn URL"
-              className={`w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+              placeholder={userData.linkedin || "LinkedIn URL"}
+              className={`w-full p-2 border rounded ${ errors.personalData?.linkedin ? "border-red-500" : "border-green-500"} ${recentlySaved === 'linkedin' ? 'ring-2 ring-green-500 animate-pulse-once' : 'ring-1 ring-gray-300'} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
             />
             <input
-              {...register('website', {
-                onBlur: (e) => autoSave('website', e.target.value),
+              {...register('personalData.website', {
+                pattern: {
+                  value: /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,
+                  message: 'Invalid URL format'
+                }
               })}
+              onBlur={() => handlePersonalDataBlur('website')}
               type="url"
-              placeholder="Personal website URL"
-              className={`w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+              placeholder={userData.linkedin || "Personal website URL"}
+              className={`w-full p-2 border rounded ${ errors.personalData?.website ? "border-red-500" : "border-green-500"} ${recentlySaved === 'website' ? 'ring-2 ring-green-500 animate-pulse-once' : 'ring-1 ring-gray-300'} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
             />
           </div>
         </div>
 
         {/* Skills (Save on Button Click) */}
         <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <h2 className="text-xl font-semibold mb-4">Skills</h2>
+          <h2 className="text-xl font-semibold mb-1">Skills</h2>
+          <h5 className="text-sm text-gray-500 font-semibold mb-4">*This information will be saved automatically.</h5>
           <Controller
             name="skills"
             control={control}
@@ -102,14 +148,11 @@ function CreateResumeForm({ onSubmit, autoSave, isLoading, labels, error, userDa
               <div>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {field.value.map((skill, index) => (
-                    <div key={index} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
+                    <div key={index} className={`bg-blue-100 text-blue-800 px-3 py-1 rounded-full ${recentlySaved === 'skills' && skill===skillSaved ? 'ring-2 ring-green-500 animate-pulse-once' : 'ring-1 ring-gray-300'}`} >
                       {skill}
                       <button
                         type="button"
-                        onClick={() => {
-                          const newSkills = field.value.filter((_, i) => i !== index);
-                          setValue('skills', newSkills);
-                        }}
+                        onClick={() => handleActionSkills("delete", field, index)}
                         className="ml-2"
                       >
                         ×
@@ -120,17 +163,8 @@ function CreateResumeForm({ onSubmit, autoSave, isLoading, labels, error, userDa
                 <input
                   type="text"
                   placeholder="Add a skill"
-                  className="w-full p-2 border rounded"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ',') {
-                      e.preventDefault();
-                      const newSkill = e.target.value.trim();
-                      if (newSkill && !field.value.includes(newSkill)) {
-                        setValue('skills', [...field.value, newSkill]);
-                        e.target.value = '';
-                      }
-                    }
-                  }}
+                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  onKeyDown={(e) => handleActionSkills("insert", field, 0, e)}
                 />
                 <p className="text-gray-500 mt-1 font-semibold text-sm">Use "Enter" or "Comma" key to register a new skill</p>
               </div>
@@ -213,9 +247,10 @@ function CreateResumeForm({ onSubmit, autoSave, isLoading, labels, error, userDa
         {/* Submit Button (Manual Save) */}
         <button
           type="submit"
-          className="mt-6 bg-green-500 text-white px-6 py-2 rounded"
+          disabled={isLoading}
+          className="w-full mt-5 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
         >
-          Save All
+          {isLoading ? "Saving data" : "Save all"}
         </button>
       </form>
     </div>

@@ -1,10 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Controller } from 'react-hook-form';
 import MonthYearPicker from "./Datepicker"
 
 // Create a separate JobEntry component to use hooks
-const JobEntry = ({ index, job, control, register, onDelete, setValue, errors }) => {
-  const [isCurrentJob, setIsCurrentJob] = useState(false);
+const JobEntry = ({ index, isCurrentJobCheck, control, register, onDelete, setValue, errors }) => {
+  const [isCurrentJob, setIsCurrentJob] = useState(isCurrentJobCheck);
+
+  useEffect(()=>{
+    setIsCurrentJob(isCurrentJobCheck);
+  }, [isCurrentJobCheck]);
 
   return (
     <div className="mb-6 p-4 border rounded-lg relative">
@@ -51,7 +55,7 @@ const JobEntry = ({ index, job, control, register, onDelete, setValue, errors })
                 checked={isCurrentJob}
                 onChange={(e) => {
                   setIsCurrentJob(e.target.checked);
-                  setValue(`jobs.${index}.endDate`, e.target.checked ? 'present' : '');
+                  setValue(`jobs.${index}.endDate`, e.target.checked ? {month: 0, year: 0} : '');
                 }}
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
@@ -76,28 +80,34 @@ const JobEntry = ({ index, job, control, register, onDelete, setValue, errors })
 const WorkExperienceSection = ({ control, register, setValue, errors }) => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-      <h2 className="text-xl font-semibold mb-4">Work History</h2>
+      <h2 className="text-xl font-semibold mb-1">Work History</h2>
+      <h5 className="text-sm text-gray-500 font-semibold mb-4">*Please save all your changes before leaving with the green button below.</h5>
       
       <Controller
         name="jobs"
         control={control}
         render={({ field }) => (
           <div>
-            {field.value.map((job, index) => (
-              <JobEntry
-                key={index}
-                index={index}
-                job={job}
-                control={control}
-                register={register}
-                setValue={setValue}
-                errors={errors?.jobs?.[index] || {}}
-                onDelete={() => {
-                  const newJobs = field.value.filter((_, i) => i !== index);
-                  setValue('jobs', newJobs);
-                }}
-              />
-            ))}
+            {field.value.map((job, index) => {
+              const check = job.endDate?.month === 0 && job.endDate?.year === 0 ? true : false;
+
+              return(
+                <JobEntry
+                  key={index}
+                  index={index}
+                  job={job}
+                  control={control}
+                  register={register}
+                  setValue={setValue}
+                  isCurrentJobCheck={check}
+                  errors={errors?.jobs?.[index] || {}}
+                  onDelete={() => {
+                    const newJobs = field.value.filter((_, i) => i !== index);
+                    setValue('jobs', newJobs);
+                  }}
+                />
+              )
+            })}
 
             <button
               type="button"
