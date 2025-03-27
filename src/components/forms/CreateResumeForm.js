@@ -1,232 +1,121 @@
 import React from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import {useAuth} from "../../contexts/AuthContext";
+import KeywordOptimizationToggle from "../common/KeywordOptimizationToggle"
 
-const CreateResumeForm = () => {
-  const { register, handleSubmit, control, setValue, watch } = useForm();
+const CreateResumeForm = (profileData ) => {
+  const auth = useAuth(); // Get user's plan (free/pro/business)
+  const { register, handleSubmit, watch } = useForm();
 
-  // Watch all form values (for debugging or auto-saving)
-  const formValues = watch();
-
-  // Auto-save function (simulate API call)
-  const autoSave = (field, value) => {
-    console.log(`Auto-saving ${field}:`, value);
-    // Simulate API call or save to state management
-  };
-
-  // Handler for form submission (manual save)
   const onSubmit = (data) => {
-    console.log('Form Data (Manual Save):', data);
-    // Save data to backend or state management here
+    console.log("Generation options:", data);
+    // Will connect to API later
   };
+
+  // Watch plan to gray out features
+  const isPro = auth.user.subscription.plan === 'pro' || auth.user.subscription.plan === 'business';
+  const isBusiness = auth.user.subscription.plan === 'business';
 
   return (
-    <div className="p-8 bg-gray-100 min-h-screen">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {/* Personal Information (Auto-Save on Blur) */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <h2 className="text-xl font-semibold mb-4">Personal Information</h2>
-          <div className="space-y-4">
-            <input
-              {...register('name', {
-                onBlur: (e) => autoSave('name', e.target.value),
-              })}
-              placeholder="Full Name"
-              className="w-full p-2 border rounded"
-            />
-            <input
-              {...register('email', {
-                onBlur: (e) => autoSave('email', e.target.value),
-              })}
-              type="email"
-              placeholder="Email"
-              className="w-full p-2 border rounded"
-            />
-            <input
-              {...register('phone', {
-                onBlur: (e) => autoSave('phone', e.target.value),
-              })}
-              type="tel"
-              placeholder="Phone"
-              className="w-full p-2 border rounded"
-            />
-            <input
-              {...register('linkedin', {
-                onBlur: (e) => autoSave('linkedin', e.target.value),
-              })}
-              type="url"
-              placeholder="LinkedIn URL"
-              className="w-full p-2 border rounded"
-            />
-          </div>
-        </div>
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-5xl mx-auto p-8 bg-white rounded-lg shadow-2xl">
+      {/* Job Description Input (Free) */}
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
+          Create resume
+        </h1>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Job Description
+        </label>
+        <textarea
+          {...register('jobDescription', { required: true })}
+          rows={5}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Paste the job description here..."
+        />
+      </div>
 
-        {/* Skills (Save on Button Click) */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <h2 className="text-xl font-semibold mb-4">Skills</h2>
-          <Controller
-            name="skills"
-            control={control}
-            defaultValue={[]}
-            render={({ field }) => (
-              <div>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {field.value.map((skill, index) => (
-                    <div key={index} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
-                      {skill}
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const newSkills = field.value.filter((_, i) => i !== index);
-                          setValue('skills', newSkills);
-                        }}
-                        className="ml-2"
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ))}
-                </div>
-                <input
-                  type="text"
-                  placeholder="Add a skill"
-                  className="w-full p-2 border rounded mb-4"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      const newSkill = e.target.value.trim();
-                      if (newSkill && !field.value.includes(newSkill)) {
-                        setValue('skills', [...field.value, newSkill]);
-                        e.target.value = '';
-                      }
-                    }
-                  }}
-                />
-              </div>
+      {/* Template Selection (Free) */}
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Template Style
+        </label>
+        <div className="grid grid-cols-3 gap-3">
+          {['Classic', 'Modern', 'Minimalist'].map((template) => (
+            <label key={template} className="flex items-center space-x-2">
+              <input
+                type="radio"
+                {...register('template')}
+                value={template.toLowerCase()}
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500"
+                defaultChecked={template === 'Classic'}
+              />
+              <span>{template}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* PRO FEATURES (Gated) */}
+      <div className={`mb-6 ${!isPro && 'opacity-50'}`}>
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="font-medium text-gray-900">
+            AI Optimization
+            {!isPro && (
+              <span className="ml-2 text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
+                PRO
+              </span>
             )}
-          />
+          </h3>
         </div>
 
-        {/* Education (Save on Button Click) */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <h2 className="text-xl font-semibold mb-4">Education</h2>
-          <div className="space-y-4">
-            <input
-              {...register('education.institution')}
-              placeholder="Institution"
-              className="w-full p-2 border rounded"
-            />
-            <input
-              {...register('education.degree')}
-              placeholder="Degree"
-              className="w-full p-2 border rounded"
-            />
-            <input
-              {...register('education.graduationDate')}
-              type="date"
-              placeholder="Graduation Date"
-              className="w-full p-2 border rounded"
-            />
-          </div>
-        </div>
+        <div className="space-y-3">
+            <KeywordOptimizationToggle jobDescription={"asadada"} profileText={"asdasd"} disabled={!isPro}/>
 
-        {/* Work History (Save on Button Click) */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <h2 className="text-xl font-semibold mb-4">Work History</h2>
-          <Controller
-            name="jobs"
-            control={control}
-            defaultValue={[]}
-            render={({ field }) => (
-              <div>
-                {field.value.map((job, index) => (
-                  <div key={index} className="mb-4">
-                    <input
-                      {...register(`jobs[${index}].title`)}
-                      placeholder="Job Title"
-                      className="w-full p-2 border rounded mb-2"
-                    />
-                    <input
-                      {...register(`jobs[${index}].company`)}
-                      placeholder="Company"
-                      className="w-full p-2 border rounded mb-2"
-                    />
-                    <input
-                      {...register(`jobs[${index}].dates`)}
-                      placeholder="Dates"
-                      className="w-full p-2 border rounded mb-2"
-                    />
-                    <textarea
-                      {...register(`jobs[${index}].responsibilities`)}
-                      placeholder="Responsibilities"
-                      className="w-full p-2 border rounded"
-                    />
-                  </div>
-                ))}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setValue('jobs', [...field.value, { title: '', company: '', dates: '', responsibilities: '' }]);
-                  }}
-                  className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
-                >
-                  Add Job
-                </button>
-              </div>
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              {...register('quantifyAchievements')}
+              disabled={!isPro}
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 disabled:text-gray-400"
+            />
+            <span>Quantify achievements with metrics</span>
+          </label>
+        </div>
+      </div>
+
+      {/* BUSINESS FEATURES (Gated) */}
+      <div className={`mb-6 ${!isBusiness && 'opacity-50'}`}>
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="font-medium text-gray-900">
+            Team Features
+            {!isBusiness && (
+              <span className="ml-2 text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">
+                BUSINESS
+              </span>
             )}
-          />
+          </h3>
         </div>
 
-        {/* Projects (Save on Button Click) */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4">Projects</h2>
-          <Controller
-            name="projects"
-            control={control}
-            defaultValue={[]}
-            render={({ field }) => (
-              <div>
-                {field.value.map((project, index) => (
-                  <div key={index} className="mb-4">
-                    <input
-                      {...register(`projects[${index}].name`)}
-                      placeholder="Project Name"
-                      className="w-full p-2 border rounded mb-2"
-                    />
-                    <textarea
-                      {...register(`projects[${index}].description`)}
-                      placeholder="Description"
-                      className="w-full p-2 border rounded mb-2"
-                    />
-                    <input
-                      {...register(`projects[${index}].technologies`)}
-                      placeholder="Technologies"
-                      className="w-full p-2 border rounded"
-                    />
-                  </div>
-                ))}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setValue('projects', [...field.value, { name: '', description: '', technologies: '' }]);
-                  }}
-                  className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
-                >
-                  Add Project
-                </button>
-              </div>
-            )}
-          />
+        <div className="space-y-3">
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              {...register('branding')}
+              disabled={!isBusiness}
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 disabled:text-gray-400"
+            />
+            <span>Add company branding</span>
+          </label>
         </div>
+      </div>
 
-        {/* Submit Button (Manual Save) */}
-        <button
-          type="submit"
-          className="mt-6 bg-green-500 text-white px-6 py-2 rounded"
-        >
-          Save All
-        </button>
-      </form>
-    </div>
+      <button
+        type="submit"
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      >
+        Generate Resume
+      </button>
+    </form>
   );
 };
 

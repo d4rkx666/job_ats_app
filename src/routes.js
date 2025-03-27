@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
+import Login from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
 import Dashboard from "./pages/Dashboard";
 import ResumePage from "./pages/ResumePage";
 import Profile from "./pages/ProfilePage";
@@ -19,6 +20,10 @@ function AppRoutes() {
             <Route path="/login" element={
               <HideLoginPage>
                 <Login/>
+              </HideLoginPage>} />
+              <Route path="/signup" element={
+              <HideLoginPage>
+                <SignupPage/>
               </HideLoginPage>} />
             <Route path="/dashboard" element={
               <ProtectedRoute>

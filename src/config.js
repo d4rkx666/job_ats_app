@@ -6,10 +6,12 @@ export const config = {
          menu: {
             home: "Home",
             login: "Login",
+            signUp: "Sign Up",
             logout: "Logout",
             dashboard: "Dashboard",
             resume: "Boost Resume",
             createResume: "Create new resume",
+            pricing: "Pricing",
             profile: "Profile",
          },
          home:{
@@ -62,7 +64,7 @@ export const config = {
                label: "Login",
                loading: "Logging in...",
             },
-            signUpHere: "Sign up here",
+            signUpHere: "Sign up here!",
             forgotPassword :"Forgot Password?",
          },
          formSignup:{
@@ -162,10 +164,12 @@ export const config = {
          menu: {
             home: "Inicio",
             login: "Entrar",
+            signUp: "Regístrate",
             logout: "Salir",
             dashboard: "Mi panel",
             resume: "Mejorar curriculum",
             createResume: "Crear curriculum",
+            pricing: "Precios",
             profile: "Perfil",
          },
          home:{
@@ -218,7 +222,7 @@ export const config = {
                label: "Iniciar sesión",
                loading: "Iniciando sesión...",
             },
-            signUpHere: "Regístrate aquí",
+            signUpHere: "¡Regístrate aquí!",
             forgotPassword :"Olvidé la contraseña",
          },
          formSignup:{

@@ -47,3 +47,7 @@
 .animate-pulse-once {
   animation: pulse-once 3s ease-in-out;
 }
+
+.progress-fill {
+  transition: width 0.5s ease-out;
+}

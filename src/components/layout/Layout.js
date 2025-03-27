@@ -11,7 +11,7 @@ function Layout({ children }) {
       <Header />
       <div className="flex flex-1">
         {user && <Sidebar />}
-        <main className="flex-1 p-5">
+        <main className="flex-1">
           {/* In case email is not verified */}
           {(user && !verified) ? <VerifyEmailReminder/> : ""}
           {children}</main>

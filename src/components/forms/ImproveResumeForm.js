@@ -51,7 +51,7 @@ function ImproveResumeForm({ onSubmit, isLoading, labels, error}) {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-8 bg-white rounded-lg shadow-2xl">
+    <div className="max-w-5xl mx-auto p-8 bg-white rounded-lg shadow-2xl">
       <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
         {labels.formImproveResume.title}
       </h1>
