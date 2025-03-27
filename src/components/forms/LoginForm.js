@@ -1,7 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 
-function LoginForm({ onSubmit, onSwitchToSignUp, isLoading, labels}) {
+function LoginForm({ onSubmit, isLoading, labels}) {
   const {
     register,
     handleSubmit,
@@ -18,7 +19,12 @@ function LoginForm({ onSubmit, onSwitchToSignUp, isLoading, labels}) {
           type="email"
           id="email"
           placeholder={ labels.formLogin.email.placeholder }
-          {...register("email", { required: labels.formLogin.email.required })}
+          {...register("email", {
+            required: labels.formLogin.email.required,
+            pattern: {
+              value: /\S+@\S+\.\S+/,
+              message: "Entered value does not match email format",
+          }, })}
           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
         />
         {errors.email && (
@@ -53,20 +59,18 @@ function LoginForm({ onSubmit, onSwitchToSignUp, isLoading, labels}) {
       <p className="text-center text-sm text-gray-600">
         <button
           type="button"
-          onClick={onSwitchToSignUp}
           className="text-blue-600 hover:underline"
         >
           {labels.formLogin.forgotPassword}
         </button>
       </p>
       <p className="text-center text-sm text-gray-600">
-        <button
+        <Link to="/signup"
           type="button"
-          onClick={onSwitchToSignUp}
           className="text-blue-600 hover:underline"
         >
           {labels.formLogin.signUpHere}
-        </button>
+        </Link>
       </p>
     </form>
   );

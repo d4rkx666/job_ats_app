@@ -1,7 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import {Link} from "react-router-dom"
 
-function LoginForm({ onSubmit, isLoading, onSwitchToLogin, labels}) {
+function LoginForm({ onSubmit, isLoading, labels}) {
   const {
     register,
     handleSubmit,
@@ -83,13 +84,12 @@ function LoginForm({ onSubmit, isLoading, onSwitchToLogin, labels}) {
       </button>
 
       <p className="text-center text-sm text-gray-600">
-        <button
+        <Link to="/login"
           type="button"
-          onClick={onSwitchToLogin}
           className="text-blue-600 hover:underline"
         >
           { labels.formSignup.loginHere }
-        </button>
+        </Link>
       </p>
     </form>
   );

@@ -1,15 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {useConfig} from "../../contexts/ConfigContext"
 
 function Sidebar() {
   const {config, language} = useConfig();
   const labels = config.labels[language];
   return (
-    <aside className="w-64 p-5 bg-gray-100 border-r border-gray-300">
+    <aside className="hidden lg:flex w-64 p-5 border-r border-blue-100">
       <nav className="flex flex-col gap-2">
-        <Link to="/dashboard" className="text-blue-600 no-underline">{labels.menu.dashboard}</Link>
-        <Link to="/resume" className="text-blue-600 no-underline">{labels.menu.resume}</Link>
+        <NavLink to="/dashboard" className={({ isActive }) => `text-sm ${isActive ? "text-blue-600 font-bold" : "text-gray-400 hover:text-gray-500"}`}>{labels.menu.dashboard}</NavLink>
+        <NavLink to="/resume" className={({ isActive }) => `text-sm ${isActive ? "text-blue-600 font-bold" : "text-gray-400 hover:text-gray-500"}`}>{labels.menu.resume}</NavLink>
       </nav>
     </aside>
   );

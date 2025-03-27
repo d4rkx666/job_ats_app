@@ -1,5 +1,5 @@
 import React from "react";
-import PreviewResumeLayout from "../components/common/PreviewResumeLayout"
+import PreviewCreateResume from "../components/common/PreviewCreateResume"
 
 const PreviewResumePage = () => {
 
@@ -40,7 +40,7 @@ const PreviewResumePage = () => {
     console.log("1st", resume);
 
   return (
-    <PreviewResumeLayout resume={resume}></PreviewResumeLayout>
+    <PreviewCreateResume resume={resume}></PreviewCreateResume>
   );
 };
 

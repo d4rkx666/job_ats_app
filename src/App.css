@@ -36,3 +36,18 @@
     transform: rotate(360deg);
   }
 }
+
+
+@keyframes pulse-once {
+  0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+  50% { box-shadow: 0 0 0 10px rgba(74, 222, 128, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
+
+.animate-pulse-once {
+  animation: pulse-once 3s ease-in-out;
+}
+
+.progress-fill {
+  transition: width 0.5s ease-out;
+}

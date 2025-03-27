@@ -1,105 +1,122 @@
-import React from "react";
-import { useForm } from "react-hook-form";
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import {useAuth} from "../../contexts/AuthContext";
+import KeywordOptimizationToggle from "../common/KeywordOptimizationToggle"
 
-function CreateResumeForm({ onSubmit, isLoading }) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+const CreateResumeForm = (profileData ) => {
+  const auth = useAuth(); // Get user's plan (free/pro/business)
+  const { register, handleSubmit, watch } = useForm();
+
+  const onSubmit = (data) => {
+    console.log("Generation options:", data);
+    // Will connect to API later
+  };
+
+  // Watch plan to gray out features
+  const isPro = auth.user.subscription.plan === 'pro' || auth.user.subscription.plan === 'business';
+  const isBusiness = auth.user.subscription.plan === 'business';
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      {/* Full Name */}
-      <div>
-        <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
-          Full Name
-        </label>
-        <input
-          type="text"
-          id="fullName"
-          {...register("fullName", { required: "Full name is required" })}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-        />
-        {errors.fullName && (
-          <p className="text-red-500 text-sm mt-1">{errors.fullName.message}</p>
-        )}
-      </div>
-
-      {/* Email */}
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-          Email
-        </label>
-        <input
-          type="email"
-          id="email"
-          {...register("email", { required: "Email is required" })}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-        />
-        {errors.email && (
-          <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
-        )}
-      </div>
-
-      {/* Job Title */}
-      <div>
-        <label htmlFor="jobTitle" className="block text-sm font-medium text-gray-700">
-          Job Title
-        </label>
-        <input
-          type="text"
-          id="jobTitle"
-          {...register("jobTitle", { required: "Job title is required" })}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-        />
-        {errors.jobTitle && (
-          <p className="text-red-500 text-sm mt-1">{errors.jobTitle.message}</p>
-        )}
-      </div>
-
-      {/* Experience */}
-      <div>
-        <label htmlFor="experience" className="block text-sm font-medium text-gray-700">
-          Experience
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-5xl mx-auto p-8 bg-white rounded-lg shadow-2xl">
+      {/* Job Description Input (Free) */}
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
+          Create resume
+        </h1>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Job Description
         </label>
         <textarea
-          id="experience"
-          {...register("experience", { required: "Experience is required" })}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-          rows={4}
+          {...register('jobDescription', { required: true })}
+          rows={5}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Paste the job description here..."
         />
-        {errors.experience && (
-          <p className="text-red-500 text-sm mt-1">{errors.experience.message}</p>
-        )}
       </div>
 
-      {/* Skills */}
-      <div>
-        <label htmlFor="skills" className="block text-sm font-medium text-gray-700">
-          Skills
+      {/* Template Selection (Free) */}
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Template Style
         </label>
-        <textarea
-          id="skills"
-          {...register("skills", { required: "Skills are required" })}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-          rows={4}
-        />
-        {errors.skills && (
-          <p className="text-red-500 text-sm mt-1">{errors.skills.message}</p>
-        )}
+        <div className="grid grid-cols-3 gap-3">
+          {['Classic', 'Modern', 'Minimalist'].map((template) => (
+            <label key={template} className="flex items-center space-x-2">
+              <input
+                type="radio"
+                {...register('template')}
+                value={template.toLowerCase()}
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500"
+                defaultChecked={template === 'Classic'}
+              />
+              <span>{template}</span>
+            </label>
+          ))}
+        </div>
       </div>
 
-      {/* Submit Button */}
+      {/* PRO FEATURES (Gated) */}
+      <div className={`mb-6 ${!isPro && 'opacity-50'}`}>
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="font-medium text-gray-900">
+            AI Optimization
+            {!isPro && (
+              <span className="ml-2 text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
+                PRO
+              </span>
+            )}
+          </h3>
+        </div>
+
+        <div className="space-y-3">
+            <KeywordOptimizationToggle jobDescription={"asadada"} profileText={"asdasd"} disabled={!isPro}/>
+
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              {...register('quantifyAchievements')}
+              disabled={!isPro}
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 disabled:text-gray-400"
+            />
+            <span>Quantify achievements with metrics</span>
+          </label>
+        </div>
+      </div>
+
+      {/* BUSINESS FEATURES (Gated) */}
+      <div className={`mb-6 ${!isBusiness && 'opacity-50'}`}>
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="font-medium text-gray-900">
+            Team Features
+            {!isBusiness && (
+              <span className="ml-2 text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">
+                BUSINESS
+              </span>
+            )}
+          </h3>
+        </div>
+
+        <div className="space-y-3">
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              {...register('branding')}
+              disabled={!isBusiness}
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 disabled:text-gray-400"
+            />
+            <span>Add company branding</span>
+          </label>
+        </div>
+      </div>
+
       <button
         type="submit"
-        disabled={isLoading}
-        className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-blue-400"
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
       >
-        {isLoading ? "Creating..." : "Create Resume"}
+        Generate Resume
       </button>
     </form>
   );
-}
+};
 
 export default CreateResumeForm;
