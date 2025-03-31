@@ -2,9 +2,14 @@ import React, {useState} from "react";
 import ProfileForm from "../components/forms/ProfileForm"
 import {save_profile, save_personal_information, save_skills} from "../services/SetProfile"
 import {useAuth} from "../contexts/AuthContext"
+import { useConfig } from "../contexts/ConfigContext";
 
 
 function CreateResume() {
+
+  // Language
+  const { config, language } = useConfig();
+  const labels = config.labels[language];
 
   // Auth to autofill
   const auth = useAuth();
@@ -17,6 +22,7 @@ function CreateResume() {
 
     try {
       await save_profile({educations: data.educations, jobs: data.jobs, projects: data.projects}).then(response =>{
+        
       }).catch(error =>{
         console.log(error)
       })
@@ -29,30 +35,44 @@ function CreateResume() {
   // Auto-save function for personal information
   const autoSavePersonalInformation = async (data) => {
     setIsLoading(true);
+    let isSaved = false;
 
     try {
-      await save_personal_information(data).then(response =>{
+      isSaved = await save_personal_information(data).then(response =>{
+        if(response.data.status === "success"){
+          return true;
+        }else{
+          return false;
+        }
       }).catch(error =>{
-        console.log(error)
+        return false;
       })
     } catch (error) {
     } finally {
         setIsLoading(false);
+        return isSaved
     }
   };
 
   // Auto-save function for personal information
   const autoSaveSkills = async (data) => {
     setIsLoading(true);
+    let isSaved = false;
 
     try {
-      await save_skills({skills:data}).then(response =>{
+      isSaved = await save_skills({skills:data}).then(response =>{
+        if(response.data.status === "success"){
+          return true;
+        }else{
+          return false;
+        }
       }).catch(error =>{
-        console.log(error)
+        return false;
       })
     } catch (error) {
     } finally {
         setIsLoading(false);
+        return isSaved;
     }
   };
 
@@ -63,6 +83,7 @@ function CreateResume() {
     autoSaveSkills={autoSaveSkills}
     userData={auth.user}
     isLoading={isLoading}
+    labels={labels}
     />
   );
 }

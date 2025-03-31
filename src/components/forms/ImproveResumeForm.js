@@ -1,5 +1,6 @@
 import React, {useState, useRef} from "react";
 import { useForm } from "react-hook-form";
+import SubmitButton from "../common/SubmitButton";
 
 function ImproveResumeForm({ onSubmit, isLoading, labels, error}) {
   const {
@@ -7,7 +8,9 @@ function ImproveResumeForm({ onSubmit, isLoading, labels, error}) {
     handleSubmit,
     formState: { errors },
     setValue
-  } = useForm();
+  } = useForm({
+    mode: 'all'
+  });
 
   const [filePreview, setFilePreview] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -51,7 +54,7 @@ function ImproveResumeForm({ onSubmit, isLoading, labels, error}) {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-8 bg-white rounded-lg shadow-2xl">
+    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg">
       <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
         {labels.formImproveResume.title}
       </h1>
@@ -112,6 +115,7 @@ function ImproveResumeForm({ onSubmit, isLoading, labels, error}) {
                   inputFileRef.current = e;
                 }}
                 onChange={handleFileChange}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 style={{zIndex: -1}}
               />
             </label>
@@ -161,13 +165,11 @@ function ImproveResumeForm({ onSubmit, isLoading, labels, error}) {
         </div>
 
         {/* Submit Button */}
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300"
-        >
-          {isLoading ? labels.formImproveResume.uploadBtn.loading : labels.formImproveResume.uploadBtn.label}
-        </button>
+        <SubmitButton
+        className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300"
+        loading={isLoading}
+        loadingLabel={labels.formImproveResume.uploadBtn.loading}
+        label={labels.formImproveResume.uploadBtn.label} />
       </form>
     </div>
   );

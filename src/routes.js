@@ -3,9 +3,9 @@ import Home from "./pages/Home";
 import Login from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import Dashboard from "./pages/Dashboard";
-import ResumePage from "./pages/ResumePage";
+import ImproveResumePage from "./pages/ImproveResumePage";
 import Profile from "./pages/ProfilePage";
-import CreateResume from "./pages/CreateResume";
+import CreateResumePage from "./pages/CreateResumePage";
 import Layout from "./components/layout/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import HideLoginPage from "./components/HideLoginPage";
@@ -35,11 +35,11 @@ function AppRoutes() {
               </ProtectedRoute>} />
             <Route path="/resume" element={
               <ProtectedRoute>
-                <ResumePage />
+                <ImproveResumePage />
               </ProtectedRoute>} />
             <Route path="/create-resume" element={
               <ProtectedRoute>
-                <CreateResume />
+                <CreateResumePage />
               </ProtectedRoute>} />
             <Route path="/improved" element={
               <ProtectedRoute>

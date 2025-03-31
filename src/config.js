@@ -129,6 +129,10 @@ export const config = {
             titleRate: "How would you rate your experience?",
             titleSuggestions: "Any comments or suggestions?",
          },
+         formPatternValidation:{
+            phone: "Phone must be a valid format (10 digits).",
+            email: "Email must be a valid format."
+         },
          previewResume:{
             title: "AI suggestions",
             subtitle: "Here you go your new suggestions to boost your job hunting. Please read carefully and keep it up!",
@@ -137,7 +141,12 @@ export const config = {
             welcome: "Welcome",
             subWelcome: "We're glad to have you here.",
             improvementsLeft: "Here are your resume improvements left",
+            creationsLeft: "Here are your resume creations left",
             previousImprovements: "Previous Improvements",
+            noImprovements: "There are not improvements yet.",
+            outOf: "Maximum",
+            drafts: "Drafts",
+            noDrafts: "There are not drafts yet.",
          },
          previewImprovement:{
             title: "AI suggestions",
@@ -287,11 +296,20 @@ export const config = {
             titleRate: "¿Cómo calificarías tu experiencia?",
             titleSuggestions: "¿Algún comentario o sugerencias?",
          },
+         formPatternValidation:{
+            phone: "El teléfono debe ser de un formato válido (10 digits).",
+            email: "El correo debe ser de un formato válido."
+         },
          dashboardPage:{
             welcome: "Bienvenid@",
             subWelcome: "Qué gusto tenerte por aquí.",
             improvementsLeft: "Aquí tienes tus mejoras disponibles",
+            creationsLeft: "Aquí tienes tus creaciones disponibles",
             previousImprovements: "Mejoras previas",
+            noImprovements: "No hay mejoras todavía.",
+            outOf: "Máximo",
+            drafts: "Borradores",
+            noDrafts: "No hay borradores todavía.",
          },
          previewImprovement:{
             title: "Sugerencias de IA",

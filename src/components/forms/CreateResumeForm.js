@@ -1,120 +1,231 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import {useAuth} from "../../contexts/AuthContext";
+import React, { useState, useEffect } from 'react';
+import { set, useForm } from 'react-hook-form';
+import ProBadge from "../common/ProBadge"
+import SubmitButton from "../common/SubmitButton"
 import KeywordOptimizationToggle from "../common/KeywordOptimizationToggle"
 
-const CreateResumeForm = (profileData ) => {
-  const auth = useAuth(); // Get user's plan (free/pro/business)
-  const { register, handleSubmit, watch } = useForm();
+const CreateResumeForm = ({ user, onSubmit, onOptimization, isLoading, isOptimized, setJobTitle, setJobDescription, setType, matchScore, keywords, labels }) => {
+  // Form state
+  const {
+    register,
+    handleSubmit,
+    trigger,
+    watch,
+    formState: { errors }
+  } = useForm({
+    defaultValues: {
+      jobDescription: '',
+      language: 'en',
+      template: 'classic',
+      includeCoverLetter: false
+    },
+    mode: 'all'
+  });
 
-  const onSubmit = (data) => {
-    console.log("Generation options:", data);
-    // Will connect to API later
+  // Consts need
+  const isPro = user.subscription.plan === 'pro' || user.subscription.plan === 'business';
+  const [resume, setResume] = useState(null);
+  const [currentStep, setCurrentStep] = useState(1); // 1-4 steps
+
+  // For keyword optimization form
+  const job_title = watch("job_title");
+  const job_description = watch("job_description");
+  const type = watch("type");
+
+  // Templates data
+  const TEMPLATES = [
+    { id: 'classic', name: 'Classic' },
+    { id: 'modern', name: 'Modern' },
+    { id: 'ats', name: 'ATS-Friendly', proOnly: true },
+  ];
+
+  // Download handler
+  const handleDownload = (format) => {
+    alert(`Implement ${format} download`);
   };
 
-  // Watch plan to gray out features
-  const isPro = auth.user.subscription.plan === 'pro' || auth.user.subscription.plan === 'business';
-  const isBusiness = auth.user.subscription.plan === 'business';
+  // Control next step
+  const handleOnNextStep = async (step) => {
+
+    let isValid = true;
+    if (currentStep == 1) {
+      const val1 = await trigger("job_title");
+      const val2 = await trigger("job_description");
+
+      isValid = val1 && val2;
+    }
+
+    if (isValid) {
+      setCurrentStep(step)
+    }
+
+  }
+
+  // Asign const to send to keyword optimization
+  useEffect(()=>{
+    setJobTitle(job_title);
+    setJobDescription(job_description);
+    setType(type);
+  }, [job_title,job_description])
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="max-w-5xl mx-auto p-8 bg-white rounded-lg shadow-2xl">
-      {/* Job Description Input (Free) */}
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
-          Create resume
-        </h1>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Job Description
-        </label>
-        <textarea
-          {...register('jobDescription', { required: true })}
-          rows={5}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Paste the job description here..."
-        />
-      </div>
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-4xl mx-auto p-6">
 
-      {/* Template Selection (Free) */}
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Template Style
-        </label>
-        <div className="grid grid-cols-3 gap-3">
-          {['Classic', 'Modern', 'Minimalist'].map((template) => (
-            <label key={template} className="flex items-center space-x-2">
-              <input
-                type="radio"
-                {...register('template')}
-                value={template.toLowerCase()}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500"
-                defaultChecked={template === 'Classic'}
-              />
-              <span>{template}</span>
+      <div className="bg-white p-6 rounded-lg shadow mb-6">
+
+
+        {/* Job */}
+        <div className={`${currentStep !== 1 && 'hidden'}`}>
+          <h2 className="text-xl font-bold mb-4">Step 1: Which job position are you applying for?</h2>
+
+          {/* Job title */}
+          <div className='mb-3'>
+          <input
+            type="text"
+            id="job_title"
+            {...register("job_title", {
+              required: labels.formImproveResume.jobTitle.required,
+            })}
+            placeholder={labels.formImproveResume.jobTitle.placeholder}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+          {errors.job_title && (
+            <p className="text-red-500 text-sm mt-2">{errors.job_title.message}</p>
+          )}
+          </div>
+
+          {/* Job description */}
+          <div className='mb-3'>
+          <textarea
+            {...register('job_description', {
+              required: 'Job description is required',
+              minLength: {
+                value: 10,
+                message: "Please provide at least 10 characters"
+              }
+            })}
+            className={`w-full h-40 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+            placeholder="Paste the job description here..."
+            disabled={isOptimized}
+          />
+          {errors.job_description && (
+            <p className="text-red-500 text-sm mt-2">{errors.job_description.message}</p>
+          )}
+          </div>
+        </div>
+
+        {/* Keywords Optimization */}
+        <div className={`${currentStep !== 2 && 'hidden'}`}>
+          <div className="items-center mt-4 mb-6">
+            <h2 className="text-xl font-bold">Step 2: Let's match the keywords with your profile.</h2>
+            <label className="block text-sm font-medium text-gray-700 mb-4">
+              First of all, ensure a good score to beat ATS.
             </label>
-          ))}
+            <KeywordOptimizationToggle register={register} jobDescription={job_description} profileText={"asdasd"} pro={isPro} matchScore={matchScore} keywords={keywords} isOptimized={isOptimized} onOptimization={onOptimization} />
+          </div>
+        </div>
+
+        {/* Template Selection */}
+        <div className={`${currentStep !== 3 && 'hidden'}`}>
+          <div className="mt-6">
+            <h2 className="text-xl font-bold mb-4">Step 3: Choose your favourite template.</h2>
+            <label className="block mb-2 font-medium">Template</label>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+              {TEMPLATES.map((template) => (
+                <label
+                  key={template.id}
+                  className={`
+                  border p-3 rounded transition-colors
+                  ${template.proOnly ? 'border-blue-300' : 'border-gray-300'}
+                  ${!isPro && template.proOnly ?
+                      'opacity-50 cursor-not-allowed' :
+                      'hover:border-blue-500'}
+                `}
+                >
+                  <input
+                    type="radio"
+                    value={template.id}
+                    {...register('template')}
+                    className="mr-2"
+                    disabled={!isPro && template.proOnly}
+                  />
+                  {template.name}
+                  {template.proOnly && (
+                    <ProBadge />
+                  )}
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Cover letter */}
+        <div className={`${currentStep !== 4 && 'hidden'}`}>
+          <div className="mt-6">
+            <h2 className="text-xl font-bold">Step 4: Need a cover letter?</h2>
+            <label className={`flex items-center mt-4 ${!isPro ? 'opacity-50 cursor-not-allowed' : ''
+              }`}>
+              <input
+                type="checkbox"
+                {...register('includeCoverLetter')}
+                className="mr-2"
+                disabled={!isPro}
+              />
+              Include Cover Letter
+              <ProBadge />
+            </label>
+          </div>
+
+          {/* Generate Button */}
+          <SubmitButton className="w-full mt-5 py-3 px-4 rounded-lg font-bold text-white" loading={isLoading} loadingLabel={"Generating..."} label={"I have beaten ATS. Generate my new Resume"} />
+        </div>
+
+        <div className='flex space-x-5 mt-3 justify-center'>
+          <button type='button' disabled={currentStep === 2 && isOptimized} className={`py-2 px-5 rounded-lg bg-blue-500 font-bold text-white hover:bg-blue-400 disabled:opacity-50 disabled:hover:bg-blue-500 ${currentStep === 1 && 'hidden'}`} onClick={() => handleOnNextStep(currentStep - 1)}>Step back</button>
+          <button type='button' disabled={currentStep === 2 && !isOptimized} className={`py-2 px-5 rounded-lg bg-blue-500 font-bold text-white hover:bg-blue-400 disabled:opacity-50 disabled:hover:bg-blue-500 ${currentStep === 4 && 'hidden'}`} onClick={() => handleOnNextStep(currentStep + 1)}>Next step</button>
         </div>
       </div>
 
-      {/* PRO FEATURES (Gated) */}
-      <div className={`mb-6 ${!isPro && 'opacity-50'}`}>
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="font-medium text-gray-900">
-            AI Optimization
-            {!isPro && (
-              <span className="ml-2 text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
-                PRO
-              </span>
-            )}
-          </h3>
+
+      {/* Results */}
+      {resume && (
+        <div className="bg-white p-6 rounded-lg shadow mt-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold">Your Resume</h2>
+            <div className="flex space-x-2">
+              <button
+                type="button"
+                onClick={() => handleDownload('pdf')}
+                className="px-3 py-1 bg-gray-100 rounded text-sm hover:bg-gray-200"
+              >
+                PDF
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDownload('docx')}
+                className={`px-3 py-1 rounded text-sm ${isPro ?
+                  'bg-gray-100 hover:bg-gray-200' :
+                  'bg-gray-50 text-gray-400 cursor-not-allowed'
+                  }`}
+                disabled={!isPro}
+              >
+                Word
+                {!isPro && (
+                  <ProBadge />
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Resume Preview */}
+          <div className="p-4 border rounded bg-gray-50 whitespace-pre-line">
+            {resume.content}
+          </div>
+
+          {/* Keywords */}
+
         </div>
-
-        <div className="space-y-3">
-            <KeywordOptimizationToggle jobDescription={"asadada"} profileText={"asdasd"} disabled={!isPro}/>
-
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              {...register('quantifyAchievements')}
-              disabled={!isPro}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 disabled:text-gray-400"
-            />
-            <span>Quantify achievements with metrics</span>
-          </label>
-        </div>
-      </div>
-
-      {/* BUSINESS FEATURES (Gated) */}
-      <div className={`mb-6 ${!isBusiness && 'opacity-50'}`}>
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="font-medium text-gray-900">
-            Team Features
-            {!isBusiness && (
-              <span className="ml-2 text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">
-                BUSINESS
-              </span>
-            )}
-          </h3>
-        </div>
-
-        <div className="space-y-3">
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              {...register('branding')}
-              disabled={!isBusiness}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 disabled:text-gray-400"
-            />
-            <span>Add company branding</span>
-          </label>
-        </div>
-      </div>
-
-      <button
-        type="submit"
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-      >
-        Generate Resume
-      </button>
+      )}
     </form>
   );
 };

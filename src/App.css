@@ -44,8 +44,21 @@
   100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
 }
 
+@keyframes auto-save {
+  0% { box-shadow: 0 0 0 0 rgba(74, 89, 222, 1); }
+  20% { box-shadow: 0 0 0 2px rgba(74, 89, 222,0.8); }
+  40% { box-shadow: 0 0 0 2px rgba(74, 89, 222,0.6); }
+  60% { box-shadow: 0 0 0 2px rgba(74, 89, 222,0.4); }
+  80% { box-shadow: 0 0 0 3px rgba(74, 89, 222,0.2); }
+  100% { box-shadow: 0 0 0 0 rgba(74, 89, 222, 0); }
+}
+
 .animate-pulse-once {
   animation: pulse-once 3s ease-in-out;
+}
+
+.animate-auto-saving {
+  animation: auto-save .5s infinite;
 }
 
 .progress-fill {
