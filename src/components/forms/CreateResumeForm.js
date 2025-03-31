@@ -4,7 +4,7 @@ import ProBadge from "../common/ProBadge"
 import SubmitButton from "../common/SubmitButton"
 import KeywordOptimizationToggle from "../common/KeywordOptimizationToggle"
 
-const CreateResumeForm = ({ user, onSubmit, onOptimization, isLoading, isOptimized, labels }) => {
+const CreateResumeForm = ({ user, onSubmit, onOptimization, isLoading, isOptimized, setJobTitle, setJobDescription, setType, matchScore, keywords, labels }) => {
   // Form state
   const {
     register,
@@ -27,7 +27,10 @@ const CreateResumeForm = ({ user, onSubmit, onOptimization, isLoading, isOptimiz
   const [resume, setResume] = useState(null);
   const [currentStep, setCurrentStep] = useState(1); // 1-4 steps
 
+  // For keyword optimization form
+  const job_title = watch("job_title");
   const job_description = watch("job_description");
+  const type = watch("type");
 
   // Templates data
   const TEMPLATES = [
@@ -57,6 +60,13 @@ const CreateResumeForm = ({ user, onSubmit, onOptimization, isLoading, isOptimiz
     }
 
   }
+
+  // Asign const to send to keyword optimization
+  useEffect(()=>{
+    setJobTitle(job_title);
+    setJobDescription(job_description);
+    setType(type);
+  }, [job_title,job_description])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-4xl mx-auto p-6">
@@ -111,7 +121,7 @@ const CreateResumeForm = ({ user, onSubmit, onOptimization, isLoading, isOptimiz
             <label className="block text-sm font-medium text-gray-700 mb-4">
               First of all, ensure a good score to beat ATS.
             </label>
-            <KeywordOptimizationToggle jobDescription={job_description} profileText={"asdasd"} pro={isPro} isOptimized={isOptimized} onOptimization={onOptimization} />
+            <KeywordOptimizationToggle register={register} jobDescription={job_description} profileText={"asdasd"} pro={isPro} matchScore={matchScore} keywords={keywords} isOptimized={isOptimized} onOptimization={onOptimization} />
           </div>
         </div>
 

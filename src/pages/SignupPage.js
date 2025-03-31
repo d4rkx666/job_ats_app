@@ -3,7 +3,8 @@ import SignUpForm from "../components/forms/SignUpForm";
 import { useAuth } from "../contexts/AuthContext";
 import { useConfig } from "../contexts/ConfigContext";
 import { signup } from "../services/SetUser";
-import firebase_login from "./LoginPage";
+import {FirebaseLogin} from "../services/FirebaseLogin";
+import { useNavigate } from "react-router-dom";
 
 function SignupPage() {
 
@@ -11,7 +12,8 @@ function SignupPage() {
    const { config, language } = useConfig();
    const labels = config.labels[language];
 
-   const { resendVerificationEmail } = useAuth(); // Get the login function from AuthContext
+   const navigate = useNavigate(); // For redirecting after login
+   const { resendVerificationEmail, login } = useAuth(); // Get the login function from AuthContext
    const [isLoading, setIsLoading] = useState(false);
    const [error, setError] = useState("");
 
@@ -27,9 +29,8 @@ function SignupPage() {
                setError(labels.error.userAlreadyInUse);
                isError = true;
             });
-
          if (!isError) {
-            await firebase_login(data.email, data.password);
+            await FirebaseLogin(data.email, data.password, login, navigate, labels.error.userNotFound);
             await resendVerificationEmail();
          }
       } catch (error) {

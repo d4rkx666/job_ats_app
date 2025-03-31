@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import {Link} from "react-router-dom"
 import SubmitButton from "../common/SubmitButton"
 
-function LoginForm({ onSubmit, isLoading, labels}) {
+function SignUpForm({ onSubmit, isLoading, labels}) {
   const {
     register,
     handleSubmit,
@@ -38,9 +38,9 @@ function LoginForm({ onSubmit, isLoading, labels}) {
           {...register("country", { required: labels.formSignup.country.required })}
           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
         >
-          <option value="" selected disabled>{labels.formSignup.country.placeholder}</option>
+          <option value="" defaultValue disabled>{labels.formSignup.country.placeholder}</option>
           {labels.formSignup.country.countries.map((c) => (
-            <option value={c.value}>{c.label}</option>
+            <option key={c.value} value={c.value}>{c.label}</option>
           ))}
         </select>
         {errors.country && (
@@ -97,4 +97,4 @@ function LoginForm({ onSubmit, isLoading, labels}) {
   );
 }
 
-export default LoginForm;
+export default SignUpForm;

@@ -1,26 +1,9 @@
 import { useState, useEffect } from 'react';
 import ProBadge from "../common/ProBadge"
 import { Link } from 'react-router-dom';
+import { set, useForm } from 'react-hook-form';
 
-export default function KeywordOptimizationToggle({ jobDescription, profileText, pro, isOptimized, onOptimization }) {
-  const [matchScore, setMatchScore] = useState(0);
-
-  // Simulate score calculation (replace with actual NLP logic later)
-  useEffect(() => {
-    if (isOptimized && jobDescription && profileText) {
-      const fakeScore = Math.min(
-        100,
-        Math.floor(
-          (jobDescription.split(/\s+/).filter(word =>
-            profileText.toLowerCase().includes(word.toLowerCase())
-          ).length / jobDescription.split(/\s+/).length) * 100
-        ) + 20 // Simulate AI boost
-      );
-      setMatchScore(fakeScore);
-    } else {
-      setMatchScore(0);
-    }
-  }, [isOptimized, jobDescription, profileText]);
+export default function KeywordOptimizationToggle({ register, pro, matchScore, keywords, isOptimized, onOptimization }) {
 
   return (
     <>
@@ -57,6 +40,7 @@ export default function KeywordOptimizationToggle({ jobDescription, profileText,
                     value="free"
                     defaultChecked="true"
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500"
+                    {...register("type")}
                   />
                   <span className="ml-2">Basic Keyword Optimization</span>
                 </label>
@@ -68,13 +52,14 @@ export default function KeywordOptimizationToggle({ jobDescription, profileText,
                     value="pro"
                     disabled={!pro}
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500"
+                    {...register("type")}
                   />
                   <span className="ml-2">AI-Powered Keyword Optimization</span>
                   <ProBadge className="ml-1" />
                 </label>
               </div>
             </div>
-            <button type='button' disabled={isOptimized} onClick={() => onOptimization()} className={`w-full  ${isOptimized ? "opacity-50" : "hover:bg-yellow-300"} bg-yellow-200 text-gray-700 py-1 rounded-full`}>
+            <button type='button' disabled={isOptimized} onClick={()=> onOptimization()}  className={`w-full  ${isOptimized ? "opacity-50" : "hover:bg-yellow-300"} bg-yellow-200 text-gray-700 py-1 rounded-full`}>
               Run Keyword Optimization
             </button>
           </>
@@ -97,18 +82,11 @@ export default function KeywordOptimizationToggle({ jobDescription, profileText,
             <div className="mt-4">
               <h3 className="font-medium mb-2">Keyword Optimization</h3>
               <div className="flex flex-wrap gap-2">
-                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">
-                  asdad
-                </span>
-                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">
-                  asdad
-                </span>
-                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">
-                  asdad
-                </span>
-                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">
-                  asdad
-                </span>
+                {keywords.map(keyword => (
+                  <span key={keyword} className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">
+                    {keyword}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
