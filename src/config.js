@@ -129,6 +129,10 @@ export const config = {
             titleRate: "How would you rate your experience?",
             titleSuggestions: "Any comments or suggestions?",
          },
+         formPatternValidation:{
+            phone: "Phone must be a valid format (10 digits).",
+            email: "Email must be a valid format."
+         },
          previewResume:{
             title: "AI suggestions",
             subtitle: "Here you go your new suggestions to boost your job hunting. Please read carefully and keep it up!",
@@ -286,6 +290,10 @@ export const config = {
             titleSubmitted: "¡Gracias por tus comentarios!",
             titleRate: "¿Cómo calificarías tu experiencia?",
             titleSuggestions: "¿Algún comentario o sugerencias?",
+         },
+         formPatternValidation:{
+            phone: "El teléfono debe ser de un formato válido (10 digits).",
+            email: "El correo debe ser de un formato válido."
          },
          dashboardPage:{
             welcome: "Bienvenid@",

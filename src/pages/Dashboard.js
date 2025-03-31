@@ -21,8 +21,7 @@ function Dashboard() {
     if(auth.user.feedback){
       setSubmitted(true);
     }
-    
-  },[]);
+  },[auth.user.feedback]);
 
   // Feedback actions
   const handleFeedback = async (data) => {
@@ -43,7 +42,7 @@ function Dashboard() {
   };
   
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg">
+    <div className="p-8 bg-gray-100 min-h-screen">
       
       {/* Welcome Message */}
       <div className="text-center mb-8">
@@ -85,9 +84,9 @@ function Dashboard() {
               key={improvement.id} // Ensure the key is on the outermost element
             >
               <div className="p-4 bg-gray-50 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex justify-between items-center">
+                <div className="grid grid-cols-[1fr_auto] gap-4 items-center w-full">
                   <div className="flex-1 min-w-0 pr-4">
-                    <h3 className="text-lg font-semibold text-gray-800 truncate">
+                    <h3 className="text-lg font-semibold text-gray-800">
                       {improvement.job_title}
                     </h3>
                     <p className="text-sm text-gray-600 truncate">

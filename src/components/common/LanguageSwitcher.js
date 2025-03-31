@@ -13,7 +13,7 @@ const LanguageSwitcher = (className) => {
       >
         {/* Toggle Circle */}
           {/* Language Label */}
-          <img className={`absolute inset-1 w-6 h-4 rounded-full bg-white shadow-md transform transition-transform duration-300 ${
+          <img alt={language} className={`absolute inset-1 w-6 h-4 rounded-full bg-white shadow-md transform transition-transform duration-300 ${
             language === "en" ? "translate-x-0" : "translate-x-8"
           }`} src={`/${language === "es" ? "english.png" : "spanish.png"}`}/>
       </button>

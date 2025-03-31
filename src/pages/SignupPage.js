@@ -43,7 +43,7 @@ function SignupPage() {
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
          <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
             <div>
-               <h1 className="text-3xl font-bold mb-6 text-center">{labels.menu.login}</h1>
+               <h1 className="text-3xl font-bold mb-6 text-center">{labels.menu.signUp}</h1>
                {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
                <SignUpForm onSubmit={handleSignUp}
                   isLoading={isLoading}

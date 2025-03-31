@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import { useForm } from "react-hook-form";
+import SubmitButton from "../common/SubmitButton"
 
 function FeedbackForm({ onSubmit, isLoading, submitted, labels}) {
   const {
@@ -76,12 +77,11 @@ function FeedbackForm({ onSubmit, isLoading, submitted, labels}) {
         </div>
 
         {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          {isLoading ? "Sending feedback..." : "Send feedback"}
-        </button>
+        <SubmitButton
+        className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        loading={isLoading}
+        loadingLabel={"Sending feedback..."}
+        label={"Send feedback"} />
       </form>)}
     </div>
   );

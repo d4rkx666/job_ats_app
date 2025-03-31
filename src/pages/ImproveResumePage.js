@@ -4,12 +4,15 @@ import ResumeForm from "../components/forms/ImproveResumeForm";
 import {getImprovedResume} from "../services/GetImprovedResume"
 import { useConfig } from "../contexts/ConfigContext";
 
-function ResumePage() {
-   const [isLoading, setIsLoading] = useState(false);
-   const [error, setError] = useState("");
+function ImproveResumePage() {
 
+   // Language
    const {config, language} = useConfig();
    const labels = config.labels[language];
+
+   // Const for Form
+   const [isLoading, setIsLoading] = useState(false);
+   const [error, setError] = useState("");
 
    const navigate = useNavigate();
 
@@ -38,8 +41,6 @@ function ResumePage() {
                setError(labels.error.universalError);
              }
          });
-
-         
       } catch (error) {
          setError(labels.error.resumeNotUploaded);
       } finally {
@@ -48,10 +49,8 @@ function ResumePage() {
    };
 
    return (
-      <div>
-         <ResumeForm onSubmit={handleSubmit} isLoading={isLoading} labels={labels} error={error}/>
-      </div>
+      <ResumeForm onSubmit={handleSubmit} isLoading={isLoading} labels={labels} error={error}/>
    );
 }
 
-export default ResumePage;
+export default ImproveResumePage;
