@@ -16,10 +16,10 @@ export const ConfigProvider = ({ children }) => {
     if(storedLang === null){
       try{
         // Detect language from user
-        const userLang = (navigator.language || navigator.userLanguage).substring(0, 2);
+        const userLang = (navigator.language || navigator.userLanguage).split("-");
 
         // Save language to local storage
-        localStorage.setItem("language", userLang);
+        localStorage.setItem("language", userLang[0]);
         const storedLang = localStorage.getItem("language");
 
         // Check if user's language is allowed
