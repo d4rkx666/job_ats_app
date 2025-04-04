@@ -3,7 +3,7 @@ import { Controller } from 'react-hook-form';
 import MonthYearPicker from "./Datepicker"
 
 // Create a separate EducationEntry component to use hooks
-const EducationEntry = ({ index, isCurrentEducationCheck, control, register, onDelete, setValue, errors}) => {
+const EducationEntry = ({ index, isCurrentEducationCheck, control, register, onDelete, setValue, labels, errors}) => {
   const [isCurrentEducation, setIsCurrentEducation] = useState(isCurrentEducationCheck);
 
   useEffect(()=>{
@@ -23,12 +23,12 @@ const EducationEntry = ({ index, isCurrentEducationCheck, control, register, onD
       <div className="space-y-4">
         <input
           {...register(`educations.${index}.institution`, {required: "Required"})}
-          placeholder="Institution"
+          placeholder={labels.formProfile.education.institution}
           className={`w-full p-2 border rounded-md ${ errors?.institution ? "border-red-500" : ""} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
         />
         <input
           {...register(`educations.${index}.degree`, {required: "Required"})}
-          placeholder="Degree"
+          placeholder={labels.formProfile.education.degree}
           className={`w-full p-2 border rounded-md ${ errors?.degree ? "border-red-500" : ""} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
         />
 
@@ -36,7 +36,7 @@ const EducationEntry = ({ index, isCurrentEducationCheck, control, register, onD
           <MonthYearPicker
             control={control}
             name={`educations.${index}.graduationStartDate`}
-            label="Start Date"
+            label={labels.formProfile.startDate}
             required={true}
           />
           
@@ -44,7 +44,7 @@ const EducationEntry = ({ index, isCurrentEducationCheck, control, register, onD
             <MonthYearPicker
               control={control}
               name={`educations.${index}.graduationEndDate`}
-              label="End Date"
+              label={labels.formProfile.endDate}
               disabled={isCurrentEducation}
               required={!isCurrentEducation}
             />
@@ -60,7 +60,7 @@ const EducationEntry = ({ index, isCurrentEducationCheck, control, register, onD
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
               <label htmlFor={`current-education-${index}`} className="ml-2 block text-sm text-gray-700">
-                I currently study here
+              {labels.formProfile.education.currently}
               </label>
             </div>
           </div>
@@ -70,11 +70,11 @@ const EducationEntry = ({ index, isCurrentEducationCheck, control, register, onD
   );
 };
 
-const EducationSection = ({ control, register, setValue, errors }) => {
+const EducationSection = ({ control, register, setValue, labels, errors }) => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-      <h2 className="text-xl font-semibold mb-1">Education</h2>
-      <h5 className="text-sm text-gray-500 font-semibold mb-4">*Please save all your changes before leaving with the green button below.</h5>
+      <h2 className="text-xl font-semibold mb-1">{labels.formProfile.education.title}</h2>
+      <h5 className="text-sm text-gray-500 font-semibold mb-4">{labels.formProfile.saveChanges}</h5>
       
       <Controller
         name="educations"
@@ -92,6 +92,7 @@ const EducationSection = ({ control, register, setValue, errors }) => {
                 control={control}
                 register={register}
                 setValue={setValue}
+                labels={labels}
                 isCurrentEducationCheck={check}
                 errors={errors?.educations?.[index] || {}}
                 onDelete={() => {
@@ -107,7 +108,7 @@ const EducationSection = ({ control, register, setValue, errors }) => {
               onClick={() => setValue('educations', [...field.value, {}])}
               className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
             >
-              + Add Another Education
+              {labels.formProfile.education.btnAdd}
             </button>
           </div>
         )}

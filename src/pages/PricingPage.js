@@ -167,18 +167,18 @@ const PricingPage = () => {
                         <tbody className="divide-y divide-gray-200 bg-white">
                            {features.map((feature) => (
                               <tr key={feature.name}>
-                                 <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-900">
+                                 <td className="px-6 py-4 text-sm text-gray-900">
                                     <div className="font-medium">{feature.name}</div>
                                     <div className="text-gray-500">{feature.description}</div>
                                  </td>
-                                 <td className="whitespace-nowrap px-6 py-4 text-center text-sm text-gray-500">
+                                 <td className="px-6 py-4 text-center text-sm text-gray-500">
                                     {feature.free ? (
                                        <CheckIcon className="mx-auto h-5 w-5 text-green-500" />
                                     ) : (
                                        <LockClosedIcon className="mx-auto h-5 w-5 text-gray-400" />
                                     )}
                                  </td>
-                                 <td className="whitespace-nowrap px-6 py-4 text-center text-sm text-gray-500">
+                                 <td className="px-6 py-4 text-center text-sm text-gray-500">
                                     <CheckIcon className="mx-auto h-5 w-5 text-blue-500" />
                                  </td>
                               </tr>

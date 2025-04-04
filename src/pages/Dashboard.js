@@ -67,10 +67,10 @@ function Dashboard() {
         <div className="mt-6 bg-white border border-gray-200 rounded-lg p-4">
           <div className="flex justify-between items-center mb-2">
             <h2 className="font-medium text-gray-700">
-              {auth.user.subscription?.plan === 'pro' ? 'Pro Plan' : 'Free Plan'}
+              {auth.user.subscription?.plan === 'pro' ? labels.user.proPlan : labels.user.freePlan}
             </h2>
             <span className="text-sm font-medium">
-              {creditsLeft}/{totalCredits} credits left
+              {creditsLeft}/{totalCredits} {labels.dashboardPage.creditsLeft}
             </span>
           </div>
 
@@ -87,16 +87,16 @@ function Dashboard() {
           {/* Action Costs */}
           <div className="space-y-3 mt-4">
             <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              Action Costs
+              {labels.dashboardPage.actionCosts}
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {/* Keyword Optimization */}
               <div className="flex items-center p-3 bg-blue-50 rounded-lg border border-blue-100">
                 <div className="flex-shrink-0 w-3 h-3 bg-blue-400 rounded-full mr-3"></div>
                 <div>
-                  <p className="text-sm font-medium text-gray-700">Keyword Optimization</p>
+                  <p className="text-sm font-medium text-gray-700">{labels.dashboardPage.keywordOptimization}</p>
                   <p className="text-xs text-gray-500">
-                    {actionCosts.keyword_optimization} credit
+                    {actionCosts.keyword_optimization} {labels.dashboardPage.credit}
                     {actionCosts.keyword_optimization !== 1 && 's'}
                   </p>
                 </div>
@@ -106,9 +106,9 @@ function Dashboard() {
               <div className="flex items-center p-3 bg-purple-50 rounded-lg border border-indigo-100">
                 <div className="flex-shrink-0 w-3 h-3 bg-indigo-400 rounded-full mr-3"></div>
                 <div>
-                  <p className="text-sm font-medium text-gray-700">Resume Creation</p>
+                  <p className="text-sm font-medium text-gray-700">{labels.dashboardPage.resumeCreation}</p>
                   <p className="text-xs text-gray-500">
-                    {actionCosts.resume_creation} credit
+                    {actionCosts.resume_creation} {labels.dashboardPage.credit}
                     {actionCosts.resume_creation !== 1 && 's'}
                   </p>
                 </div>
@@ -119,9 +119,9 @@ function Dashboard() {
                 <div className="flex items-center p-3 bg-purple-50 rounded-lg border border-purple-100">
                   <div className="flex-shrink-0 w-3 h-3 bg-purple-400 rounded-full mr-3"></div>
                   <div>
-                    <p className="text-sm font-medium text-gray-700">Resume Optimization</p>
+                    <p className="text-sm font-medium text-gray-700">{labels.dashboardPage.resumeOptimization}</p>
                     <p className="text-xs text-gray-500">
-                      {actionCosts.resume_optimization} credit
+                      {actionCosts.resume_optimization} {labels.dashboardPage.credit}
                       {actionCosts.resume_optimization !== 1 && 's'}
                     </p>
                   </div>
@@ -137,7 +137,7 @@ function Dashboard() {
                 to="/pricing"
                 className="text-sm font-medium text-blue-600 hover:text-blue-800"
               >
-                Upgrade to Pro for 50 credits/month →
+                {labels.dashboardPage.upgrade}
               </Link>
             </div>
           )}
@@ -152,7 +152,7 @@ function Dashboard() {
           className={`px-4 py-2 font-medium ${activeTab === 'improvements' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
           onClick={() => setActiveTab('improvements')}
         >
-          {labels.dashboardPage.previousImprovements}
+          {labels.dashboardPage.improvements}
         </button>
 
         {/* Creations button*/}
@@ -160,7 +160,7 @@ function Dashboard() {
           className={`px-4 py-2 font-medium ${activeTab === 'creations' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
           onClick={() => setActiveTab('creations')}
         >
-          Creations
+          {labels.dashboardPage.creations}
         </button>
 
         {/* Drafts button*/}
@@ -283,7 +283,7 @@ function Dashboard() {
             </div>
           ) : (
             <div className="bg-white p-6 rounded-lg text-center">
-              <p className="text-gray-500">{labels.dashboardPage.noDrafts}</p>
+              <p className="text-gray-500">{labels.dashboardPage.noCreations}</p>
             </div>
           )}
         </div>

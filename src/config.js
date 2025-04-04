@@ -8,11 +8,17 @@ export const config = {
             login: "Login",
             signUp: "Sign Up",
             logout: "Logout",
+            mobileMenu: "Menu",
+            mobileMyAccount: "My account",
             dashboard: "Dashboard",
             resume: "Boost Resume",
             createResume: "Create new resume",
             pricing: "Pricing",
             profile: "Profile",
+         },
+         user:{
+            proPlan: "Pro Plan",
+            freePlan: "Free Plan",
          },
          home:{
             header:{
@@ -81,6 +87,7 @@ export const config = {
                   {label: "Mexico", value: "mex"},
                   {label: "Canada", value: "cad"},
                   {label: "USA", value: "usa"},
+                  {label: "Bosnia and Herzegovina", value:"ba"}
                ]
             },
             email: {
@@ -123,11 +130,58 @@ export const config = {
                loading: "Optimizing...",
             },
          },
+         formProfile:{
+            personalInformation: {
+               title: "Personal Information",
+               subtitle: "*This information will be saved automatically, except the name.",
+               subtitle2: "*Email field is not your username for login.",
+               email: "Email",
+               phone: "Phone",
+               linkedin: "Linkedin URL",
+               website: "Website URL"
+            },
+            skills: {
+               title: "Skills",
+               subtitle: "*This information will be saved automatically.",
+               addSkill: "Add a Skill",
+               subtitle2: 'Use "Enter" or "Comma" key to register a new skill',
+            },
+            education: {
+               title: "Education",
+               institution: "Institution",
+               degree : "Degree",
+               currently: "I currently study here",
+               btnAdd: "+ Add Another Education"
+            },
+            work: {
+               title: "Work History",
+               jobTitle: "Job Title",
+               company : "Company",
+               responsibilities : "Responsibilities",
+               currently: "I currently study here",
+               btnAdd: "+ Add Another job"
+            },
+            project: {
+               title: "Projects",
+               name: "Project Name",
+               description : "Description",
+               technologies : "Technologies",
+               btnAdd: "+ Add Project"
+            },
+            saveChanges: "*Save all your changes with the green button below.",
+            startDate: "Start Date",
+            endDate: "EndDate",
+            btnSave: "Save all",
+            btnSaving: "Save all",
+         },
          formFeedback:{
             title: "Your feedback",
             titleSubmitted: "Thank you for your feedback!",
             titleRate: "How would you rate your experience?",
+            placeholder: "We'd love to hear from you!",
             titleSuggestions: "Any comments or suggestions?",
+            btn: "Send feedback",
+            btnLoading: "Sending feedback..."
          },
          formPatternValidation:{
             phone: "Phone must be a valid format (10 digits).",
@@ -140,13 +194,19 @@ export const config = {
          dashboardPage:{
             welcome: "Welcome",
             subWelcome: "We're glad to have you here.",
-            improvementsLeft: "Here are your resume improvements left",
-            creationsLeft: "Here are your resume creations left",
-            previousImprovements: "Previous Improvements",
-            noImprovements: "There are not improvements yet.",
-            outOf: "Maximum",
+            creditsLeft: "credits left",
+            actionCosts: "Action Costs",
+            keywordOptimization: "Keyword Optimization",
+            resumeOptimization: "Resume Optimization",
+            credit: "credit",
+            upgrade: "Upgrade to Pro for 50 credits/month →",
+            resumeCreation: "Resume Creation",
+            improvements: "Improvements",
+            creations: "Creations",
             drafts: "Drafts",
             noDrafts: "There are not drafts yet.",
+            noCreations: "There are not improvements yet.",
+            noImprovements: "There are not improvements yet.",
          },
          previewImprovement:{
             title: "AI suggestions",
@@ -175,11 +235,17 @@ export const config = {
             login: "Entrar",
             signUp: "Regístrate",
             logout: "Salir",
+            mobileMenu: "Menú",
+            mobileMyAccount: "Mi cuenta",
             dashboard: "Mi panel",
             resume: "Mejorar curriculum",
             createResume: "Crear curriculum",
             pricing: "Precios",
             profile: "Perfil",
+         },
+         user:{
+            proPlan: "Plan Pro",
+            freePlan: "Plan Gratuito",
          },
          home:{
             header:{
@@ -248,6 +314,7 @@ export const config = {
                   {label: "México", value: "mex"},
                   {label: "Canadá", value: "cad"},
                   {label: "USA", value: "usa"},
+                  {label: "Bosnia y Herzegovina", value:"ba"}
                ]
             },
             email: {
@@ -290,11 +357,58 @@ export const config = {
                loading: "Optimizando...",
             },
          },
+         formProfile:{
+            personalInformation: {
+               title: "Información Personal",
+               subtitle: "*Esta información se guardará automáticamente, excepto el nombre.",
+               subtitle2: "*El campo de Email no es tu usuario para iniciar sesión.",
+               email: "Correo electrónico",
+               phone: "Teléfono",
+               linkedin: "URL de tu Linkedin",
+               website: "URL de tu sitio web"
+            },
+            skills: {
+               title: "Habilidades",
+               subtitle: "*Esta información se guardará automáticamente.",
+               addSkill: "Agrega una habilidad",
+               subtitle2: 'Usa la tecla "Enter" o "Coma" para registrar tu habilidad.',
+            },
+            education: {
+               title: "Educación",
+               institution: "Instituto",
+               degree : "Grado académico / Carrera",
+               currently: "Actualmente estudio aquí",
+               btnAdd: "+ Agregar otra educación"
+            },
+            work: {
+               title: "Historial de trabajo",
+               jobTitle: "Nombre del puesto",
+               company : "Empresa",
+               responsibilities : "Responsabilidades",
+               currently: "Actualmente trabajo aquí",
+               btnAdd: "+ Agregar otro trabajo"
+            },
+            project: {
+               title: "Projectos",
+               name: "Nombre del proyecto",
+               description : "Descripción",
+               technologies : "Tecnologías",
+               btnAdd: "+ Agregar proyecto"
+            },
+            saveChanges: "*Guarda todos tus cambios con el botón verde de abajo.",
+            startDate: "Fecha de inicio",
+            endDate: "Fecha de terminación",
+            btnSave: "Guardar todo",
+            btnSaving: "Guardando...",
+         },
          formFeedback:{
             title: "Comentarios",
             titleSubmitted: "¡Gracias por tus comentarios!",
             titleRate: "¿Cómo calificarías tu experiencia?",
+            placeholder: "¡Nos encantaría escuchar tus comentarios!",
             titleSuggestions: "¿Algún comentario o sugerencias?",
+            btn: "Enviar comentarios",
+            btnLoading: "Enviando comentarios..."
          },
          formPatternValidation:{
             phone: "El teléfono debe ser de un formato válido (10 digits).",
@@ -303,13 +417,19 @@ export const config = {
          dashboardPage:{
             welcome: "Bienvenid@",
             subWelcome: "Qué gusto tenerte por aquí.",
-            improvementsLeft: "Aquí tienes tus mejoras disponibles",
-            creationsLeft: "Aquí tienes tus creaciones disponibles",
-            previousImprovements: "Mejoras previas",
-            noImprovements: "No hay mejoras todavía.",
-            outOf: "Máximo",
+            creditsLeft: "créditos disponibles",
+            actionCosts: "Costo de Acciones",
+            keywordOptimization: "Optimización de palabras clave",
+            resumeOptimization: "Optimización de CV",
+            resumeCreation: "Creación de CV",
+            credit: "Crédito",
+            upgrade: "Actualizar a Pro para tener 50 créditos/mes →",
+            improvements: "Sugerencias de mejora",
+            creations: "CV creados",
             drafts: "Borradores",
             noDrafts: "No hay borradores todavía.",
+            noCreations: "No hay creaciones todavía.",
+            noImprovements: "No hay sugerencias todavía.",
          },
          previewImprovement:{
             title: "Sugerencias de IA",
