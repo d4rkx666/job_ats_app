@@ -211,20 +211,48 @@ function CreateResumePage() {
             context={context} />
           </>
         ) : (
-          <div className="ml-3 bg-green-100 p-2 rounded">
-            <div className="mt-2 text-sm text-blue-700">
-              <p>
-                To continue, you need to set up your profile.
+          <div className="relative isolate overflow-hidden p-6 rounded-xl bg-white border border-gray-200 shadow-2xl transition-all duration-300 hover:shadow-lg">
+            {/* Decorative elements */}
+            <div className="absolute inset-0 -z-2 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-50/50 to-white" />
+            <div className="absolute -right-20 -top-20 -z-2 h-64 w-64 rounded-full bg-blue-100/30 blur-2xl" />
+            <div className="absolute -left-20 -bottom-20 -z-2 h-64 w-64 rounded-full bg-blue-200/20 blur-2xl" />
+            
+            {/* Content */}
+            <div className="flex flex-col items-center text-center">
+              <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-blue-400 shadow-lg">
+                <svg className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+              
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Complete Your Profile</h3>
+              <p className="text-gray-600 mb-6 max-w-md">
+                Unlock personalized recommendations and full access by setting up your professional profile
               </p>
+              
+              <div className="flex space-x-4">
+                <Link
+                  to="/profile"
+                  className="relative flex items-center justify-center px-6 py-3 overflow-hidden font-medium text-blue-600 transition-all duration-300 rounded-lg group"
+                >
+                  <span className="absolute inset-0 border-0 group-hover:border-[25px] ease-linear duration-100 transition-all border-blue-100 rounded-lg"></span>
+                  <span className="relative z-2 flex items-center">
+                    Get Started
+                    <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                  </span>
+                </Link>
+                
+                <button className="px-6 py-3 text-gray-600 hover:text-gray-900 transition-colors duration-200 font-medium rounded-lg">
+                  Remind Me Later
+                </button>
+              </div>
             </div>
-            <div className="mt-4">
-              <Link to="/profile"
-                type="button"
-                className="text-sm font-medium text-blue-700 hover:text-blue-600 underline"
-              >
-                Go to mi profile →
-              </Link>
-            </div>
+            
+            {/* Floating particles */}
+            <div className="absolute top-2 right-4 h-2 w-2 rounded-full bg-blue-400 animate-float" style={{ animationDelay: '0.5s' }}></div>
+            <div className="absolute bottom-4 left-6 h-1.5 w-1.5 rounded-full bg-blue-300 animate-float" style={{ animationDelay: '1s' }}></div>
           </div>
         )
       )

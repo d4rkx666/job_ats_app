@@ -3,7 +3,7 @@ import { Controller } from 'react-hook-form';
 import MonthYearPicker from "./Datepicker"
 
 // Create a separate JobEntry component to use hooks
-const JobEntry = ({ index, isCurrentJobCheck, control, register, onDelete, setValue, errors }) => {
+const JobEntry = ({ index, isCurrentJobCheck, control, register, onDelete, labels, setValue, errors }) => {
   const [isCurrentJob, setIsCurrentJob] = useState(isCurrentJobCheck);
 
   useEffect(()=>{
@@ -23,12 +23,12 @@ const JobEntry = ({ index, isCurrentJobCheck, control, register, onDelete, setVa
       <div className="space-y-4">
         <input
           {...register(`jobs.${index}.title`, {required: "Required"})}
-          placeholder="Job Title"
+          placeholder={labels.formProfile.work.jobTitle}
           className={`w-full p-2 border rounded-md ${ errors?.title ? "border-red-500" : ""} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
         />
         <input
           {...register(`jobs.${index}.company`, {required: "Required"})}
-          placeholder="Company"
+          placeholder={labels.formProfile.work.company}
           className={`w-full p-2 border rounded-md ${ errors?.company ? "border-red-500" : ""} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
         />
 
@@ -36,7 +36,7 @@ const JobEntry = ({ index, isCurrentJobCheck, control, register, onDelete, setVa
           <MonthYearPicker
             control={control}
             name={`jobs.${index}.startDate`}
-            label="Start Date"
+            label={labels.formProfile.startDate}
             required={true}
           />
           
@@ -44,7 +44,7 @@ const JobEntry = ({ index, isCurrentJobCheck, control, register, onDelete, setVa
             <MonthYearPicker
               control={control}
               name={`jobs.${index}.endDate`}
-              label="End Date"
+              label={labels.formProfile.endDate}
               disabled={isCurrentJob}
               required={!isCurrentJob}
             />
@@ -60,7 +60,7 @@ const JobEntry = ({ index, isCurrentJobCheck, control, register, onDelete, setVa
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
               <label htmlFor={`current-job-${index}`} className="ml-2 block text-sm text-gray-700">
-                I currently work here
+              {labels.formProfile.work.currently}
               </label>
             </div>
           </div>
@@ -68,7 +68,7 @@ const JobEntry = ({ index, isCurrentJobCheck, control, register, onDelete, setVa
 
         <textarea
           {...register(`jobs.${index}.responsibilities`, {required: "Required"})}
-          placeholder="Responsibilities"
+          placeholder={labels.formProfile.work.responsibilities}
           className={`w-full p-2 border rounded-md ${ errors?.responsibilities ? "border-red-500" : ""} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
           rows={4}
         />
@@ -77,11 +77,11 @@ const JobEntry = ({ index, isCurrentJobCheck, control, register, onDelete, setVa
   );
 };
 
-const WorkExperienceSection = ({ control, register, setValue, errors }) => {
+const WorkExperienceSection = ({ control, register, setValue, labels, errors }) => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-      <h2 className="text-xl font-semibold mb-1">Work History</h2>
-      <h5 className="text-sm text-gray-500 font-semibold mb-4">*Please save all your changes before leaving with the green button below.</h5>
+      <h2 className="text-xl font-semibold mb-1">{labels.formProfile.work.title}</h2>
+      <h5 className="text-sm text-gray-500 font-semibold mb-4">{labels.formProfile.saveChanges}</h5>
       
       <Controller
         name="jobs"
@@ -99,6 +99,7 @@ const WorkExperienceSection = ({ control, register, setValue, errors }) => {
                   control={control}
                   register={register}
                   setValue={setValue}
+                  labels={labels}
                   isCurrentJobCheck={check}
                   errors={errors?.jobs?.[index] || {}}
                   onDelete={() => {
@@ -114,7 +115,7 @@ const WorkExperienceSection = ({ control, register, setValue, errors }) => {
               onClick={() => setValue('jobs', [...field.value, {}])}
               className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
             >
-              + Add Another Job
+              {labels.formProfile.work.btnAdd}
             </button>
           </div>
         )}

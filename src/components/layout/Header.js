@@ -133,7 +133,7 @@ function Header() {
           <div>
             <ul>
               {user &&
-              <h2 className="text-xl font-semibold text-sky-700 mb-4 text-center">Menu</h2>
+              <h2 className="text-xl font-semibold text-sky-700 mb-4 text-center">{labels.menu.mobileMenu}</h2>
               }
               <li className="mb-1">
                 <NavLink to="/" className={({ isActive }) => `block p-3 text-sm font-semibold ${isActive ? "bg-blue-50 text-blue-600" : "text-gray-400 hover:bg-blue-50 hover:text-blue-600"}  rounded`}>
@@ -156,7 +156,7 @@ function Header() {
               <>
                 <hr className="h-px my-3 bg-blue-500 border-1"/>
 
-                <h2 className="text-xl font-semibold text-sky-700 mb-4 text-center">User</h2>
+                <h2 className="text-xl font-semibold text-sky-700 mb-4 text-center">{labels.menu.mobileMyAccount}</h2>
                 <li className="mb-1">
                   <NavLink to="/dashboard" className={({ isActive }) => `block p-3 text-sm font-semibold ${isActive ? "bg-blue-50 text-blue-600" : "text-gray-400 hover:bg-blue-50 hover:text-blue-600"}  rounded`}>
                     {labels.menu.dashboard}
@@ -187,10 +187,10 @@ function Header() {
             {!user ? (
               <div className="pt-6">
                 <Link to="/login" className="block px-4 py-3 mb-3 leading-loose text-xs text-center font-semibold leading-none bg-gray-50 hover:bg-gray-100 rounded-xl">
-                  Sign in
+                  {labels.menu.login}
                 </Link>
                 <Link to="/signup" className="block px-4 py-3 mb-2 leading-loose text-xs text-center text-white font-semibold bg-blue-600 hover:bg-blue-700  rounded-xl">
-                  Sign Up
+                {labels.menu.signUp}
                 </Link>
               </div>
             ) : (

@@ -115,9 +115,9 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Personal Information (Auto-Save on Blur) */}
         <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <h2 className="text-xl font-semibold mb-1">Personal Information</h2>
-          <h5 className="text-sm text-gray-500 font-semibold">*This information will be saved automatically, except the name</h5>
-          <h5 className="text-sm text-gray-500 font-semibold mb-4">*Email field is not your username for login.</h5>
+          <h2 className="text-xl font-semibold mb-1">{labels.formProfile.personalInformation.title}</h2>
+          <h5 className="text-sm text-gray-500 font-semibold">{labels.formProfile.personalInformation.subtitle}</h5>
+          <h5 className="text-sm text-gray-500 font-semibold mb-4">{labels.formProfile.personalInformation.subtitle2}</h5>
           <div className="space-y-4">
             <input
               type='text'
@@ -134,7 +134,7 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
               })}
               onBlur={() => handlePersonalDataBlur('email')}
               type="email"
-              placeholder={userData.email || "Email"}
+              placeholder={userData.email || labels.formProfile.personalInformation.email}
               className={`w-full p-2 border rounded ${ (errors.personalData?.email || errorAutoSaved === "email") ? "border-red-500" : "border-green-500"} ${recentlySaved === 'email' && 'ring-2 ring-green-500 animate-pulse-once'} ${autoSaving === "email" && "animate-auto-saving"}  ${recentlySaved === 'email' && "animate-pulse-once"} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
             />
             <input
@@ -145,7 +145,7 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
               }},)}
               onBlur={() => handlePersonalDataBlur('phone')}
               type="tel"
-              placeholder={userData.phone || "Phone"}
+              placeholder={userData.phone || labels.formProfile.personalInformation.phone}
               className={`w-full p-2 border rounded ${ (errors.personalData?.phone || errorAutoSaved === "phone") ? "border-red-500" : "border-green-500"} ${recentlySaved === 'phone' && 'ring-2 ring-green-500 animate-pulse-once'} ${autoSaving === "phone" && "animate-auto-saving"}  ${recentlySaved === 'phone' && "animate-pulse-once"} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
             />
             <input
@@ -157,7 +157,7 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
               })}
               onBlur={() => handlePersonalDataBlur('linkedin')}
               type="url"
-              placeholder={userData.linkedin || "LinkedIn URL"}
+              placeholder={userData.linkedin || labels.formProfile.personalInformation.linkedin}
               className={`w-full p-2 border rounded ${ (errors.personalData?.linkedin || errorAutoSaved === "linkedin") ? "border-red-500" : "border-green-500"} ${recentlySaved === 'linkedin' && 'ring-2 ring-green-500 animate-pulse-once'} ${autoSaving === "linkedin" && "animate-auto-saving"}  ${recentlySaved === 'linkedin' && "animate-pulse-once"} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
             />
             <input
@@ -169,7 +169,7 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
               })}
               onBlur={() => handlePersonalDataBlur('website')}
               type="url"
-              placeholder={userData.linkedin || "Personal website URL"}
+              placeholder={userData.linkedin || labels.formProfile.personalInformation.website}
               className={`w-full p-2 border rounded ${ (errors.personalData?.website || errorAutoSaved === "website") ? "border-red-500" : "border-green-500"} ${recentlySaved === 'website' && 'ring-2 ring-green-500 animate-pulse-once'} ${autoSaving === "website" && "animate-auto-saving"}  ${recentlySaved === 'website' && "animate-pulse-once"} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
             />
           </div>
@@ -177,8 +177,8 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
 
         {/* Skills (Save on Button Click) */}
         <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <h2 className="text-xl font-semibold mb-1">Skills</h2>
-          <h5 className="text-sm text-gray-500 font-semibold mb-4">*This information will be saved automatically.</h5>
+          <h2 className="text-xl font-semibold mb-1">{labels.formProfile.skills.title}</h2>
+          <h5 className="text-sm text-gray-500 font-semibold mb-4">{labels.formProfile.skills.subtitle}</h5>
           <Controller
             name="skills"
             control={control}
@@ -201,11 +201,11 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
                 </div>
                 <input
                   type="text"
-                  placeholder="Add a skill"
+                  placeholder={labels.formProfile.skills.addSkill}
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   onKeyDown={(e) => handleActionSkills("insert", field, 0, e)}
                 />
-                <p className="text-gray-500 mt-1 font-semibold text-sm">Use "Enter" or "Comma" key to register a new skill</p>
+                <p className="text-gray-500 mt-1 font-semibold text-sm">{labels.formProfile.skills.subtitle2}</p>
               </div>
             )}
           />
@@ -213,10 +213,11 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
 
         {/* Education Section */}
         <EducationSection
-        control={control}
-        register={register}
-        setValue={setValue}
-        errors={errors}
+          control={control}
+          register={register}
+          setValue={setValue}
+          labels={labels}
+          errors={errors}
         />
 
         {/* Work History Section */}
@@ -224,12 +225,13 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
           control={control}
           register={register}
           setValue={setValue}
+          labels={labels}
           errors={errors}
         />
 
         {/* Projects (Save on Button Click) */}
         <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4">Projects</h2>
+          <h2 className="text-xl font-semibold mb-4">{labels.formProfile.project.title}</h2>
           <Controller
             name="projects"
             control={control}
@@ -253,17 +255,17 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
                       </button>
                       <input
                         {...register(`projects[${index}].name`, {required: "Required"})}
-                        placeholder="Project Name"
+                        placeholder={labels.formProfile.project.name}
                         className={`w-full p-2 border rounded-md ${ err?.name ? "border-red-500" : ""} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
                       />
                       <textarea
                         {...register(`projects[${index}].description`, {required: "Required"})}
-                        placeholder="Description"
+                        placeholder={labels.formProfile.project.description}
                         className={`w-full p-2 border rounded-md ${ err?.description ? "border-red-500" : ""} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
                       />
                       <input
                         {...register(`projects[${index}].technologies`, {required: "Required"})}
-                        placeholder="Technologies"
+                        placeholder={labels.formProfile.project.technologies}
                         className={`w-full p-2 border rounded-md ${ err?.technologies ? "border-red-500" : ""} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
                       />
                     </div>
@@ -276,7 +278,7 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
                   }}
                   className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
                 >
-                  Add Project
+                  {labels.formProfile.project.btnAdd}
                 </button>
               </div>
             )}
@@ -289,7 +291,7 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
           disabled={isLoading}
           className="w-full mt-5 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
         >
-          {isLoading ? "Saving data" : "Save all"}
+          {isLoading ? labels.formProfile.btnSaving : labels.formProfile.btnSave}
         </button>
       </form>
     </div>

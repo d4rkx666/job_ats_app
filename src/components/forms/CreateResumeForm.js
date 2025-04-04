@@ -88,7 +88,7 @@ const CreateResumeForm = ({
       <div className="flex justify-between mb-8 relative">
         {[1, 2, 3, 4].map((step) => (
           <React.Fragment key={step}>
-            <div className="flex flex-col items-center z-10">
+            <div className="flex flex-col items-center z-2">
               <div className={`w-10 h-10 rounded-full flex items-center justify-center 
                 ${currentStep >= step ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-400'}
                 ${currentStep === step ? 'ring-4 ring-blue-200' : ''}`}>
