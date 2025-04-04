@@ -6,6 +6,8 @@ import Dashboard from "./pages/Dashboard";
 import ImproveResumePage from "./pages/ImproveResumePage";
 import Profile from "./pages/ProfilePage";
 import CreateResumePage from "./pages/CreateResumePage";
+import PreviewResumePage from "./pages/PreviewResumePage";
+import PricingPage from "./pages/PricingPage";
 import Layout from "./components/layout/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import HideLoginPage from "./components/HideLoginPage";
@@ -17,6 +19,7 @@ function AppRoutes() {
       <Layout>
         <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/pricing" element={<PricingPage />}/>
             <Route path="/login" element={
               <HideLoginPage>
                 <Login/>
@@ -41,6 +44,8 @@ function AppRoutes() {
               <ProtectedRoute>
                 <CreateResumePage />
               </ProtectedRoute>} />
+            <Route path="/preview-resume" element={
+                <PreviewResumePage />} />
             <Route path="/improved" element={
               <ProtectedRoute>
                 <PreviewResumeImprovements />

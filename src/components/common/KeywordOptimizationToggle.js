@@ -1,13 +1,11 @@
-import { useState, useEffect } from 'react';
-import ProBadge from "../common/ProBadge"
+import {ProBadge} from "./Badge"
 import { Link } from 'react-router-dom';
-import { set, useForm } from 'react-hook-form';
 
-export default function KeywordOptimizationToggle({ register, pro, matchScore, keywords, isOptimized, onOptimization }) {
+export default function KeywordOptimizationToggle({ register, pro, matchScore, keywords, isOptimized, isLoading, isOptimizedDraft, onOptimization }) {
 
   return (
     <>
-      {isOptimized &&
+      {(isOptimized && !isOptimizedDraft) &&
         <div className="ml-3 bg-green-100 p-2 rounded">
           <h3 className="text-sm font-medium text-blue-800">This job has been saved as a draft in your <Link className='underline' to="/dashboard">Dashboard</Link>.</h3>
           <div className="mt-2 text-sm text-blue-700">
@@ -16,17 +14,47 @@ export default function KeywordOptimizationToggle({ register, pro, matchScore, k
             </p>
           </div>
           <div className="mt-4">
-            {matchScore < 80 ? 
+            {matchScore < 80 ?
               <Link to="/profile"
                 type="button"
                 className="text-sm font-medium text-blue-700 hover:text-blue-600 underline"
               >
                 Go to mi profile →
               </Link>
-              :""
+              : ""
             }
           </div>
         </div>
+      }
+      {isOptimizedDraft &&
+        <>
+          <div className="ml-3 bg-blue-100 p-2 rounded">
+            <h3 className="text-sm font-medium text-blue-800">Welcome back to your draft</h3>
+            <div className="mt-2 text-sm text-blue-700">
+              <p>
+                {matchScore < 50 ? "We recommend you to update your profile or study the keywords you are missing." : matchScore >= 50 && matchScore < 80 ? "You're doing well! But you can do it better! Check back your profile to match these Keywords." : "You are ready to apply for this role! Go to Step 3."}
+              </p>
+              <br/>
+              <b>
+                If you have added the keywords in your profile for this position, you can either re-optimize again with a cost, or continue to create your resume.
+              </b>
+            </div>
+            <div className="mt-4">
+              {matchScore < 80 ?
+                <Link to="/profile"
+                  type="button"
+                  className="text-sm font-medium text-blue-700 hover:text-blue-600 underline"
+                >
+                  Go to mi profile →
+                </Link>
+                : ""
+              }
+            </div>
+          </div>
+          <button type='button' onClick={() => onOptimization()} className={`w-full hover:bg-yellow-300 bg-yellow-200 text-gray-700 py-1 mt-2 mb-2 rounded-full`}>
+          {isLoading ? "Optimizing..." : "Optimize again"}
+          </button>
+        </>
       }
       <div className={`space-y-2 p-3 mt-3 border rounded-lg ${pro ? 'bg-gray-50 border-gray-200' : 'bg-white border-gray-300'}`}>
         {!isOptimized &&
@@ -59,8 +87,8 @@ export default function KeywordOptimizationToggle({ register, pro, matchScore, k
                 </label>
               </div>
             </div>
-            <button type='button' disabled={isOptimized} onClick={()=> onOptimization()}  className={`w-full  ${isOptimized ? "opacity-50" : "hover:bg-yellow-300"} bg-yellow-200 text-gray-700 py-1 rounded-full`}>
-              Run Keyword Optimization
+            <button type='button' disabled={isOptimized} onClick={() => onOptimization()} className={`w-full  ${isOptimized ? "opacity-50" : "hover:bg-yellow-300"} bg-yellow-200 text-gray-700 py-1 rounded-full`}>
+              {isLoading ? "Optimizing..." : "Run Keyword Optimization"}
             </button>
           </>
         }
@@ -79,8 +107,8 @@ export default function KeywordOptimizationToggle({ register, pro, matchScore, k
               <span className='absolute text-white'>{matchScore}%</span>
             </div>
 
-            <div className="mt-4">
-              <h3 className="font-medium mb-2">Keyword Optimization</h3>
+            <div className="mt-4 text-center">
+              <h3 className="text-sm font-medium mb-2">We have found the following keywords from the job description:</h3>
               <div className="flex flex-wrap gap-2">
                 {keywords.map(keyword => (
                   <span key={keyword} className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">
