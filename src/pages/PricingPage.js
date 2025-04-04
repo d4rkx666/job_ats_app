@@ -65,7 +65,8 @@ const PricingPage = () => {
                   Choose Your Plan
                </h1>
                <p className="mt-5 max-w-xl mx-auto text-xl text-gray-500">
-                  Get job-ready with our powerful resume optimization tools
+                  {/*Get job-ready with our powerful resume optimization tools*/}
+                  Enjoy the free BETA VERSION and get ready for the future prices!
                </p>
             </div>
 
