@@ -137,7 +137,7 @@ function ImproveResumeForm({ onSubmit, isLoading, labels, error}) {
                     inputFileRef.current = e;
                   }}
                   onChange={handleFileChange}
-                  className="hidden"
+                  className="absolute opacity-0 w-px h-px overflow-hidden"
                   accept=".pdf"
                 />
               </label>

@@ -20,7 +20,7 @@ function ImproveResumePage() {
    const navigate = useNavigate();
 
    // Load user
-   const {user} = useAuth();
+   const {user, logout} = useAuth();
 
    const handleSubmit = async (data) => {
       setIsLoading(true);
@@ -44,7 +44,7 @@ function ImproveResumePage() {
       try {
          await getImprovedResume(formData)
          .then((response) => {
-            if(response.sucess){
+            if(response.success){
                // send json in text
                const response_text = response.optimized_resume;
                navigate("/improved",{ state:{ response_text }});
@@ -67,6 +67,9 @@ function ImproveResumePage() {
              }
          });
       } catch (error) {
+         if (error.status === 500) {// token expired
+            logout();
+          }
          setError(labels.error.resumeNotUploaded);
       } finally {
          setIsLoading(false);

@@ -7,11 +7,14 @@ import { get_keywords_optimization } from "../services/GetKeywordsImprovement"
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {set_new_resume} from "../services/SetNewResume"
 
+// For construction page
+import { WrenchScrewdriverIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
+
 
 function CreateResumePage() {
 
   // DEBUG
-  const [debug] = useState(false);
+  const [debug] = useState(true);
 
   // Language
   const { config, language } = useConfig();
@@ -152,7 +155,35 @@ function CreateResumePage() {
 
   if (debug) {
     return (
-      <><img alt="under_construction" className="min-w-screen" src="/under_construction.jpeg"/></>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col items-center justify-center p-6">
+      <div className="max-w-md w-full bg-white rounded-xl shadow-md overflow-hidden p-8 text-center">
+        {/* Icon */}
+        <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-blue-100 mb-6">
+          <WrenchScrewdriverIcon className="h-10 w-10 text-blue-600" />
+        </div>
+        
+        {/* Heading */}
+        <h1 className="text-3xl font-bold text-gray-900 mb-3">Under Construction</h1>
+        
+        {/* Description */}
+        <p className="text-gray-600 mb-6">
+          We're working hard to bring you an amazing experience. This page will be available soon!
+        </p>
+        
+        {/* Progress Bar */}
+        <div className="w-full bg-gray-200 rounded-full h-2 mb-8">
+          <div 
+            className="bg-blue-600 h-2 rounded-full animate-pulse" 
+            style={{ width: '75%' }}
+          ></div>
+        </div>
+      </div>
+      
+      {/* Footer */}
+      <p className="mt-8 text-sm text-gray-500">
+        © {new Date().getFullYear()} Your Company. All rights reserved.
+      </p>
+    </div>
     );
   } else {
     return (
