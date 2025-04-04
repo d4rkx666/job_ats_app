@@ -54,123 +54,153 @@ function ImproveResumeForm({ onSubmit, isLoading, labels, error}) {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg">
-      <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
-        {labels.formImproveResume.title}
-      </h1>
-      {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {/* Resume Upload */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            {labels.formImproveResume.resumeFile.label}
-          </label>
-          <div
-            className={`flex items-center justify-center w-full ${
-              isDragging ? "bg-blue-100" : "bg-blue-50"
-            } rounded-lg border-2 border-dashed border-blue-300 transition duration-300`}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-          >
-            <label className="flex flex-col items-center px-4 py-6 cursor-pointer">
-              <svg
-                className="w-12 h-12 text-blue-500 mb-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-                ></path>
-              </svg>
-              <span className="text-blue-600 font-semibold">
-                {filePreview ? filePreview : labels.formImproveResume.resumeFile.placeholder}
-              </span>
-              <input
-                type="file"
-                id="resume"
-                {
-                  ...register("resume")
-                }
-                ref={(e) => {
-                  // Merge react-hook-form's ref with your custom ref
-                  register("resume", {
-                    required: labels.formImproveResume.resumeFile.required,
-                    validate: () =>{
-                      let file = inputFileRef.current.files[0];
-                      if(file.type !== "application/pdf"){
-                        return labels.formImproveResume.resumeFile.invalidType
-                      }
-                      if(file.size > 5 * 1024 * 1024){
-                        return labels.formImproveResume.resumeFile.invalidSize
-                      }
-                      return true
-                    },
-                  }).ref(e);
-                  inputFileRef.current = e;
-                }}
-                onChange={handleFileChange}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                style={{zIndex: -1}}
-              />
+    <div className="max-w-3xl mx-auto p-6">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        {/* Form Header */}
+        <div className="bg-blue-50 border-b border-blue-100 p-6">
+          <h1 className="text-2xl font-bold text-center text-gray-800">
+            {labels.formImproveResume.title}
+          </h1>
+          {error && (
+            <div className="bg-red-50 border-l-4 border-red-400 p-4 mt-4">
+              <p className="text-red-700">{error}</p>
+            </div>
+          )}
+        </div>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-6">
+          {/* Resume Upload */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              {labels.formImproveResume.resumeFile.label}
             </label>
+            <div
+              className={`flex items-center justify-center w-full rounded-lg border-2 border-dashed transition duration-300 ${
+                isDragging 
+                  ? "border-blue-400 bg-blue-50" 
+                  : "border-gray-300 hover:border-blue-300"
+              }`}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+            >
+              <label className="flex flex-col items-center px-4 py-8 cursor-pointer w-full">
+                <div className="bg-blue-100 p-3 rounded-full mb-3">
+                  <svg
+                    className="w-6 h-6 text-blue-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                    />
+                  </svg>
+                </div>
+                <span className="text-gray-600 text-center">
+                  {filePreview ? (
+                    <span className="text-blue-600 font-medium">{filePreview}</span>
+                  ) : (
+                    <>
+                      <span className="text-blue-600 font-medium">
+                        {labels.formImproveResume.resumeFile.actionText}
+                      </span>
+                      <span className="text-gray-500"> {labels.formImproveResume.resumeFile.placeholder}</span>
+                    </>
+                  )}
+                </span>
+                <span className="text-xs text-gray-500 mt-2">
+                  PDF, max 5MB
+                </span>
+                <input
+                  type="file"
+                  id="resume"
+                  {...register("resume", {
+                    required: labels.formImproveResume.resumeFile.required,
+                    validate: () => {
+                      if (!inputFileRef.current?.files?.[0]) return true;
+                      const file = inputFileRef.current.files[0];
+                      if (file.type !== "application/pdf") {
+                        return labels.formImproveResume.resumeFile.invalidType;
+                      }
+                      if (file.size > 5 * 1024 * 1024) {
+                        return labels.formImproveResume.resumeFile.invalidSize;
+                      }
+                      return true;
+                    },
+                  })}
+                  ref={(e) => {
+                    register("resume").ref(e);
+                    inputFileRef.current = e;
+                  }}
+                  onChange={handleFileChange}
+                  className="absolute opacity-0 w-px h-px overflow-hidden"
+                  accept=".pdf"
+                />
+              </label>
+            </div>
+            {errors.resume && (
+              <p className="text-red-500 text-sm mt-2">{errors.resume.message}</p>
+            )}
           </div>
-          {errors.resume && (
-            <p className="text-red-500 text-sm mt-2">{errors.resume.message}</p>
-          )}
-        </div>
 
-        {/* Job title */}
-        <div>
-          <label htmlFor="job_title" className="block text-sm font-medium text-gray-700 mb-2">
-            {labels.formImproveResume.jobTitle.label}
-          </label>
-          <input
-            type="text"
-            id="job_title"
-            {...register("job_title", {
-              required: labels.formImproveResume.jobTitle.required,
-            })}
-            placeholder={labels.formImproveResume.jobTitle.placeholder}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          />
-          {errors.job_title && (
-            <p className="text-red-500 text-sm mt-2">{errors.job_title.message}</p>
-          )}
-        </div>
+          {/* Job Title */}
+          <div>
+            <label htmlFor="job_title" className="block text-sm font-medium text-gray-700 mb-2">
+              {labels.formImproveResume.jobTitle.label}
+            </label>
+            <input
+              type="text"
+              id="job_title"
+              {...register("job_title", {
+                required: labels.formImproveResume.jobTitle.required,
+              })}
+              placeholder={labels.formImproveResume.jobTitle.placeholder}
+              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+            />
+            {errors.job_title && (
+              <p className="text-red-500 text-sm mt-2">{errors.job_title.message}</p>
+            )}
+          </div>
 
-        {/* Job Description */}
-        <div>
-          <label htmlFor="job_description" className="block text-sm font-medium text-gray-700 mb-2">
-            {labels.formImproveResume.jobDescription.label}
-          </label>
-          <textarea
-            id="job_description"
-            {...register("job_description", {
-              required: labels.formImproveResume.jobDescription.required,
-            })}
-            rows="6"
-            maxLength={3000}
-            placeholder={labels.formImproveResume.jobDescription.placeholder}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          />
-          {errors.job_description && (
-            <p className="text-red-500 text-sm mt-2">{errors.job_description.message}</p>
-          )}
-        </div>
+          {/* Job Description */}
+          <div>
+            <label htmlFor="job_description" className="block text-sm font-medium text-gray-700 mb-2">
+              {labels.formImproveResume.jobDescription.label}
+            </label>
+            <textarea
+              id="job_description"
+              {...register("job_description", {
+                required: labels.formImproveResume.jobDescription.required,
+              })}
+              rows="6"
+              maxLength={3000}
+              placeholder={labels.formImproveResume.jobDescription.placeholder}
+              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+            />
+            <div className="flex justify-between mt-1">
+              {errors.job_description ? (
+                <p className="text-red-500 text-sm">{errors.job_description.message}</p>
+              ) : (
+                <span className="text-xs text-gray-500">Max 3000 characters</span>
+              )}
+            </div>
+          </div>
 
-        {/* Submit Button */}
-        <SubmitButton
-        className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300"
-        loading={isLoading}
-        loadingLabel={labels.formImproveResume.uploadBtn.loading}
-        label={labels.formImproveResume.uploadBtn.label} />
-      </form>
+          {/* Submit Button */}
+          <div className="pt-4">
+            <SubmitButton
+              className="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white py-3 px-4 rounded-lg font-bold hover:from-blue-700 hover:to-blue-600 transition-all shadow-sm"
+              loading={isLoading}
+              loadingLabel={labels.formImproveResume.uploadBtn.loading}
+              label={labels.formImproveResume.uploadBtn.label}
+            />
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {CreditEmptyModal} from "../components/common/CreditEmptyModal"
 import ResumeForm from "../components/forms/ImproveResumeForm";
 import {getImprovedResume} from "../services/GetImprovedResume"
 import { useConfig } from "../contexts/ConfigContext";
+import { useAuth } from "../contexts/AuthContext";
 
 function ImproveResumePage() {
 
@@ -13,11 +15,25 @@ function ImproveResumePage() {
    // Const for Form
    const [isLoading, setIsLoading] = useState(false);
    const [error, setError] = useState("");
+   const [showCreditModal, setShowCreditModal] = useState(false);
 
    const navigate = useNavigate();
 
+   // Load user
+   const {user, logout} = useAuth();
+
    const handleSubmit = async (data) => {
       setIsLoading(true);
+
+      // Check credits
+      if(user.usage.current_credits < Number(process.env.REACT_APP_KEYWORDS_OPTIMIZATION_COST)){ 
+         setShowCreditModal(true);
+         setIsLoading(false);
+         return;
+      }
+
+
+
       setError("");
       const formData = new FormData();
       formData.append("resume", data.resume[0]);
@@ -28,20 +44,32 @@ function ImproveResumePage() {
       try {
          await getImprovedResume(formData)
          .then((response) => {
-            // send json in text
-            const response_text = response.optimized_resume;
-            navigate("/improved",{ state:{ response_text }});
+            if(response.success){
+               // send json in text
+               const response_text = response.optimized_resume;
+               navigate("/improved",{ state:{ response_text }});
+            }else{
+               switch(response.type_error){
+                  case "no_credits_left":
+                     setError(labels.error.withoutImprovements);
+                     break;
+                  default:
+                     setError(labels.error.universalError);
+                     break;
+               }
+            }
          })
          .catch(err => {
             if(err.response?.data?.detail === "403: Email not verified"){
                setError(labels.error.userNotVerified);
-            }else if(err.response?.data?.detail === "203: You have not improvements left."){
-               setError(labels.error.withoutImprovements);
             }else{
                setError(labels.error.universalError);
              }
          });
       } catch (error) {
+         if (error.status === 500) {// token expired
+            logout();
+          }
          setError(labels.error.resumeNotUploaded);
       } finally {
          setIsLoading(false);
@@ -49,7 +77,10 @@ function ImproveResumePage() {
    };
 
    return (
-      <ResumeForm onSubmit={handleSubmit} isLoading={isLoading} labels={labels} error={error}/>
+      <>
+         {showCreditModal && <CreditEmptyModal/>}
+         <ResumeForm onSubmit={handleSubmit} isLoading={isLoading} labels={labels} error={error}/>
+      </>
    );
 }
 
