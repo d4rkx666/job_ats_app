@@ -38,12 +38,11 @@ export const ConfigProvider = ({ children }) => {
   // run every time user switches the language
   useEffect(()=>{
 
-    // set directly
-    localStorage.setItem("language", language);
     const storedLang = localStorage.getItem("language");
-
-    // set const
-    setLanguage(storedLang)
+    if(storedLang !== language){
+      // set directly
+      localStorage.setItem("language", language);
+    }
   },[language, setLanguage])
 
   return (
