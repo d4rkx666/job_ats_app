@@ -74,6 +74,8 @@ function CreateResumePage() {
           item.resume = response.resume;
           item.tips = response.tips;
           item.ats_score = response.ats_score;
+          setIsLoading(false)
+          return;
           navigate("/preview-resume",{
             state:{
               draft: item
@@ -187,7 +189,7 @@ function CreateResumePage() {
     );
   } else {
     return (
-      (user.profile ?
+      ((user.profile && user.profile?.skills && user.profile?.education && user.profile?.jobs) ?
         (
           <>
           {showCreditModal && <CreditEmptyModal/>}
@@ -211,9 +213,9 @@ function CreateResumePage() {
             context={context} />
           </>
         ) : (
-          <div className="relative isolate overflow-hidden p-6 rounded-xl bg-white border border-gray-200 shadow-2xl transition-all duration-300 hover:shadow-lg">
+          <div className="max-w-3xl mx-auto m-3 relative isolate overflow-hidden p-6 rounded-xl bg-white border border-gray-200 shadow-2xl transition-all duration-300 hover:shadow-lg">
             {/* Decorative elements */}
-            <div className="absolute inset-0 -z-2 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-50/50 to-white" />
+            <div className="absolute inset-0 -z-2 bg-gray from-blue-50/50 to-white" />
             <div className="absolute -right-20 -top-20 -z-2 h-64 w-64 rounded-full bg-blue-100/30 blur-2xl" />
             <div className="absolute -left-20 -bottom-20 -z-2 h-64 w-64 rounded-full bg-blue-200/20 blur-2xl" />
             
@@ -233,20 +235,13 @@ function CreateResumePage() {
               <div className="flex space-x-4">
                 <Link
                   to="/profile"
-                  className="relative flex items-center justify-center px-6 py-3 overflow-hidden font-medium text-blue-600 transition-all duration-300 rounded-lg group"
+                  className="bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:from-blue-700 hover:to-blue-600 relative flex items-center justify-center px-6 py-3 font-medium  rounded-lg group"
                 >
-                  <span className="absolute inset-0 border-0 group-hover:border-[25px] ease-linear duration-100 transition-all border-blue-100 rounded-lg"></span>
-                  <span className="relative z-2 flex items-center">
                     Get Started
                     <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                     </svg>
-                  </span>
                 </Link>
-                
-                <button className="px-6 py-3 text-gray-600 hover:text-gray-900 transition-colors duration-200 font-medium rounded-lg">
-                  Remind Me Later
-                </button>
               </div>
             </div>
             
