@@ -13,7 +13,7 @@ function PreviewResumeImprovements(){
   
   // clean response:
   const cleaned_resume = response_text.replace(/\s+/g, " ").trim();
-  const improvements = JSON.parse(cleaned_resume);
+  const improvements = JSON.parse(cleaned_resume).improvements;
 
   return (
     <div className="max-w-4xl mx-auto p-8 bg-white rounded-lg shadow-lg">

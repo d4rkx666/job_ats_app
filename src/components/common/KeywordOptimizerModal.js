@@ -16,7 +16,7 @@ export default function KeywordOptimizerModal({
   context // 'create' | 'draft' | 'preview'
 }) {
 
-   const showReoptimize = context === 'draft' && matchScore < 100;
+  const showReoptimize = context === 'draft' && matchScore < 100;
   // Auto-close and continue if score is good
   useEffect(() => {
     if (matchScore >= 75 && context === 'create') {
@@ -35,8 +35,8 @@ export default function KeywordOptimizerModal({
   }, [onClose]);
 
   const getContextText = () => {
-    switch(context) {
-      case 'draft': 
+    switch (context) {
+      case 'draft':
         return { title: "Improve Your Draft", action: "Update Draft" };
       case 'preview':
         return { title: "Re-optimize Resume", action: "Re-optimize" };
@@ -48,7 +48,7 @@ export default function KeywordOptimizerModal({
   const { title, action } = getContextText();
 
   return (
-    <div 
+    <div
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-5 p-4"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
@@ -63,29 +63,27 @@ export default function KeywordOptimizerModal({
         <div className="space-y-4">
           {/* Score Display (when available) */}
           {matchScore > 0 && (
-            <div className={`p-4 rounded-lg ${
-              matchScore >= 80 ? 'bg-green-50' : 
-              matchScore >= 50 ? 'bg-blue-50' : 'bg-yellow-50'
-            }`}>
+            <div className={`p-4 rounded-lg ${matchScore >= 80 ? 'bg-green-50' :
+                matchScore >= 50 ? 'bg-blue-50' : 'bg-yellow-50'
+              }`}>
               <div className="flex items-center justify-between mb-2">
                 <span className="font-medium">ATS Match Score</span>
                 <span className="font-bold">{matchScore}%</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
-                <div 
-                  className={`h-full rounded-full ${
-                    matchScore >= 80 ? 'bg-green-500' : 
-                    matchScore >= 50 ? 'bg-blue-500' : 'bg-yellow-500'
-                  }`}
+                <div
+                  className={`h-full rounded-full ${matchScore >= 80 ? 'bg-green-500' :
+                      matchScore >= 50 ? 'bg-blue-500' : 'bg-yellow-500'
+                    }`}
                   style={{ width: `${matchScore}%` }}
                 />
               </div>
               <p className="mt-2 text-sm">
-                {matchScore < 50 ? "Needs significant improvement" : 
-                 matchScore < 75 ? "Good but could be better" : 
-                 "Excellent match!"}
+                {matchScore < 50 ? "Needs significant improvement" :
+                  matchScore < 75 ? "Good but could be better" :
+                    "Excellent match!"}
               </p>
-              
+
               {matchScore >= 75 && context === 'create' && (
                 <div className="flex items-center mt-3 text-sm text-green-700">
                   <SparklesIcon className="h-4 w-4 mr-1" />
@@ -103,8 +101,8 @@ export default function KeywordOptimizerModal({
               </h4>
               <div className="flex flex-wrap gap-2">
                 {currentKeywords.map(keyword => (
-                  <span 
-                    key={keyword} 
+                  <span
+                    key={keyword}
                     className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs"
                   >
                     {keyword}
@@ -132,9 +130,8 @@ export default function KeywordOptimizerModal({
                 </span>
               </div>
 
-              <div className={`flex items-center justify-between p-3 border rounded-lg ${
-                !isProUser ? 'opacity-50' : ''
-              }`}>
+              <div className={`flex items-center justify-between p-3 border rounded-lg ${!isProUser ? 'opacity-50' : ''
+                }`}>
                 <label className="flex items-center space-x-2">
                   <input
                     type="radio"
@@ -179,20 +176,24 @@ export default function KeywordOptimizerModal({
                 Improve Profile
               </Link>
             )}
-            
+
             <button
               onClick={() => matchScore > 0 ? onContinue?.() : onOptimize()}
               disabled={isLoading}
               type="button"
-              className={`flex-1 py-2 px-4 rounded-lg ${
-                isLoading ? 'bg-blue-300' : 'bg-blue-600 hover:bg-blue-700'
-              } text-white font-medium text-sm`}
+              className={`
+                flex-1 py-2 px-4 rounded-lg text-white font-medium text-sm
+                ${isLoading ? 'bg-blue-300' : 'bg-blue-600 hover:bg-blue-700'}
+                flex items-center justify-center
+                min-h-[40px]  // Ensures consistent height
+                transition-colors duration-200  // Smooth color transition
+              `}
             >
               {isLoading && context === "create" ? (
-                <>
+                <span className="inline-flex items-center">
                   <ArrowPathIcon className="h-4 w-4 mr-2 animate-spin" />
                   Optimizing...
-                </>
+                </span>
               ) : matchScore > 0 ? (
                 context === 'preview' ? 'Save Changes' : 'Continue to Templates'
               ) : (
