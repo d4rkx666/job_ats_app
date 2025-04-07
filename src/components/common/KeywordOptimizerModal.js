@@ -41,7 +41,7 @@ export default function KeywordOptimizerModal({
       case 'preview':
         return { title: "Re-optimize Resume", action: "Re-optimize" };
       default:
-        return { title: "Keyword Optimization", action: "Optimize" };
+        return { title: "Keyword Extraction", action: "Optimize" };
     }
   };
 
@@ -102,10 +102,10 @@ export default function KeywordOptimizerModal({
               <div className="flex flex-wrap gap-2">
                 {currentKeywords.map(keyword => (
                   <span
-                    key={keyword}
+                    key={keyword.keyword}
                     className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs"
                   >
-                    {keyword}
+                    {keyword.keyword}
                   </span>
                 ))}
               </div>
@@ -123,7 +123,7 @@ export default function KeywordOptimizerModal({
                     onChange={() => setOptimizationType('free')}
                     className="h-4 w-4 text-blue-600"
                   />
-                  <span>Basic Optimization</span>
+                  <span>Basic Extraction</span>
                 </label>
                 <span className="text-sm text-gray-500">
                   {process.env.REACT_APP_KEYWORDS_OPTIMIZATION_COST} credit
@@ -140,7 +140,7 @@ export default function KeywordOptimizerModal({
                     disabled={!isProUser}
                     className="h-4 w-4 text-blue-600"
                   />
-                  <span>AI-Powered Optimization</span>
+                  <span>AI-Powered Extraction</span>
                   <ProBadge />
                 </label>
                 <span className="text-sm text-gray-500">

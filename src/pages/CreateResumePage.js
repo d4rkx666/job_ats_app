@@ -14,7 +14,7 @@ import { WrenchScrewdriverIcon, EnvelopeIcon } from '@heroicons/react/24/outline
 function CreateResumePage() {
 
   // DEBUG
-  const [debug] = useState(true);
+  const [debug] = useState(false);
 
   // Language
   const { config, language } = useConfig();
@@ -73,9 +73,6 @@ function CreateResumePage() {
           const item = user.creations.find(i => i.id === to_insert.idDraft);
           item.resume = response.resume;
           item.tips = response.tips;
-          item.ats_score = response.ats_score;
-          setIsLoading(false)
-          return;
           navigate("/preview-resume",{
             state:{
               draft: item
@@ -83,7 +80,9 @@ function CreateResumePage() {
           });
         }
       }).catch(error=>{
-        
+        if (error.status === 500) {// token expired
+          logout();
+        }
       })
     }catch(error){
 

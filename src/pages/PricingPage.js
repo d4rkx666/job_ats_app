@@ -90,7 +90,7 @@ const PricingPage = () => {
                   </a>
                   <div className="mt-8">
                      <h3 className="text-sm font-medium text-gray-900">What's included</h3>
-                     <ul role="list" className="mt-6 space-y-4">
+                     <ul className="mt-6 space-y-4">
                         {features.filter(f => f.free).map((feature) => (
                            <li key={feature.name} className="flex">
                               <CheckIcon className="flex-shrink-0 h-5 w-5 text-green-500" aria-hidden="true" />
@@ -131,7 +131,7 @@ const PricingPage = () => {
                   </a>
                   <div className="mt-8">
                      <h3 className="text-sm font-medium text-gray-900">What's included</h3>
-                     <ul role="list" className="mt-6 space-y-4">
+                     <ul className="mt-6 space-y-4">
                         {features.filter(f => f.pro).map((feature) => (
                            <li key={feature.name} className="flex">
                               <CheckIcon className="flex-shrink-0 h-5 w-5 text-blue-500" aria-hidden="true" />

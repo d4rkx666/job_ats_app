@@ -4,6 +4,9 @@ import { ProBadge } from './Badge';
 import { useAuth } from '../../contexts/AuthContext';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm'; // For GitHub Flavored Markdown (tables, etc.)
+import { jsPDF } from 'jspdf';
+import { saveAs } from 'file-saver';
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, PageNumber, AlignmentType } from 'docx';
 import {
   SparklesIcon,
   ArrowPathIcon,
@@ -40,7 +43,8 @@ export default function PreviewResumeLayout() {
   const [markdown, setMarkdown] = useState(resume);
   const [activeTab, setActiveTab] = useState('preview');
   const [isExportOpen, setIsExportOpen] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [optimizationType, setOptimizationType] = useState('free');
   const [optimizerState, setOptimizerState] = useState({
     show: false,
     isLoading: false,
@@ -118,13 +122,6 @@ export default function PreviewResumeLayout() {
     }
   };
 
-  const handleExport = (type) => {
-    console.log(`Exporting as ${type}...`);
-    setIsExportOpen(false);
-    // Implement actual export logic here
-  };
-
-
   // Markdown formatting functions
   const formatText = (prefix, suffix = prefix, placeholder = '') => {
     const textarea = document.querySelector('textarea');
@@ -157,70 +154,489 @@ export default function PreviewResumeLayout() {
 
 
   // Custom component for highlighted text
-  const HighlightedText = React.memo(({ children }) => {
-    // Fast path for simple strings
-    if (typeof children === 'string') {
-      const parts = children.split(/(==.*?==)/g);
-      if (parts.length === 1) return children; // No highlights found
-
-      return (
-        <>
-          {parts.map((part, i) =>
-            part.startsWith('==') && part.endsWith('==') ? (
-              <mark key={i} className="mark">
-                {part.slice(2, -2)}
-              </mark>
-            ) : (
-              part
-            )
-          )}
-        </>
-      );
-    }
-
-    // Handle arrays without recursion if possible
-    if (Array.isArray(children)) {
-      const hasHighlights = children.some(
-        child => typeof child === 'string' && child.includes('==')
-      );
-
-      if (!hasHighlights) return <>{children}</>;
-
-      return <>{children.map((child, i) => <HighlightedText key={i}>{child}</HighlightedText>)}</>;
-    }
-
-    // Skip processing for non-string elements without highlights
-    if (React.isValidElement(children)) {
-      if (typeof children.props.children === 'string' && children.props.children.includes('==')) {
-        return React.cloneElement(children, {
-          children: <HighlightedText>{children.props.children}</HighlightedText>
-        });
-      }
+  const HighlightedText = React.memo(({ children, keywords = [] }) => {
+    // If no keywords or children is not a string, return as-is
+    if (!keywords.length || typeof children !== 'string') {
       return children;
     }
-
-    return children;
+  
+    // Regex pattern for all keywords that should be highlighted
+    const highlightPattern = new RegExp(
+      keywords
+        .filter(kw => kw.match)
+        .map(kw => `\\b${escapeRegExp(kw.keyword)}\\b`)
+        .join('|'),
+      'gi'
+    );
+  
+    // Split the text into parts, with matches wrapped in <mark>
+    const parts = children.split(highlightPattern);
+    const matches = children.match(highlightPattern) || [];
+  
+    return (
+      <>
+        {parts.map((part, i) => (
+          <React.Fragment key={i}>
+            {part}
+            {matches[i] && (
+              <mark className="rounded-lg px-1">
+                {matches[i]}
+              </mark>
+            )}
+          </React.Fragment>
+        ))}
+      </>
+    );
   });
+
+  // Helper function to escape regex special characters
+  function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
 
   const components = {
     // Text containers
-    p: ({ node, ...props }) => <p className="mb-4"><HighlightedText {...props} /></p>,
-    span: ({ node, ...props }) => <span><HighlightedText {...props} /></span>,
+    p: ({ node, ...props }) => <p className="mb-4"><HighlightedText keywords={optimizerState.keywords} {...props} /></p>,
+    span: ({ node, ...props }) => <span><HighlightedText keywords={optimizerState.keywords} {...props} /></span>,
 
     // Lists
-    li: ({ node, ...props }) => <li className="mb-1"><HighlightedText {...props} /></li>,
+    ul: ({ node, ...props }) => (
+      <ul className="list-disc pl-6 mb-4">
+        <HighlightedText keywords={optimizerState.keywords} {...props} />
+      </ul>
+    ),
+    ol: ({ node, ...props }) => (
+      <ol className="list-decimal pl-6 mb-4">
+        <HighlightedText keywords={optimizerState.keywords} {...props} />
+      </ol>
+    ),
+    li: ({ node, ...props }) => <li className="mb-1"><HighlightedText keywords={optimizerState.keywords} {...props} /></li>,
 
     // Headings
-    h1: ({ node, ...props }) => <h1 className="text-3xl font-bold mb-4 border-b pb-2"><HighlightedText {...props} /></h1>,
-    h2: ({ node, ...props }) => <h2 className="text-2xl font-bold mb-3"><HighlightedText {...props} /></h2>,
+    h1: ({ node, ...props }) => <h1 className="text-3xl font-bold mb-4 border-b pb-2"><HighlightedText keywords={optimizerState.keywords} {...props} /></h1>,
+    h2: ({ node, ...props }) => <h2 className="text-2xl font-bold mb-3"><HighlightedText keywords={optimizerState.keywords} {...props} /></h2>,
 
     // Special text processor
     text: ({ node, ...props }) => {
       if (typeof props.children === 'string' && props.children.includes('==')) {
-        return <HighlightedText>{props.children}</HighlightedText>;
+        return <HighlightedText keywords={optimizerState.keywords}>{props.children}</HighlightedText>;
       }
       return props.children;
     },
+  };
+
+  const handleExport = async (type) => {
+    setIsLoading(true);
+    
+    try {
+      if (type === "pdf") {
+        exportToPDF(markdown);
+      } else if (type === "docx") {
+        await exportToDOCX(markdown);
+      }
+    } catch (error) {
+      console.error("Export failed:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const exportToPDF = (markdown) => {
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const margin = 15;
+    const maxLineWidth = pageWidth - (margin * 2);
+    let yPosition = 20;
+    let currentPage = 1;
+    const maxPages = 10;
+
+    // Protect PDF
+    if (!isProUser) {
+      doc.setPermissions({
+        printing: 'lowResolution', // Allow only low-res printing
+        modifying: false,
+        copying: false,
+        annotating: false,
+        fillingForms: false,
+        contentAccessibility: false,
+        assembleDocument: false
+      });
+    }
+  
+    // Set default font (keeping your original styling)
+    doc.setFont('helvetica');
+    doc.setFontSize(11);
+  
+    // Improved page break handler
+    const checkSpace = (neededHeight) => {
+      if (yPosition + neededHeight > pageHeight - margin) {
+        doc.addPage();
+        currentPage++;
+        yPosition = margin;
+        return true;
+      }
+      return false;
+    };
+  
+    // Smart text adder with perfect wrapping
+    const addText = (text, fontSize, options = {}) => {
+      const { color, isBold, indent = 0 } = options;
+      const currentFont = doc.getFont();
+      
+      // Apply styling
+      doc.setFontSize(fontSize);
+      if (isBold) doc.setFont(currentFont.fontName, 'bold');
+      if (color) doc.setTextColor(color);
+      
+      // Calculate exact text dimensions
+      const textLines = doc.splitTextToSize(text, maxLineWidth - indent);
+      const lineHeight = fontSize * 0.50; // Optimal line height for Helvetica
+      
+      textLines.forEach(line => {
+        // Check space including line height
+        checkSpace(lineHeight);
+        
+        // Add the text
+        doc.text(line, margin + indent, yPosition);
+        yPosition += lineHeight;
+      });
+      
+      // Reset styling
+      doc.setFont(currentFont.fontName, 'normal');
+      doc.setTextColor(0); // Reset to black
+    };
+  
+    const sections = parseMarkdownToSections(markdown);
+  
+    // Add title (keeping your original style)
+    const title = sections.find(s => s.type === 'h1')?.content || "My Resume";
+    addText(title, 22, { isBold: true, });
+    yPosition += 1;
+  
+    // Add contact info
+    const contact = sections.find(s => s.type === 'contact');
+    if (contact) {
+      addText(contact.content, 12, { color: 100 });
+      yPosition += 5;
+      doc.line(margin, yPosition, pageWidth - margin, yPosition);
+      yPosition += 10;
+    }
+  
+    // Process all sections with perfect wrapping
+    sections.forEach(section => {
+      switch(section.type) {
+        case 'h2':
+          addText(section.content, 16, { color: 40, isBold: true });
+          break;
+          
+        case 'h3':
+          addText(section.content, 14, { color: 60, isBold: true });
+          break;
+          
+        case 'list':
+          section.items.forEach(item => {
+            addText('• ' + item, 11, { indent: 5, color: 100 });
+          });
+          yPosition += 10;
+          break;
+          
+        case 'ordered-list':
+          section.items.forEach((item, index) => {
+            addText(`${index + 1}. ${item}`, 11, { indent: 5, color: 100 });
+          });
+          yPosition += 10;
+          break;
+          
+        case 'paragraph':
+          addText(section.content, 11 ,{color: 100});
+          yPosition += 10;
+          break;
+      }
+    });
+  
+    // Add page numbers (keeping your style)
+    for (let i = 1; i <= currentPage; i++) {
+      doc.setPage(i);
+      doc.setFontSize(10);
+      doc.setTextColor(100);
+      doc.text(
+        `Page ${i} of ${currentPage}`,
+        pageWidth - margin,
+        pageHeight - 10,
+        { align: 'right' }
+      );
+    }
+  
+    doc.save("resume.pdf");
+  };
+
+  const exportToDOCX = async (markdown) => {
+    const sections = parseMarkdownToSections(markdown);
+    
+    // Filter out the h1 section since we'll handle it separately
+    const mainSections = sections.filter(section => section.type !== 'h1');
+    const nameSection = sections.find(section => section.type === 'h1');
+
+    // Document-wide styles
+    const styles = {
+      heading1: {
+        size: 28,
+        color: "2d2d2d",
+        bold: true,
+        spacing: { after: 0 }
+      },
+      heading2: {
+        size: 24,
+        color: "3d3d3d",
+        bold: true,
+        spacing: { before: 300 }
+      },
+      heading3: {
+        size: 20,
+        color: "4d4d4d",
+        bold: true,
+      },
+      body: {
+        size: 22,
+        color: "000000",
+        spacing: { line: 300, after: 300 }
+      },
+      contact: {
+        size: 22,
+        color: "666666",
+        spacing: { after: 200 }
+      },
+      list: {
+        bullet: "•",
+        indent: 300,
+        spacing: { line: 250 }
+      }
+    };
+  
+    const children = mainSections.map(section => {
+      switch(section.type) {
+        case 'h1':
+          return new Paragraph({
+            heading: HeadingLevel.HEADING_1,
+            children: [
+              new TextRun({
+                text: section.content,
+                bold: styles.heading1.bold,
+                size: styles.heading1.size,
+                color: styles.heading1.color
+              })
+            ],
+            spacing: styles.heading1.spacing
+          });
+  
+        case 'h2':
+          return new Paragraph({
+            heading: HeadingLevel.HEADING_2,
+            children: [
+              new TextRun({
+                text: section.content,
+                bold: styles.heading2.bold,
+                size: styles.heading2.size,
+                color: styles.heading2.color
+              })
+            ],
+            spacing: styles.heading2.spacing
+          });
+  
+        case 'h3':
+          return new Paragraph({
+            heading: HeadingLevel.HEADING_3,
+            children: [
+              new TextRun({
+                text: section.content,
+                bold: styles.heading3.bold,
+                size: styles.heading3.size,
+                color: styles.heading3.color
+              })
+            ],
+            spacing: styles.heading3.spacing
+          });
+  
+        case 'contact':
+          return new Paragraph({
+            children: [
+              new TextRun({
+                text: section.content,
+                size: styles.contact.size,
+                color: styles.contact.color
+              })
+            ],
+            spacing: styles.contact.spacing,
+            border: {
+              bottom: {
+                color: "CCCCCC",
+                space: 1,
+                style: "single",
+                size: 6
+              }
+            }
+          });
+  
+        case 'list':
+          return section.items.map(item => 
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: `${styles.list.bullet} ${item}`,
+                  size: styles.body.size
+                })
+              ],
+              indent: { left: styles.list.indent },
+              spacing: styles.list.spacing
+            })
+          );
+  
+        case 'ordered-list':
+          return section.items.map((item, index) => 
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: `${index + 1}. ${item}`,
+                  size: styles.body.size
+                })
+              ],
+              indent: { left: styles.list.indent },
+              spacing: styles.list.spacing
+            })
+          );
+  
+        default:
+          return new Paragraph({
+            children: [
+              new TextRun({
+                text: section.content,
+                size: styles.body.size,
+                color: styles.body.color
+              })
+            ],
+            spacing: styles.body.spacing
+          });
+      }
+    }).flat();
+  
+    const doc = new Document({
+      styles: {
+        paragraphStyles: [{
+          id: "Normal",
+          name: "Normal",
+          run: {
+            font: "Calibri",
+            size: 22
+          },
+          paragraph: {
+            spacing: { line: 276 }
+          }
+        }]
+      },
+      sections: [{
+        properties: {
+          page: {
+            margin: {
+              top: 1000,
+              right: 1000,
+              bottom: 1000,
+              left: 1000
+            }
+          }
+        },
+        children: [
+          // Add name only once at the top
+          ...(nameSection ? [new Paragraph({
+            heading: HeadingLevel.HEADING_1,
+            children: [
+              new TextRun({
+                text: nameSection.content,
+                bold: styles.heading1.bold,
+                size: styles.heading1.size,
+                color: styles.heading1.color
+              })
+            ],
+            spacing: styles.heading1.spacing
+          })] : []),
+          
+          // Add all other content
+          ...children
+        ]
+      }]
+    });
+  
+    const blob = await Packer.toBlob(doc);
+    saveAs(blob, "professional_resume.docx");
+  };
+
+  // Improved markdown parser with better formatting support
+  const parseMarkdownToSections = (markdown) => {
+    const lines = markdown.split('\n');
+    const sections = [];
+    let currentList = null;
+    let currentOrderedList = null;
+
+    lines.forEach(line => {
+      line = line.trim();
+      if (!line) return;
+
+      // Parse inline formatting (bold, italic)
+      const parseInlineFormatting = (text) => {
+        return text
+          .replace(/\*\*(.*?)\*\*/g, '$1') // Remove bold markers (handled in DOCX styling)
+          .replace(/\*(.*?)\*/g, '$1')     // Remove italic markers
+          .replace(/_(.*?)_/g, '$1');      // Remove underscore italic markers
+      };
+
+      if (line.startsWith('# ')) {
+        closeCurrentLists();
+        sections.push({ type: 'h1', content: parseInlineFormatting(line.substring(2)) });
+      } 
+      else if (line.startsWith('## ')) {
+        closeCurrentLists();
+        sections.push({ type: 'h2', content: parseInlineFormatting(line.substring(3)) });
+      }
+      else if (line.startsWith('### ')) {
+        closeCurrentLists();
+        sections.push({ type: 'h3', content: parseInlineFormatting(line.substring(4)) });
+      }
+      else if (line.startsWith('- ')) {
+        if (!currentList) {
+          closeCurrentLists();
+          currentList = { type: 'list', items: [] };
+          sections.push(currentList);
+        }
+        currentList.items.push(parseInlineFormatting(line.substring(2)));
+      }
+      else if (line.match(/^[0-9]+\. /)) {
+        if (!currentOrderedList) {
+          closeCurrentLists();
+          currentOrderedList = { type: 'ordered-list', items: [] };
+          sections.push(currentOrderedList);
+        }
+        currentOrderedList.items.push(parseInlineFormatting(line.replace(/^[0-9]+\. /, '')));
+      }
+      else if (line.includes('@') || line.toLowerCase().includes('email') || line.toLowerCase().includes('phone')) {
+        closeCurrentLists();
+        sections.push({ type: 'contact', content: parseInlineFormatting(line) });
+      }
+      else {
+        closeCurrentLists();
+        sections.push({ type: 'paragraph', content: parseInlineFormatting(line) });
+      }
+    });
+
+    function closeCurrentLists() {
+      currentList = null;
+      currentOrderedList = null;
+    }
+
+    return sections;
+  };
+
+  const saveResume = async (markdown) => {
+    // Implement your save logic here
   };
 
   return (
@@ -301,7 +717,7 @@ export default function PreviewResumeLayout() {
             {/* Content */}
             {activeTab === 'preview' ? (
               markdown ? (
-                <div className="prose max-w-none">
+                <div id="resume-content" className="prose max-w-none">
                   <ReactMarkdown
                     remarkPlugins={[remarkGfm]}
                     components={components}
@@ -400,9 +816,9 @@ export default function PreviewResumeLayout() {
               {optimizerState.keywords.map((kw, i) => (
                 <span
                   key={i}
-                  className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium"
+                  className={`${kw.match ? "bg-purple-100" : "bg-yellow-100" } text-blue-800 px-2 py-1 rounded text-xs font-medium`}
                 >
-                  {kw}
+                  {kw.keyword}
                 </span>
               ))}
             </div>
@@ -474,6 +890,8 @@ export default function PreviewResumeLayout() {
           onOptimize={handleOptimize}
           onClose={() => setOptimizerState(prev => ({ ...prev, show: false }))}
           isLoading={optimizerState.isLoading}
+          optimizationType={optimizationType}
+          setOptimizationType={setOptimizationType}
           context="preview"
         />
       )}
@@ -501,7 +919,9 @@ export default function PreviewResumeLayout() {
                 <div className="flex items-center">
                   <DocumentTextIcon className="h-5 w-5 text-red-500 mr-3" />
                   <div>
-                    <p className="font-medium">PDF</p>
+                  <div className="flex items-center gap-2">
+                      <p className="font-medium">PDF</p>
+                    </div>
                     <p className="text-sm text-gray-500">Best for applications</p>
                   </div>
                 </div>

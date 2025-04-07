@@ -79,9 +79,14 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
 
     // Insert action
     }else if(action === "insert"){
-      if (e.key === 'Enter' || e.key === ',') {
+      if (e.target.value.endsWith(",") || e.key === 'Enter') {
+      //if (e.key === 'Enter' || e.key === ',') {
         e.preventDefault();
-        const newSkill = e.target.value.trim();
+        let newSkill = e.target.value.trim();
+        if(e.target.value.endsWith(",")){
+          newSkill = e.target.value.slice(0, -1).trim();
+        }
+        
 
         // Don't save if no changes
         if (newSkill && !field.value.includes(newSkill)) {
@@ -156,7 +161,7 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
                 }
               })}
               onBlur={() => handlePersonalDataBlur('linkedin')}
-              type="url"
+              type="text"
               placeholder={userData.linkedin || labels.formProfile.personalInformation.linkedin}
               className={`w-full p-2 border rounded ${ (errors.personalData?.linkedin || errorAutoSaved === "linkedin") ? "border-red-500" : "border-green-500"} ${recentlySaved === 'linkedin' && 'ring-2 ring-green-500 animate-pulse-once'} ${autoSaving === "linkedin" && "animate-auto-saving"}  ${recentlySaved === 'linkedin' && "animate-pulse-once"} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
             />
@@ -168,8 +173,8 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
                 }
               })}
               onBlur={() => handlePersonalDataBlur('website')}
-              type="url"
-              placeholder={userData.linkedin || labels.formProfile.personalInformation.website}
+              type="text"
+              placeholder={userData.website || labels.formProfile.personalInformation.website}
               className={`w-full p-2 border rounded ${ (errors.personalData?.website || errorAutoSaved === "website") ? "border-red-500" : "border-green-500"} ${recentlySaved === 'website' && 'ring-2 ring-green-500 animate-pulse-once'} ${autoSaving === "website" && "animate-auto-saving"}  ${recentlySaved === 'website' && "animate-pulse-once"} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
             />
           </div>
@@ -203,7 +208,9 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
                   type="text"
                   placeholder={labels.formProfile.skills.addSkill}
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  onKeyDown={(e) => handleActionSkills("insert", field, 0, e)}
+                  onChange={(e) => handleActionSkills("insert", field, 0, e)}
+                  onKeyPress={(e) => {if (e.key === 'Enter') {handleActionSkills("insert", field, 0, e)}
+                  }}
                 />
                 <p className="text-gray-500 mt-1 font-semibold text-sm">{labels.formProfile.skills.subtitle2}</p>
               </div>

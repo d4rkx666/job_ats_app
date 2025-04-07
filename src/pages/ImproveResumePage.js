@@ -60,16 +60,15 @@ function ImproveResumePage() {
             }
          })
          .catch(err => {
-            if(err.response?.data?.detail === "403: Email not verified"){
+            if (err.status === 500) {// token expired
+               logout();
+            }else if(err.response?.data?.detail === "403: Email not verified"){
                setError(labels.error.userNotVerified);
             }else{
                setError(labels.error.universalError);
-             }
+            }
          });
       } catch (error) {
-         if (error.status === 500) {// token expired
-            logout();
-          }
          setError(labels.error.resumeNotUploaded);
       } finally {
          setIsLoading(false);

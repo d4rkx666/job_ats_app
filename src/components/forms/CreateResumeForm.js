@@ -186,7 +186,7 @@ const CreateResumeForm = ({
               <span className="bg-blue-100 text-blue-800 w-8 h-8 rounded-full flex items-center justify-center mr-3">
                 2
               </span>
-              Optimize for ATS
+              Extract keywords for ATS
             </h2>
             
             <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-6">

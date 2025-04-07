@@ -12,7 +12,7 @@ function CreateResume() {
   const labels = config.labels[language];
 
   // Auth to autofill
-  const auth = useAuth();
+  const {user, logout} = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -24,7 +24,9 @@ function CreateResume() {
       await save_profile({educations: data.educations, jobs: data.jobs, projects: data.projects}).then(response =>{
         
       }).catch(error =>{
-        console.log(error)
+        if (error.status === 500) {// token expired
+          logout();
+        }
       })
     } catch (error) {
     } finally {
@@ -45,7 +47,9 @@ function CreateResume() {
           return false;
         }
       }).catch(error =>{
-        return false;
+        if (error.status === 500) {// token expired
+          logout();
+        }
       })
     } catch (error) {
     } finally {
@@ -67,7 +71,9 @@ function CreateResume() {
           return false;
         }
       }).catch(error =>{
-        return false;
+        if (error.status === 500) {// token expired
+          logout();
+        }
       })
     } catch (error) {
     } finally {
@@ -81,7 +87,7 @@ function CreateResume() {
     onSubmit={handleSubmit}
     autoSavePersonalInformation={autoSavePersonalInformation}
     autoSaveSkills={autoSaveSkills}
-    userData={auth.user}
+    userData={user}
     isLoading={isLoading}
     labels={labels}
     />

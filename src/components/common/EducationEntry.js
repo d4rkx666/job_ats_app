@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import MonthYearPicker from "./Datepicker"
 
 // Create a separate EducationEntry component to use hooks
-const EducationEntry = ({ index, isCurrentEducationCheck, control, register, onDelete, setValue, labels, errors}) => {
+const EducationEntry = ({ index, isCurrentEducationCheck, control, register, onDelete, setValue, labels, errors }) => {
   const [isCurrentEducation, setIsCurrentEducation] = useState(isCurrentEducationCheck);
 
-  useEffect(()=>{
+  useEffect(() => {
     setIsCurrentEducation(isCurrentEducationCheck);
   }, [isCurrentEducationCheck]);
 
@@ -22,14 +22,14 @@ const EducationEntry = ({ index, isCurrentEducationCheck, control, register, onD
 
       <div className="space-y-4">
         <input
-          {...register(`educations.${index}.institution`, {required: "Required"})}
+          {...register(`educations.${index}.institution`, { required: "Required" })}
           placeholder={labels.formProfile.education.institution}
-          className={`w-full p-2 border rounded-md ${ errors?.institution ? "border-red-500" : ""} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+          className={`w-full p-2 border rounded-md ${errors?.institution ? "border-red-500" : ""} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
         />
         <input
-          {...register(`educations.${index}.degree`, {required: "Required"})}
+          {...register(`educations.${index}.degree`, { required: "Required" })}
           placeholder={labels.formProfile.education.degree}
-          className={`w-full p-2 border rounded-md ${ errors?.degree ? "border-red-500" : ""} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+          className={`w-full p-2 border rounded-md ${errors?.degree ? "border-red-500" : ""} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
         />
 
         <div className="grid grid-cols-2 gap-4">
@@ -39,7 +39,7 @@ const EducationEntry = ({ index, isCurrentEducationCheck, control, register, onD
             label={labels.formProfile.startDate}
             required={true}
           />
-          
+
           <div>
             <MonthYearPicker
               control={control}
@@ -55,12 +55,12 @@ const EducationEntry = ({ index, isCurrentEducationCheck, control, register, onD
                 checked={isCurrentEducation}
                 onChange={(e) => {
                   setIsCurrentEducation(e.target.checked);
-                  setValue(`educations.${index}.graduationEndDate`, e.target.checked ? {month:0, year:0} : '');
+                  setValue(`educations.${index}.graduationEndDate`, e.target.checked ? { month: 0, year: 0 } : '');
                 }}
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
               <label htmlFor={`current-education-${index}`} className="ml-2 block text-sm text-gray-700">
-              {labels.formProfile.education.currently}
+                {labels.formProfile.education.currently}
               </label>
             </div>
           </div>
@@ -71,11 +71,35 @@ const EducationEntry = ({ index, isCurrentEducationCheck, control, register, onD
 };
 
 const EducationSection = ({ control, register, setValue, labels, errors }) => {
+  const [educationIds, setEducationIds] = useState([Date.now()]); // Initialize with one job
+
+  const addEducation = () => {
+    const newId = Date.now();
+    setEducationIds(prev => [...prev, newId]);
+
+    // Initialize new job with all required fields
+    const currentEducations = control._formValues.educations || [];
+    setValue('educations', [...currentEducations, {
+      institution: '',
+      degree: '',
+      graduationStartDate: null,
+      graduationEndDate: null,
+    }]);
+  };
+
+  const removeEducation = (index) => {
+    setEducationIds(prev => prev.filter((_, i) => i !== index));
+
+    const currentEducations = control._formValues.educations || [];
+    const newEducations = currentEducations.filter((_, i) => i !== index);
+    setValue('educations', newEducations);
+  };
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mb-6">
       <h2 className="text-xl font-semibold mb-1">{labels.formProfile.education.title}</h2>
       <h5 className="text-sm text-gray-500 font-semibold mb-4">{labels.formProfile.saveChanges}</h5>
-      
+
       <Controller
         name="educations"
         control={control}
@@ -83,29 +107,26 @@ const EducationSection = ({ control, register, setValue, labels, errors }) => {
           <div>
             {field.value.map((education, index) => {
               const check = education.graduationEndDate?.month === 0 && education.graduationEndDate?.year === 0 ? true : false;
-              
-              return(
-              <EducationEntry
-                key={index}
-                index={index}
-                education={education}
-                control={control}
-                register={register}
-                setValue={setValue}
-                labels={labels}
-                isCurrentEducationCheck={check}
-                errors={errors?.educations?.[index] || {}}
-                onDelete={() => {
-                  const newJobs = field.value.filter((_, i) => i !== index);
-                  setValue('educations', newJobs);
-                }}
-              />
-            )
+
+              return (
+                <EducationEntry
+                  key={index}
+                  index={index}
+                  education={education}
+                  control={control}
+                  register={register}
+                  setValue={setValue}
+                  labels={labels}
+                  isCurrentEducationCheck={check}
+                  errors={errors?.educations?.[index] || {}}
+                  onDelete={() => removeEducation(index)}
+                />
+              )
             })}
 
             <button
               type="button"
-              onClick={() => setValue('educations', [...field.value, {}])}
+              onClick={addEducation}
               className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
             >
               {labels.formProfile.education.btnAdd}
