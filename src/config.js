@@ -22,38 +22,63 @@ export const config = {
          },
          home:{
             header:{
-               title: "Improve Your Resume, Land Your Dream Job",
-               subtitle: "Optimize your resume with AI-powered tools and stand out to employers.",
+               title: "Land More Interviews",
+               title2: "With an ATS-Optimized Resume",
+               subtitle: "Our AI-powered platform analyzes job descriptions and optimizes your resume to beat applicant tracking systems.",
+               seeHowItWorks: "See How It Works"
             },
-            chooseUs:{
-               title: "Why Choose Us?",
-               cardOne: {
-                  title: "AI-Powered Optimization",
-                  body: "Our AI analyzes your resume and suggests improvements to make it stand out.",
-               },
-               cardTwo: {
-                  title: "Tailored for Your Industry",
-                  body: "Get industry-specific recommendations to match job requirements.",
-               },
-               cardThree: {
-                  title: "Fast and Easy",
-                  body: "Upload your resume and get results in minutes.",
+            features:{
+               title:"Everything you need to beat the ATS",
+               subtitle:"Our platform uses cutting-edge technology to give your resume the best chance of getting seen.",
+               feature:{
+                  one:{
+                     name: "AI-Powered Optimization",
+                     description: "Our advanced AI analyzes job descriptions and builds/optimizes your resume to match perfectly",
+                  },
+                  two:{
+                     name: "ATS Score Tracking",
+                     description: "Get real-time feedback on how well your resume performs in applicant tracking systems",
+                  },
+                  three:{
+                     name: "Keyword Analysis",
+                     description: "Identify the most important keywords to include for each specific job application",
+                  },
+                  four:{
+                     name: "Instant Downloads",
+                     description: "Export your resume in multiple formats with one click",
+                  },
                }
             },
-            userRates:{
-               title:"What Our Users Say",
-               cardOne:{
-
-               },
-               cardTwo:{
-
+            howItWorks:{
+               title:"How It Works",
+               title2: "From Blank Page to Interview-Ready in 4 Simple Steps",
+               subtitle:"Our AI does the heavy lifting in while you focus on your job search.",
+               steps:{
+                  step1:{
+                     title: "Setup your profile",
+                     description: "Setup a profile with all your skills in our system",
+                  },
+                  step2:{
+                     title: "Add the Job Description",
+                     description: "Paste the text from the job posting you're applying for",
+                  },
+                  step3:{
+                     title: "AI Magic Happens",
+                     description: "Our system analyzes and creates an exclusive resume for the job you're applying for",
+                  },
+                  step4:{
+                     title: "Download & Apply Confidently",
+                     description: "Get an ATS-optimized resume tailored to the job",
+                  },
                },
             },
             footer: {
-               title: "Ready to Improve Your Resume?",
-               subtitle: "Sign up now and start optimizing your resume today!",
+               title: "Ready to transform your resume?",
+               title2: "Start your free trial today.",
+               subtitle: "Get 7 days of Pro features to see the difference for yourself. Due the beta version for testing, get more free days of Pro Plan contacting the admin.",
+               tryPro: "Try Pro Free for 7 Days"
             },
-            getStartedBtn:"Get Started"
+            getStartedBtn:"Get Started - It's Free"
          },
          formLogin:{
             email: {
@@ -361,38 +386,63 @@ export const config = {
          },
          home:{
             header:{
-               title: "Optimiza tu curriculum, Aterriza el trabajo de tus sueños",
-               subtitle: "Enriquece tu curriculum con herramientas impulsadas por la Inteligencia Artificial, y destácate para los empleadores.",
+               title: "Aterriza más entrevistas",
+               title2: "Con un CV optimizado para ATS",
+               subtitle: "Nuestra plataforma de IA potenciada analiza descripciones de trabajo y crea/optimiza tu CV para vencer a los Sistemas de Seguimiento de Aplicantes (ATS).",
+               seeHowItWorks: "Ver cómo funciona"
             },
-            chooseUs:{
-               title: "¿Por qué elegirnos?",
-               cardOne: {
-                  title: "Optimización impulsada por IA",
-                  body: "Nuestra IA analiza tu curriculum y sugiere mejoras para hacerte destacar.",
-               },
-               cardTwo: {
-                  title: "Adaptada a tu industria",
-                  body: "Obtén recommendaciones específicas para la industria en la que aplicas.",
-               },
-               cardThree: {
-                  title: "Rápido y fácil",
-                  body: "Sube tu curriculum y obtén los resultados en minutos.",
+            features:{
+               title:"Todo lo que necesitas para vencer al ATS",
+               subtitle:"Nuestra plataforma utiliza tecnologías innovadoras para darle a tu CV el mejor chance de ser visto por los reclutadores.",
+               feature:{
+                  one:{
+                     name: "Optimización de IA potenciada",
+                     description: "Nuestra IA avanzada analiza las descripciones de trabajo y crea/optimiza tu CV para adaptarlo perfectamente",
+                  },
+                  two:{
+                     name: "Seguimiento de puntaje ATS",
+                     description: "Obtén retroalimentación en tiempo real de qué tan bien tu CV actúa en Sistemas de Seguimiento de Aplicantes",
+                  },
+                  three:{
+                     name: "Análisis de Palabras Clave",
+                     description: "Identifica las Palabras Clave más importantes de la descripción de trabajo para incluírlas en tu aplicación",
+                  },
+                  four:{
+                     name: "Descargas instantes",
+                     description: "Exporta tu CV en múltiples formatos con un click",
+                  },
                }
             },
-            userRates:{
-               title:"What Our Users Say",
-               cardOne:{
-
-               },
-               cardTwo:{
-
+            howItWorks:{
+               title:"Cómo funciona",
+               title2: "De página en blanco a estar listo para la entrevista en 4 sencillos pasos",
+               subtitle:"Nuestra IA hace el trabajo pesado mientras tú te ocupas de la búsqueda de trabajo.",
+               steps:{
+                  step1:{
+                     title: "Configura tu Perfil",
+                     description: "Configura tu Perfil con todas tus habilidades, en nuestro sistema",
+                  },
+                  step2:{
+                     title: "Agrega la descripción de trabajo",
+                     description: "Pega el texto de la Descripción del Puesto para el que estás aplicando",
+                  },
+                  step3:{
+                     title: "La magia de IA sucede",
+                     description: "Job Booster analiza y crea un CV EXCLUSIVO para el puesto de trabajo para el que estás aplicando",
+                  },
+                  step4:{
+                     title: "Descarga y aplica con confianza",
+                     description: "Obtén un CV optimizado para el ATS y adaptado al puesto de trabajo para la cual aplica",
+                  },
                },
             },
             footer: {
-               title: "¿Curriculum listo para ser mejorado?",
-               subtitle: "¡Regístrate ahora y comienza a optimizar tu curriculum basado en tu industria!",
+               title: "¿Ready para impulsar tu CV?",
+               title2: "Start your free trial today.",
+               subtitle: "Obtén 7 días de características Pro para que veas las diferencias por tí mismo. Debido a la sesión de pruebas pre venta, obtén más días grátis de Pro contactando al administrador.",
+               tryPro: "Prueba 7 días grátis de Pro"
             },
-            getStartedBtn:"Comenzar"
+            getStartedBtn:"Inicia - Es grátis"
          },
          formLogin:{
             email: {
