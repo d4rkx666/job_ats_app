@@ -38,7 +38,7 @@ export default function PreviewResumeLayout() {
   } = location.state || {};
 
   // Auth to check user
-  const { user, logout } = useAuth();
+  const { user, system, logout } = useAuth();
   const [isProUser, setIsProUser] = useState(false);
 
   // To save resume
@@ -90,8 +90,8 @@ export default function PreviewResumeLayout() {
   const cost = ()=>{
     return (
       <>
-        {config.actionCosts.resume_creation} {labels.dashboardPage.credit}
-        {config.actionCosts.resume_creation !== 1 && 's'}
+        {system.resume_creation} {labels.dashboardPage.credit}
+        {system.resume_creation !== 1 && 's'}
       </>
     )
   }
