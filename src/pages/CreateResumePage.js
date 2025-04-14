@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import CreateResumeForm from "../components/forms/CreateResumeForm"
 import {CreditEmptyModal} from "../components/common/CreditEmptyModal"
 import { useAuth } from "../contexts/AuthContext";
 import { useConfig } from "../contexts/ConfigContext"
-import { get_keywords_optimization } from "../services/GetKeywordsImprovement"
+import { get_keywords_extraction } from "../services/GetKeywordsExtraction"
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {set_new_resume} from "../services/SetNewResume"
+import LoadingCreateResumeModal from "../components/common/LoadingCreateResumeModal"
 
 // For construction page
-import { WrenchScrewdriverIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
+import { WrenchScrewdriverIcon } from '@heroicons/react/24/outline';
 
 
 function CreateResumePage() {
@@ -26,6 +27,7 @@ function CreateResumePage() {
 
   // Const for Form
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingKeywords, setIsLoadingKeywords] = useState(false);
   const [isOptimized, setIsOptimized] = useState(draft.isOptimizedDraft || false);
   const [error, setError] = useState("");
   const [showCreditModal, setShowCreditModal] = useState(false);
@@ -35,15 +37,36 @@ function CreateResumePage() {
   // For keyword optimization
   const [jobTitle, setJobTitle] = useState("")
   const [jobDescription, setJobDescription] = useState("")
-  const [type, setType] = useState("")
   const [matchScore, setMatchScore] = useState(0);
   const [keywords, setKeywords] = useState([]);
   const [currentStep, setCurrentStep] = useState(1); // 1-4 steps
   const [isOptimizerOpen, setIsOptimizerOpen] = useState(false); // open modal
   const [context, setContext] = useState("create"); // create, draft, preview
 
+  // Loading 
+  const [progress, setProgress] = useState(0)
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const timerRef = useRef(null);
+  const [currentStepLoading, setCurrentStepLoading] = useState(1);
+  const progressIntervalRef = useRef(null);
+
   // User auth
   const { user, logout } = useAuth();
+
+  //cost
+  const cost = (type)=>{
+    return (type === "keywords" ? 
+      <>
+        {config.actionCosts.keyword_optimization} {labels.dashboardPage.credit}
+        {config.actionCosts.keyword_optimization !== 1 && 's'}
+      </>
+      :
+      <>
+        {config.actionCosts.resume_creation} {labels.dashboardPage.credit}
+        {config.actionCosts.resume_creation !== 1 && 's'}
+      </>
+    )
+  }
 
   // Detects coming from Drafts
   useEffect(()=>{
@@ -60,50 +83,91 @@ function CreateResumePage() {
   // Form submission
   const handleOnSubmit = async (data) => {
     setIsLoading(true);
+    setElapsedTime(0);
+    setProgress(0);
+    setCurrentStepLoading(1);
+    
+    // Start timer
+    timerRef.current = setInterval(() => {
+      setElapsedTime(prev => prev + 1);
+    }, 1000);
+
+
+    if(user.usage.current_credits < Number(process.env.REACT_APP_RESUME_CREATION_COST)){ 
+      setShowCreditModal(true);
+      setIsLoading(false);
+      return;
+    }
     try{
+      
+
+      // Simulate progress updates - will stop at 99%
+      const steps = 6;
+      progressIntervalRef.current = setInterval(() => {
+        setProgress(prev => {
+          // Stop at 99% (100% will be set when API completes)
+          const maxProgress = 99;
+          const increment = maxProgress / steps;
+          const newProgress = prev + increment;
+          return newProgress >= maxProgress ? maxProgress : newProgress;
+        });
+        
+        setCurrentStepLoading(prev => {
+          if (prev >= steps) return steps;
+          return prev + 1;
+        });
+      }, 1800);
+
       let to_insert={
         template: data.template,
         lang: language,
         idDraft: idDraft,
         coverLetter: data.includeCoverLetter
       }
-
-      await set_new_resume(to_insert).then(response=>{
-        if(response.success === true){
-          const item = user.creations.find(i => i.id === to_insert.idDraft);
-          item.resume = response.resume;
-          item.tips = response.tips;
-          navigate("/preview-resume",{
-            state:{
-              draft: item
-            }
-          });
-        }
-      }).catch(error=>{
+      
+      //await new Promise(resolve => setTimeout(resolve, 10000));
+      const startTime = performance.now();
+      const response = await set_new_resume(to_insert).catch(error=>{
         if (error.status === 500) {// token expired
           logout();
         }
       })
+      const endTime = performance.now();
+      console.log(`API call TOOK ${(endTime - startTime) / 1000} seconds`);
+
+      if(response.success === true){
+        // API completed - set to 100% and close modal
+        setCurrentStepLoading(6)
+        setProgress(100);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        navigate("/preview-resume",{
+          state:{
+            idCreation: idDraft
+          }
+        });
+      }
     }catch(error){
 
     }finally{
+      clearInterval(timerRef.current);
+      clearInterval(progressIntervalRef.current);
       setIsLoading(false);
     }
   };
 
-  // Click when optimizes keywords
-  const handleOnOptimization = async () => {
-    setIsLoading(true);
-    console.log("on optimize")
+  // Click when extracts keywords
+  const handleOnExtraction = async () => {
+    setIsLoadingKeywords(true);
     if(user.usage.current_credits < Number(process.env.REACT_APP_KEYWORDS_OPTIMIZATION_COST)){ 
       setShowCreditModal(true);
-      setIsLoading(false);
+      setIsLoadingKeywords(false);
       return;
     }
 
     try {
       if(draft.isOptimizedDraft){
-        await get_keywords_optimization({ job_title: "", job_description: "", lang: language, isDraft: true, idDraft: draft.item.id }).then(response => {
+        await get_keywords_extraction({ job_title: "", job_description: "", lang: language, isDraft: true, idDraft: draft.item.id }).then(response => {
           console.log(response)
           if(response.success){
             setMatchScore(response.score);
@@ -124,7 +188,7 @@ function CreateResumePage() {
           }
         })
       }else{
-        await get_keywords_optimization({ job_title: jobTitle, job_description: jobDescription, type: type /*free-pro*/, lang: language, isDraft: false }).then(response => {
+        await get_keywords_extraction({ job_title: jobTitle, job_description: jobDescription, lang: language, isDraft: false }).then(response => {
           if(response.success){
             setMatchScore(response.score);
             setKeywords(response.keywords);
@@ -147,9 +211,9 @@ function CreateResumePage() {
         })
       }
     } catch (error) {
-      console.log(error, "asd");
+      console.log(error);
     } finally {
-      setIsLoading(false);
+      setIsLoadingKeywords(false);
     }
 
   }
@@ -194,14 +258,14 @@ function CreateResumePage() {
           {showCreditModal && <CreditEmptyModal/>}
           <CreateResumeForm user={user}
             onSubmit={handleOnSubmit}
-            onOptimization={handleOnOptimization}
+            onExtraction={handleOnExtraction}
             error={error}
             isLoading={isLoading}
+            isLoadingKeywords={isLoadingKeywords}
             labels={labels}
             isOptimized={isOptimized}
             setJobTitle={setJobTitle}
             setJobDescription={setJobDescription}
-            setType={setType}
             matchScore={matchScore}
             keywords={keywords}
             currentStep={currentStep}
@@ -209,7 +273,20 @@ function CreateResumePage() {
             draft={draft}
             isOptimizerOpen={isOptimizerOpen}
             setIsOptimizerOpen={setIsOptimizerOpen}
-            context={context} />
+            costKeywords={cost("keywords")}
+            costCreateResume={cost("create")}
+            context={context}
+            progress={progress}
+            />
+
+          {/* LOADING MODAL*/}
+          {isLoading && (
+            <LoadingCreateResumeModal 
+            progress={progress} 
+            currentStep={currentStepLoading}
+            elapsedTime={elapsedTime}
+            />
+          )}
           </>
         ) : (
           <div className="max-w-3xl mx-auto m-3 relative isolate overflow-hidden p-6 rounded-xl bg-white border border-gray-200 shadow-2xl transition-all duration-300 hover:shadow-lg">

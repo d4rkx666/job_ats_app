@@ -17,6 +17,16 @@ function ImproveResumePage() {
    const [error, setError] = useState("");
    const [showCreditModal, setShowCreditModal] = useState(false);
 
+   //cost
+   const cost = ()=>{
+      return (
+        <>
+          {config.actionCosts.resume_optimization} {labels.dashboardPage.credit}
+          {config.actionCosts.resume_optimization !== 1 && 's'}
+        </>
+      )
+   }
+
    const navigate = useNavigate();
 
    // Load user
@@ -78,7 +88,12 @@ function ImproveResumePage() {
    return (
       <>
          {showCreditModal && <CreditEmptyModal/>}
-         <ResumeForm onSubmit={handleSubmit} isLoading={isLoading} labels={labels} error={error}/>
+         <ResumeForm
+         onSubmit={handleSubmit}
+         isLoading={isLoading}
+         labels={labels}
+         error={error}
+         cost={cost()}/>
       </>
    );
 }

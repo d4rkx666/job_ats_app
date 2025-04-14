@@ -1,29 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { ProBadge } from "../common/Badge";
 import SubmitButton from "../common/SubmitButton";
-import KeywordOptimizerModal from '../common/KeywordOptimizerModal';
-import { RoundedATSIndicador } from '../common/RoundedATSIndicator';
+import { UpgradeProKeywords } from '../common/UpgradeProKeywords';
+import { KeywordList } from '../common/KeywordList';
 
-const CreateResumeForm = ({ 
-  user, 
-  onSubmit, 
-  onOptimization, 
-  error, 
-  context, 
-  isLoading, 
-  isOptimized, 
-  isOptimizerOpen, 
-  setIsOptimizerOpen, 
-  setJobTitle, 
-  setJobDescription, 
-  setType, 
-  currentStep, 
-  setCurrentStep, 
-  matchScore, 
-  keywords, 
-  draft, 
-  labels 
+const CreateResumeForm = ({
+  user,
+  onSubmit,
+  onExtraction,
+  isLoading,
+  isLoadingKeywords,
+  isOptimized,
+  setIsOptimizerOpen,
+  setJobTitle,
+  setJobDescription,
+  currentStep,
+  setCurrentStep,
+  keywords,
+  draft,
+  labels,
+  costKeywords,
+  costCreateResume
 }) => {
   const {
     register,
@@ -45,7 +43,6 @@ const CreateResumeForm = ({
   const isPro = user?.subscription?.plan === 'pro' || user?.subscription?.plan === 'business';
   const job_title = watch("job_title");
   const job_description = watch("job_description");
-  const [optimizationType, setOptimizationType] = useState('free');
 
   // Enhanced templates with visual indicators
   const TEMPLATES = [
@@ -63,13 +60,10 @@ const CreateResumeForm = ({
     setCurrentStep(step);
   };
 
-  const onContinue = () => setCurrentStep(3);
-
   useEffect(() => {
     setJobTitle(job_title);
     setJobDescription(job_description);
-    setType(optimizationType);
-  }, [job_title, job_description, optimizationType]);
+  }, [job_title, job_description]);
 
   useEffect(() => {
     if (draft.isOptimizedDraft) {
@@ -95,14 +89,14 @@ const CreateResumeForm = ({
                 {step}
               </div>
               <span className={`text-sm mt-2 ${currentStep >= step ? 'text-blue-600 font-medium' : 'text-gray-500'}`}>
-                {['Job Info', 'Optimize', 'Design', 'Extras'][step - 1]}
+                {['Job Info', 'Keywords', 'Design', 'Extras'][step - 1]}
               </span>
             </div>
             {step < 4 && (
               <div className={`absolute h-1 w-full top-5 transform -translate-y-1/2 
-                ${currentStep > step ? 'bg-blue-600' : 'bg-gray-200'}`} 
-                style={{ 
-                  left: `calc(${step * 30}% - 24%)`, 
+                ${currentStep > step ? 'bg-blue-600' : 'bg-gray-200'}`}
+                style={{
+                  left: `calc(${step * 30}% - 24%)`,
                   width: '30%',
                   zIndex: -1
                 }} />
@@ -121,7 +115,7 @@ const CreateResumeForm = ({
               </span>
               Tell us about the job
             </h2>
-            
+
             <div className="space-y-5">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -163,8 +157,8 @@ const CreateResumeForm = ({
                     <span className="text-xs text-gray-500">Minimum 10 characters</span>
                   )}
                   {isPro && (
-                    <button 
-                      type="button" 
+                    <button
+                      type="button"
                       className="text-xs flex items-center text-blue-600 hover:text-blue-800"
                     >
                       <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -179,57 +173,76 @@ const CreateResumeForm = ({
           </div>
         )}
 
-        {/* Step 2: Keyword Optimization */}
+        {/* Step 2: Keyword Extraction - Pro Upgrade Nudges */}
         {currentStep === 2 && (
           <div className="p-6">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-              <span className="bg-blue-100 text-blue-800 w-8 h-8 rounded-full flex items-center justify-center mr-3">
-                2
-              </span>
-              Extract keywords for ATS
-            </h2>
-            
-            <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-medium text-gray-800">ATS Match Score</h3>
-                  <p className="text-sm text-gray-600">How well your resume matches this job</p>
-                </div>
-                <RoundedATSIndicador score={matchScore} className="relative w-16 h-16" />
+            <div className="flex items-start justify-between mb-6">
+              <div className="flex items-center">
+                <span className="bg-blue-100 text-blue-800 w-8 h-8 rounded-full flex items-center justify-center mr-3">
+                  2
+                </span>
+                <h2 className="text-2xl font-bold text-gray-800">
+                  {draft.isOptimizedDraft ? "Your Resume Keywords" : "Job Description Analysis"}
+                </h2>
               </div>
+              {keywords?.length > 0 && (
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                  {keywords.length} keywords
+                </span>
+              )}
             </div>
 
-            {error && (
-              <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
-                <p className="text-red-700">{error}</p>
+            {keywords?.length > 0 && !isPro && (
+              <UpgradeProKeywords keywords={keywords}/>
+            )}
+
+            {/* Extraction Panel (Shows when no keywords exist) */}
+            {(!keywords || keywords.length === 0) && (
+              <div className="bg-white border-2 border-dashed border-gray-200 rounded-xl p-8 text-center">
+                <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+                <h3 className="mt-2 text-lg font-medium text-gray-900">
+                  {draft.isOptimizedDraft ? "No keywords saved with this draft" : "Analyze the job description"}
+                </h3>
+                <p className="mt-1 text-sm text-gray-500">
+                  {draft.isOptimizedDraft
+                    ? "This draft was created before keyword analysis was available."
+                    : "Extract key skills and requirements to optimize your resume."}
+                </p>
+                <div className="mt-6">
+                <SubmitButton
+                  className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  loading={isLoadingKeywords}
+                  loadingLabel="Analyzing..."
+                  label={draft.isOptimizedDraft ? "Extract Keywords Now" : "Analyze Job Description"}
+                  cost={costKeywords}
+                  type={"button"}
+                  onClick={onExtraction}
+                />
+                </div>
               </div>
             )}
 
-            <button
-              type="button"
-              onClick={() => setIsOptimizerOpen(true)}
-              className="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white py-3 px-4 rounded-lg font-medium hover:from-blue-700 hover:to-blue-600 transition-all shadow-sm flex items-center justify-center"
-            >
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-              Optimize Keywords
-            </button>
+            {/* Keyword Display (Shows when keywords exist) */}
+            {keywords?.length > 0 && (
+              <>
+              <KeywordList isPro={isPro} keywords={keywords}/>
 
-            {isOptimizerOpen && (
-              <KeywordOptimizerModal
-                jobDescription={job_description}
-                currentKeywords={keywords}
-                matchScore={matchScore}
-                isProUser={isPro}
-                onOptimize={onOptimization}
-                onClose={() => setIsOptimizerOpen(false)}
-                isLoading={isLoading}
-                optimizationType={optimizationType}
-                setOptimizationType={setOptimizationType}
-                context={context}
-                onContinue={onContinue}
-              />
+              {/* Re-extract Button */}
+              <div className="flex justify-end">
+                <button
+                    type="button"
+                    onClick={onExtraction}
+                    className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                    <svg className="-ml-1 mr-2 h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    Re-analyze Job Description (2 credits)
+                </button>
+              </div>
+              </>
             )}
           </div>
         )}
@@ -243,7 +256,7 @@ const CreateResumeForm = ({
               </span>
               Choose your design
             </h2>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {TEMPLATES.map((template) => (
                 <label
@@ -305,7 +318,7 @@ const CreateResumeForm = ({
               </span>
               Final touches
             </h2>
-            
+
             <div className="space-y-5">
               <div className={`p-4 border rounded-lg ${isPro ? 'border-gray-200' : 'border-gray-100 bg-gray-50'}`}>
                 <label className={`flex items-center ${!isPro ? 'opacity-75' : ''}`}>
@@ -313,7 +326,8 @@ const CreateResumeForm = ({
                     type="checkbox"
                     {...register('includeCoverLetter')}
                     className="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
-                    disabled={!isPro}
+                    //disabled={!isPro}
+                    disabled={true}
                   />
                   <span className="ml-3 font-medium text-gray-800">
                     Generate matching cover letter
@@ -322,16 +336,20 @@ const CreateResumeForm = ({
                 </label>
                 {isPro && (
                   <p className="text-sm text-gray-500 mt-2 ml-7">
-                    We'll create a personalized cover letter using your profile and this job description.
+                  We'll create a personalized cover letter using your profile and this job description.
                   </p>
                 )}
+                <p className="text-sm text-gray-500 mt-2 ml-7">
+                We are on construction... / Estamos en construcción...
+                </p>
               </div>
 
-              <SubmitButton 
+              <SubmitButton
                 className="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white py-3 px-4 rounded-lg font-bold hover:from-blue-700 hover:to-blue-600 transition-all shadow-sm"
                 loading={isLoading}
                 loadingLabel="Generating your resume..."
                 label="Generate My Resume"
+                cost={costCreateResume}
               />
             </div>
           </div>

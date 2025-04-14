@@ -2,7 +2,7 @@ import React, {useState, useRef} from "react";
 import { useForm } from "react-hook-form";
 import SubmitButton from "../common/SubmitButton";
 
-function ImproveResumeForm({ onSubmit, isLoading, labels, error}) {
+function ImproveResumeForm({ onSubmit, isLoading, labels, cost, error}) {
   const {
     register,
     handleSubmit,
@@ -197,6 +197,7 @@ function ImproveResumeForm({ onSubmit, isLoading, labels, error}) {
               loading={isLoading}
               loadingLabel={labels.formImproveResume.uploadBtn.loading}
               label={labels.formImproveResume.uploadBtn.label}
+              cost={cost}
             />
           </div>
         </form>

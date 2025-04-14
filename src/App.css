@@ -72,7 +72,3 @@
 .progress-fill {
   transition: width 0.5s ease-out;
 }
-
-mark {
-  background: rgba(200, 174, 212, 0.5); /* Light blue highlight */
-}

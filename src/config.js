@@ -1,6 +1,12 @@
 export const config = {
    appName: process.env.REACT_APP_NAME,
    appFooterDescription: process.env.REACT_APP_FOOTER_DESCRIPTION,
+   // Action costs (for tooltips)
+   actionCosts:{
+      keyword_optimization: process.env.REACT_APP_KEYWORDS_OPTIMIZATION_COST,
+      resume_creation: process.env.REACT_APP_RESUME_CREATION_COST,
+      resume_optimization: process.env.REACT_APP_RESUME_OPTIMIZATION_COST
+   },
    labels: {
       en: {
          menu: {

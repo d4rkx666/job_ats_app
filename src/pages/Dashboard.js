@@ -47,13 +47,6 @@ function Dashboard() {
   const creditsLeft = totalCredits - creditsUsed;
   const usagePercentage = Math.min(100, Math.round((creditsUsed / totalCredits) * 100));
 
-  // Action costs (for tooltips)
-  const actionCosts = {
-    keyword_optimization: process.env.REACT_APP_KEYWORDS_OPTIMIZATION_COST,
-    resume_creation: process.env.REACT_APP_RESUME_CREATION_COST,
-    resume_optimization: process.env.REACT_APP_RESUME_OPTIMIZATION_COST
-  };
-
   return (
     <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
       {/* Welcome Section */}
@@ -96,8 +89,8 @@ function Dashboard() {
                 <div>
                   <p className="text-sm font-medium text-gray-700">{labels.dashboardPage.keywordOptimization}</p>
                   <p className="text-xs text-gray-500">
-                    {actionCosts.keyword_optimization} {labels.dashboardPage.credit}
-                    {actionCosts.keyword_optimization !== 1 && 's'}
+                    {config.actionCosts.keyword_optimization} {labels.dashboardPage.credit}
+                    {config.actionCosts.keyword_optimization !== 1 && 's'}
                   </p>
                 </div>
               </div>
@@ -108,21 +101,21 @@ function Dashboard() {
                 <div>
                   <p className="text-sm font-medium text-gray-700">{labels.dashboardPage.resumeCreation}</p>
                   <p className="text-xs text-gray-500">
-                    {actionCosts.resume_creation} {labels.dashboardPage.credit}
-                    {actionCosts.resume_creation !== 1 && 's'}
+                    {config.actionCosts.resume_creation} {labels.dashboardPage.credit}
+                    {config.actionCosts.resume_creation !== 1 && 's'}
                   </p>
                 </div>
               </div>
 
               {/* Resume Optimization - Only show if exists */}
-              {actionCosts.resume_optimization && (
+              {config.actionCosts.resume_optimization && (
                 <div className="flex items-center p-3 bg-purple-50 rounded-lg border border-purple-100">
                   <div className="flex-shrink-0 w-3 h-3 bg-purple-400 rounded-full mr-3"></div>
                   <div>
                     <p className="text-sm font-medium text-gray-700">{labels.dashboardPage.resumeOptimization}</p>
                     <p className="text-xs text-gray-500">
-                      {actionCosts.resume_optimization} {labels.dashboardPage.credit}
-                      {actionCosts.resume_optimization !== 1 && 's'}
+                      {config.actionCosts.resume_optimization} {labels.dashboardPage.credit}
+                      {config.actionCosts.resume_optimization !== 1 && 's'}
                     </p>
                   </div>
                 </div>
@@ -188,7 +181,7 @@ function Dashboard() {
                   <div className="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:border-l-4 hover:border-l-blue-500">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-lg font-semibold text-gray-800 truncate">
+                        <h3 className="text-lg font-semibold text-gray-800">
                           {improvement.job_title}
                         </h3>
                         <p className="text-sm text-gray-600 line-clamp-2">
@@ -233,7 +226,7 @@ function Dashboard() {
                 (draft.status === "created" &&
                   <Link
                     to="/preview-resume"
-                    state={{ draft: draft }}
+                    state={{ idCreation: draft.id }}
                     className="block no-underline"
                     key={draft.id}
                   >
@@ -242,11 +235,11 @@ function Dashboard() {
                         <div className="hidden lg:flex flex-col items-end">
                           <div className="flex flex-col items-center">
                             <p className="text-xs">ATS</p>
-                            <RoundedATSIndicador score={draft.ats_score} className="w-10 h-10" />
+                            <RoundedATSIndicador score={draft.ats.ats_score} className={"w-10 h-10"} />
                           </div>
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="text-lg font-semibold text-gray-800 truncate">
+                          <h3 className="text-lg font-semibold text-gray-800">
                             {draft.job_title}
                           </h3>
                           <p className="text-sm text-gray-600 line-clamp-2">
@@ -256,7 +249,7 @@ function Dashboard() {
                         <div className="flex flex-row items-center justify-between md:flex-col md:items-end gap-2">
                           <div className="flex lg:hidden flex-col items-center">
                             <p className="text-xs">ATS</p>
-                            <RoundedATSIndicador score={draft.ats_score} className="w-10 h-10" />
+                            <RoundedATSIndicador score={draft.ats.ats_score} className={"w-10 h-10"} />
                           </div>
                           <div className="flex flex-col items-end">
                             <span className="text-xs text-gray-500">
@@ -304,12 +297,6 @@ function Dashboard() {
                   >
                     <div className="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:border-l-4 hover:border-l-blue-500">
                       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                        <div className="hidden lg:flex flex-col items-end">
-                          <div className="flex flex-col items-center">
-                            <p className="text-xs">ATS</p>
-                            <RoundedATSIndicador score={draft.ats_score} className="w-10 h-10" />
-                          </div>
-                        </div>
                         <div className="flex-1 min-w-0">
                           <h3 className="text-lg font-semibold text-gray-800 truncate">
                             {draft.job_title}
@@ -319,10 +306,6 @@ function Dashboard() {
                           </p>
                         </div>
                         <div className="flex flex-row items-center justify-between md:flex-col md:items-end gap-2">
-                          <div className="flex lg:hidden flex-col items-center">
-                            <p className="text-xs">ATS</p>
-                            <RoundedATSIndicador score={draft.ats_score} className="w-10 h-10" />
-                          </div>
                           <div className="flex flex-col items-end">
                             <span className="text-xs text-gray-500">
                               {new Date(

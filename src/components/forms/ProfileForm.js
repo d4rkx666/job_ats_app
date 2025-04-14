@@ -2,19 +2,18 @@ import React, {useEffect, useState} from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import WorkExperienceSection from "../common/JobEntry"
 import EducationSection from "../common/EducationEntry"
-import { save_personal_information } from '../../services/SetProfile';
 
 
 function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkills, isLoading, labels, userData}) {
-  const { register, handleSubmit, control, reset, watch, setValue, trigger, setError, formState:{errors} } = useForm({
+  const { register, handleSubmit, control, reset, watch, setValue, trigger, formState:{errors} } = useForm({
     defaultValues: {
       jobs: userData.profile?.jobs || [{}], // Initialize with one empty job
       educations: userData.profile?.education || [{}], // Initialize with one empty education
       personalData: {
-        email: userData.email || "",
-        phone: userData.phone || "",
-        linkedin: userData.linkedin || "",
-        website: userData.website || ""
+        email: userData.profile?.contact?.email || "",
+        phone: userData.profile?.contact?.phone || "",
+        linkedin: userData.profile?.contact?.linkedin || "",
+        website: userData.profile?.contact?.website || ""
       }
     },
     mode: "all",
@@ -139,7 +138,7 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
               })}
               onBlur={() => handlePersonalDataBlur('email')}
               type="email"
-              placeholder={userData.email || labels.formProfile.personalInformation.email}
+              placeholder={userData.profile?.contact?.email || labels.formProfile.personalInformation.email}
               className={`w-full p-2 border rounded ${ (errors.personalData?.email || errorAutoSaved === "email") ? "border-red-500" : "border-green-500"} ${recentlySaved === 'email' && 'ring-2 ring-green-500 animate-pulse-once'} ${autoSaving === "email" && "animate-auto-saving"}  ${recentlySaved === 'email' && "animate-pulse-once"} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
             />
             <input
@@ -150,7 +149,7 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
               }},)}
               onBlur={() => handlePersonalDataBlur('phone')}
               type="tel"
-              placeholder={userData.phone || labels.formProfile.personalInformation.phone}
+              placeholder={userData.profile?.contact?.phone || labels.formProfile.personalInformation.phone}
               className={`w-full p-2 border rounded ${ (errors.personalData?.phone || errorAutoSaved === "phone") ? "border-red-500" : "border-green-500"} ${recentlySaved === 'phone' && 'ring-2 ring-green-500 animate-pulse-once'} ${autoSaving === "phone" && "animate-auto-saving"}  ${recentlySaved === 'phone' && "animate-pulse-once"} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
             />
             <input
@@ -162,7 +161,7 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
               })}
               onBlur={() => handlePersonalDataBlur('linkedin')}
               type="text"
-              placeholder={userData.linkedin || labels.formProfile.personalInformation.linkedin}
+              placeholder={userData.profile?.contact?.linkedin || labels.formProfile.personalInformation.linkedin}
               className={`w-full p-2 border rounded ${ (errors.personalData?.linkedin || errorAutoSaved === "linkedin") ? "border-red-500" : "border-green-500"} ${recentlySaved === 'linkedin' && 'ring-2 ring-green-500 animate-pulse-once'} ${autoSaving === "linkedin" && "animate-auto-saving"}  ${recentlySaved === 'linkedin' && "animate-pulse-once"} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
             />
             <input
