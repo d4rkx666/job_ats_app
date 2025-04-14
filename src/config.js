@@ -1,12 +1,6 @@
 export const config = {
    appName: process.env.REACT_APP_NAME,
    appFooterDescription: process.env.REACT_APP_FOOTER_DESCRIPTION,
-   // Action costs (for tooltips)
-   actionCosts:{
-      keyword_optimization: process.env.REACT_APP_KEYWORDS_OPTIMIZATION_COST,
-      resume_creation: process.env.REACT_APP_RESUME_CREATION_COST,
-      resume_optimization: process.env.REACT_APP_RESUME_OPTIMIZATION_COST
-   },
    labels: {
       en: {
          menu: {
@@ -202,7 +196,8 @@ export const config = {
             subWelcome: "We're glad to have you here.",
             creditsLeft: "credits left",
             actionCosts: "Action Costs",
-            keywordOptimization: "Keyword Optimization",
+            atsReoptimization: "ATS Score analysis",
+            keywordOptimization: "Keyword Extraction",
             resumeOptimization: "Resume Optimization",
             credit: "credit",
             upgrade: "Upgrade to Pro for 50 credits/month →",
@@ -213,6 +208,117 @@ export const config = {
             noDrafts: "There are not drafts yet.",
             noCreations: "There are not improvements yet.",
             noImprovements: "There are not improvements yet.",
+         },
+         createResumePage:{
+            title:"Complete Your Profile",
+            subtitle:"Unlock personalized recommendations and full access by setting up your professional profile",
+            getStartedBtn: "Get Started",
+            form:{
+               jobTitle: "Job Title",
+               jobTitlePlaceholder: "e.g. 'Sales executive @ Amazon'",
+               jobDescription: "Job Description",
+               jobDescriptionPlaceholder: "Paste the full job description here",
+               jobDescriptionMinimumError:"Please provide at least 10 characters",
+               jobDescriptionMinimum:"Minimum 10 characters",
+               steps:{
+                  step1:{
+                     step: "Job Info",
+                     title: "Tell us about the job",
+                  },
+                  step2:{
+                     step: "Keywords",
+                     title: "Job Description Analysis",
+                     title2: "Your Resume Keywords",
+                     keywordsAmount: "keywords",
+                     withoutKeywords: "No keywords saved with this draft",
+                     subtitle:"Analyze the job description",
+                     extractInfo: "Extract key skills and requirements to optimize your resume.",
+                     extractBtn: "Analyze Job Description",
+                     reExtractBtn: "Re-analyze Job Description",
+                  },
+                  step3:{
+                     step: "Design",
+                     title: "Choose your design",
+                     preview: "Preview",
+                     popular: "Popular"
+                  },
+                  step4:{
+                     step: "Extras",
+                     title: "Final touches",
+                     coverLetter: "Generate matching cover letter",
+                     coverLetterInfo: "We'll create a personalised cover letter using your profile and the job description.",
+                     createButton: "Generate my new resume",
+                     creatingButton: "Generating resume..."
+                  },
+                  stepBack: "Back",
+                  stepFoward: "Continue",
+               },
+               templates:{
+                  template1:"Classic",
+                  template2:"Modern",
+                  template3:"ATS-Optimized",
+                  template4:"Executive",
+                  bestScore: "Best Score"
+               }
+            },
+            modalLoading:{
+               title:"Crafting Your Resume",
+               subtitle: "This usually takes 15-30 seconds",
+               progress:"Progress",
+               step:"Step",
+               stepOf:"of",
+               proTipInf:"Our AI is crafting your resume for Applicant Tracking Systems (ATS) to maximize your interview chances.",
+               step1:{
+                  title: "Initializing resume creation"
+               },
+               step2:{
+                  title: "Analyzing content structure"
+               },
+               step3:{
+                  title: "Optimizing for ATS scoring"
+               },
+               step4:{
+                  title: "Generating your layout"
+               },
+               step5:{
+                  title: "Final quality checks"
+               },
+               step6:{
+                  title: "Preparing your resume"
+               },
+            }
+         },
+         proLabel:{
+            proFeature: "Pro Feature:",
+            upgradeToPro: "Upgrade to Pro",
+            proUnlocks: "Pro unlocks:",
+            buyExtraCredits: "Buy Extra Credits",
+            proTip:"Pro Tip",
+         },
+         keywordList:{
+            appears:"Appears",
+            time:"time/s in this job description",
+            coreRequirements: "Core Requirements",
+            mustInclude: "Must Include",
+            noHardSkills: "No hard skills identified",
+            toolsAndTech: "Tools & Technologies",
+            noTools: "No tools identified",
+            softSkills: "Soft Skills",
+            noSoftSkills: "No soft skills identified",
+            certs: "Certifications"
+         },
+         creditEmptyModal:{
+            outOf:"Out of Credits!",
+            used: "You've used all",
+            thisMonth: "free credits this month.",
+            noCredits: "0 credits left",
+            used: "used",
+            resetIn: "Credits reset in",
+            days: "days",
+            poweredAIKWExtraction: "AI-powered keyword extraction",
+            moreCredits: "x3 more credits",
+            proUsed:"You’ve used all",
+            proThisMonth: "credits this month.",
          },
          previewImprovement:{
             title: "AI suggestions",
@@ -425,7 +531,8 @@ export const config = {
             subWelcome: "Qué gusto tenerte por aquí.",
             creditsLeft: "créditos disponibles",
             actionCosts: "Costo de Acciones",
-            keywordOptimization: "Optimización de palabras clave",
+            atsReoptimization: "Anáisis de puntaje de ATS",
+            keywordOptimization: "Extracción de palabras clave",
             resumeOptimization: "Optimización de CV",
             resumeCreation: "Creación de CV",
             credit: "Crédito",
@@ -436,6 +543,117 @@ export const config = {
             noDrafts: "No hay borradores todavía.",
             noCreations: "No hay creaciones todavía.",
             noImprovements: "No hay sugerencias todavía.",
+         },
+         createResumePage:{
+            title:"Completa tu Perfil",
+            subtitle:"Desbloquea recomendaciones personalizadas y acceso completo a la creación de CVs con Inteligencia Artificial completando tu perfil profesional.",
+            getStartedBtn: "Empezar",
+            form:{
+               jobTitle: "Título de trabajo",
+               jobTitlePlaceholder: "Ejemplo. 'Ejecutivo de ventas @ Amazon'",
+               jobDescription: "Descripción del puesto",
+               jobDescriptionPlaceholder: "Pega aquí la descripción del trabajo",
+               jobDescriptionMinimumError:"Escribe al menos 10 caracteres",
+               jobDescriptionMinimum:"Mínimo 10 caracteres",
+               steps:{
+                  step1:{
+                     step: "Info del puesto",
+                     title: "Platícanos acerca del puesto de trabajo",
+                  },
+                  step2:{
+                     step: "Palabras clave",
+                     title: "Análisis de la descripción de trabajo",
+                     title2: "Tus palabras clave",
+                     keywordsAmount: "palabras clave",
+                     withoutKeywords: "No hay palabras clave guardadas con este borrador",
+                     subtitle:"Analiza la descripción de trabajo",
+                     extractInfo: "Extrae las habilidades claves y requerimientos para optimizar tu CV.",
+                     extractBtn: "Analizar descripción de trabajo",
+                     reExtractBtn: "Re-analizar descripción de trabajo",
+                  },
+                  step3:{
+                     step: "Dieño",
+                     title: "Elige tu diseño",
+                     preview: "Previsualizar",
+                     popular: "Popular"
+                  },
+                  step4:{
+                     step: "Extras",
+                     title: "Toques finales",
+                     coverLetter: "Generar una carta de presentación",
+                     coverLetterInfo: "Crearemos una carta de presentación personalizada utilizando tu perfil y la descripción de trabajo.",
+                     createButton: "Generar mi nuevo CV",
+                     creatingButton: "Generando CV..."
+                  },
+                  stepBack: "Retroceder",
+                  stepFoward: "Continuar",
+               },
+               templates:{
+                  template1:"Clásico",
+                  template2:"Moderno",
+                  template3:"Optimizado para ATS",
+                  template4:"Ejecutivo",
+                  bestScore: "Mejor puntaje"
+               }
+            },
+            modalLoading:{
+               title:"Elaborando tu CV",
+               subtitle: "Usualmente toma 15-30 segundos",
+               progress:"Progreso",
+               step:"Paso",
+               stepOf:"de",
+               proTipInf:"Nuestra IA está creando tu CV para Sistemas de Seguimiento de Aplicantes (ATS) para maximizar tus chances de entrevistas.",
+               step1:{
+                  title: "Inicializando la creación de CV"
+               },
+               step2:{
+                  title: "Analizando la estructura del contenido"
+               },
+               step3:{
+                  title: "Optimizando para el puntaje de ATS"
+               },
+               step4:{
+                  title: "Generando el diseño de tu CV"
+               },
+               step5:{
+                  title: "Chequeos finales de la calidad"
+               },
+               step6:{
+                  title: "Preparando tu CV"
+               },
+            }
+         },
+         proLabel:{
+            proFeature: "Características Pro:",
+            upgradeToPro: "Actualízate a Pro",
+            proUnlocks: "Desbloqueos de Pro:",
+            buyExtraCredits: "Comprar Créditos extras",
+            proTip:"Tip Pro",
+         },
+         keywordList:{
+            appears:"Aparece",
+            time:"tiempo/s en esta descripción de trabajo",
+            coreRequirements: "Requirementos de Núcleo",
+            mustInclude: "Debe incluír",
+            noHardSkills: "Habilidades de peso no encontradas",
+            toolsAndTech: "Herramientas y Tecnologías",
+            noTools: "Herramientas o Tecnologías no encontradas",
+            softSkills: "Habilidades suaves",
+            noSoftSkills: "Habilidades suaves no encontradas",
+            certs: "Certificaciones"
+         },
+         creditEmptyModal:{
+            outOf:"¡Sin Créditos!",
+            used: "Has usado todos tus",
+            thisMonth: "créditos gratuitos de este mes.",
+            noCredits: "0 créditos disponibles",
+            used: "usado",
+            resetIn: "Reseteo de créditos en",
+            days: "días",
+            poweredAIKWExtraction: "Extracción de palabras clave impulsada por IA",
+            moreCredits: "x3+ veces más créditos",
+            proUsed:"Has usado todos tus",
+            proThisMonth: "créditos de este mes.",
          },
          previewImprovement:{
             title: "Sugerencias de IA",

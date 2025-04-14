@@ -17,20 +17,20 @@ function ImproveResumePage() {
    const [error, setError] = useState("");
    const [showCreditModal, setShowCreditModal] = useState(false);
 
-   //cost
-   const cost = ()=>{
-      return (
-        <>
-          {config.actionCosts.resume_optimization} {labels.dashboardPage.credit}
-          {config.actionCosts.resume_optimization !== 1 && 's'}
-        </>
-      )
-   }
-
    const navigate = useNavigate();
 
    // Load user
-   const {user, logout} = useAuth();
+   const {user, system, logout} = useAuth();
+
+     //cost
+     const cost = ()=>{
+      return (
+        <>
+          {system.resume_optimization} {labels.dashboardPage.credit}
+          {system.resume_optimization !== 1 && 's'}
+        </>
+      )
+   }
 
    const handleSubmit = async (data) => {
       setIsLoading(true);

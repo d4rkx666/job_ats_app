@@ -46,10 +46,10 @@ const CreateResumeForm = ({
 
   // Enhanced templates with visual indicators
   const TEMPLATES = [
-    { id: 'classic', name: 'Classic', popular: false },
-    { id: 'modern', name: 'Modern', popular: true },
-    { id: 'ats', name: 'ATS-Optimized', proOnly: true, badge: 'Best Score' },
-    { id: 'executive', name: 'Executive', proOnly: true }
+    { id: 'classic', name: labels.createResumePage.form.templates.template1, popular: false },
+    { id: 'modern', name: labels.createResumePage.form.templates.template2, popular: true },
+    { id: 'ats', name: labels.createResumePage.form.templates.template3, proOnly: true, badge: labels.createResumePage.form.templates.bestScore },
+    { id: 'executive', name: labels.createResumePage.form.templates.template4, proOnly: true }
   ];
 
   const handleOnNextStep = async (step) => {
@@ -75,7 +75,6 @@ const CreateResumeForm = ({
   useEffect(() => {
     if (currentStep === 2) setIsOptimizerOpen(true);
   }, [currentStep]);
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-3xl mx-auto p-4">
       {/* Progress Stepper */}
@@ -89,7 +88,7 @@ const CreateResumeForm = ({
                 {step}
               </div>
               <span className={`text-sm mt-2 ${currentStep >= step ? 'text-blue-600 font-medium' : 'text-gray-500'}`}>
-                {['Job Info', 'Keywords', 'Design', 'Extras'][step - 1]}
+                {[labels.createResumePage.form.steps.step1.step, labels.createResumePage.form.steps.step2.step, labels.createResumePage.form.steps.step3.step, labels.createResumePage.form.steps.step4.step][step - 1]}
               </span>
             </div>
             {step < 4 && (
@@ -113,13 +112,13 @@ const CreateResumeForm = ({
               <span className="bg-blue-100 text-blue-800 w-8 h-8 rounded-full flex items-center justify-center mr-3">
                 1
               </span>
-              Tell us about the job
+              {labels.createResumePage.form.steps.step1.title}
             </h2>
 
             <div className="space-y-5">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Job Title*
+                {labels.createResumePage.form.jobTitle}
                 </label>
                 <input
                   type="text"
@@ -127,7 +126,7 @@ const CreateResumeForm = ({
                   {...register("job_title", {
                     required: labels.formImproveResume.jobTitle.required,
                   })}
-                  placeholder="e.g. 'Senior Product Designer @ Google'"
+                  placeholder={labels.createResumePage.form.jobTitlePlaceholder}
                   className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                 />
                 {errors.job_title && (
@@ -137,26 +136,22 @@ const CreateResumeForm = ({
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Job Description*
+                {labels.createResumePage.form.jobDescription}
                 </label>
                 <textarea
                   {...register('job_description', {
-                    required: 'Job description is required',
+                    required: labels.formImproveResume.jobDescription.required,
                     minLength: {
                       value: 10,
-                      message: "Please provide at least 10 characters"
+                      message: labels.createResumePage.form.jobDescriptionMinimumError
                     }
                   })}
                   className="w-full h-48 px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                  placeholder="Paste the full job description here..."
+                  placeholder={labels.createResumePage.form.jobDescriptionPlaceholder}
                 />
                 <div className="flex justify-between items-center mt-1">
-                  {errors.job_description ? (
-                    <p className="text-red-500 text-sm">{errors.job_description.message}</p>
-                  ) : (
-                    <span className="text-xs text-gray-500">Minimum 10 characters</span>
-                  )}
-                  {isPro && (
+                  <span className="text-xs text-gray-500">{labels.createResumePage.form.jobDescriptionMinimum}</span>
+                  {false && (
                     <button
                       type="button"
                       className="text-xs flex items-center text-blue-600 hover:text-blue-800"
@@ -182,12 +177,12 @@ const CreateResumeForm = ({
                   2
                 </span>
                 <h2 className="text-2xl font-bold text-gray-800">
-                  {draft.isOptimizedDraft ? "Your Resume Keywords" : "Job Description Analysis"}
+                  {draft.isOptimizedDraft ? labels.createResumePage.form.steps.step2.title2 : labels.createResumePage.form.steps.step2.title}
                 </h2>
               </div>
               {keywords?.length > 0 && (
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                  {keywords.length} keywords
+                  {keywords.length} {labels.createResumePage.form.steps.step2.keywordsAmount}
                 </span>
               )}
             </div>
@@ -203,19 +198,19 @@ const CreateResumeForm = ({
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                 </svg>
                 <h3 className="mt-2 text-lg font-medium text-gray-900">
-                  {draft.isOptimizedDraft ? "No keywords saved with this draft" : "Analyze the job description"}
+                  {draft.isOptimizedDraft ? labels.createResumePage.form.steps.step2.withoutKeywords :labels.createResumePage.form.steps.step2.subtitle}
                 </h3>
                 <p className="mt-1 text-sm text-gray-500">
                   {draft.isOptimizedDraft
                     ? "This draft was created before keyword analysis was available."
-                    : "Extract key skills and requirements to optimize your resume."}
+                    : labels.createResumePage.form.steps.step2.extractInfo}
                 </p>
                 <div className="mt-6">
                 <SubmitButton
                   className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                   loading={isLoadingKeywords}
                   loadingLabel="Analyzing..."
-                  label={draft.isOptimizedDraft ? "Extract Keywords Now" : "Analyze Job Description"}
+                  label={draft.isOptimizedDraft ? "Extract Keywords Now" : labels.createResumePage.form.steps.step2.extractBtn}
                   cost={costKeywords}
                   type={"button"}
                   onClick={onExtraction}
@@ -227,7 +222,7 @@ const CreateResumeForm = ({
             {/* Keyword Display (Shows when keywords exist) */}
             {keywords?.length > 0 && (
               <>
-              <KeywordList isPro={isPro} keywords={keywords}/>
+              <KeywordList isPro={isPro} keywords={keywords} labels={labels}/>
 
               {/* Re-extract Button */}
               <div className="flex justify-end">
@@ -239,7 +234,7 @@ const CreateResumeForm = ({
                     <svg className="-ml-1 mr-2 h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
-                    Re-analyze Job Description (2 credits)
+                    {labels.createResumePage.form.steps.step2.reExtractBtn} (2 credits)
                 </button>
               </div>
               </>
@@ -254,7 +249,7 @@ const CreateResumeForm = ({
               <span className="bg-blue-100 text-blue-800 w-8 h-8 rounded-full flex items-center justify-center mr-3">
                 3
               </span>
-              Choose your design
+              {labels.createResumePage.form.steps.step3.title}
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -278,7 +273,7 @@ const CreateResumeForm = ({
                   />
                   <div className="flex items-start">
                     <div className="bg-gray-100 w-16 h-20 rounded mr-4 flex items-center justify-center text-gray-400">
-                      Preview
+                    {labels.createResumePage.form.steps.step3.preview}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center">
@@ -287,7 +282,7 @@ const CreateResumeForm = ({
                         </h3>
                         {template.popular && (
                           <span className="bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded-full">
-                            Popular
+                            {labels.createResumePage.form.steps.step3.popular}
                           </span>
                         )}
                       </div>
@@ -316,7 +311,7 @@ const CreateResumeForm = ({
               <span className="bg-blue-100 text-blue-800 w-8 h-8 rounded-full flex items-center justify-center mr-3">
                 4
               </span>
-              Final touches
+              {labels.createResumePage.form.steps.step4.title}
             </h2>
 
             <div className="space-y-5">
@@ -330,13 +325,13 @@ const CreateResumeForm = ({
                     disabled={true}
                   />
                   <span className="ml-3 font-medium text-gray-800">
-                    Generate matching cover letter
+                  {labels.createResumePage.form.steps.step4.coverLetter}
                   </span>
                   <ProBadge className="ml-2" />
                 </label>
                 {isPro && (
                   <p className="text-sm text-gray-500 mt-2 ml-7">
-                  We'll create a personalized cover letter using your profile and this job description.
+                  {labels.createResumePage.form.steps.step3.coverLetterInfo}
                   </p>
                 )}
                 <p className="text-sm text-gray-500 mt-2 ml-7">
@@ -347,8 +342,8 @@ const CreateResumeForm = ({
               <SubmitButton
                 className="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white py-3 px-4 rounded-lg font-bold hover:from-blue-700 hover:to-blue-600 transition-all shadow-sm"
                 loading={isLoading}
-                loadingLabel="Generating your resume..."
-                label="Generate My Resume"
+                loadingLabel={labels.createResumePage.form.steps.step4.creatingButton}
+                label={labels.createResumePage.form.steps.step4.createButton}
                 cost={costCreateResume}
               />
             </div>
@@ -363,7 +358,7 @@ const CreateResumeForm = ({
             disabled={currentStep === 1}
             className={`py-2 px-5 rounded-lg font-medium ${currentStep === 1 ? 'text-gray-400 cursor-not-allowed' : 'text-blue-600 hover:bg-blue-50'}`}
           >
-            Back
+            {labels.createResumePage.form.steps.stepBack}
           </button>
           {currentStep < 4 ? (
             <button
@@ -372,7 +367,7 @@ const CreateResumeForm = ({
               disabled={currentStep === 2 && !isOptimized}
               className={`py-2 px-5 rounded-lg font-medium text-white ${currentStep === 2 && !isOptimized ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
             >
-              Continue
+              {labels.createResumePage.form.steps.stepFoward}
             </button>
           ) : null}
         </div>

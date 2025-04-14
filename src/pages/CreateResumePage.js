@@ -51,19 +51,19 @@ function CreateResumePage() {
   const progressIntervalRef = useRef(null);
 
   // User auth
-  const { user, logout } = useAuth();
+  const { user, system, logout } = useAuth();
 
   //cost
   const cost = (type)=>{
     return (type === "keywords" ? 
       <>
-        {config.actionCosts.keyword_optimization} {labels.dashboardPage.credit}
-        {config.actionCosts.keyword_optimization !== 1 && 's'}
+        {system.keyword_extraction} {labels.dashboardPage.credit}
+        {system.keyword_extraction !== 1 && 's'}
       </>
       :
       <>
-        {config.actionCosts.resume_creation} {labels.dashboardPage.credit}
-        {config.actionCosts.resume_creation !== 1 && 's'}
+        {system.resume_creation} {labels.dashboardPage.credit}
+        {system.resume_creation !== 1 && 's'}
       </>
     )
   }
@@ -285,6 +285,7 @@ function CreateResumePage() {
             progress={progress} 
             currentStep={currentStepLoading}
             elapsedTime={elapsedTime}
+            labels={labels}
             />
           )}
           </>
@@ -303,9 +304,9 @@ function CreateResumePage() {
                 </svg>
               </div>
               
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Complete Your Profile</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">{labels.createResumePage.title}</h3>
               <p className="text-gray-600 mb-6 max-w-md">
-                Unlock personalized recommendations and full access by setting up your professional profile
+                {labels.createResumePage.subtitle}
               </p>
               
               <div className="flex space-x-4">
@@ -313,7 +314,7 @@ function CreateResumePage() {
                   to="/profile"
                   className="bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:from-blue-700 hover:to-blue-600 relative flex items-center justify-center px-6 py-3 font-medium  rounded-lg group"
                 >
-                    Get Started
+                    {labels.CreateResumeForm.getStartedBtn}
                     <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                     </svg>

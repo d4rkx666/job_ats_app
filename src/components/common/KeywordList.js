@@ -1,5 +1,5 @@
 import { ProBadge, ProFeatureEnabled } from "./Badge";
-export const KeywordList = ({isPro, keywords}) => {
+export const KeywordList = ({isPro, keywords, labels}) => {
 
    const KeywordPill = ({ keyword, variant = 'primary', showCount = false }) => {
       const variants = {
@@ -24,7 +24,7 @@ export const KeywordList = ({isPro, keywords}) => {
             </span>
             {showCount && (
                <div className="absolute z-10 hidden group-hover:block bottom-full mb-2 px-2 py-1 text-xs font-medium text-white bg-gray-900 rounded whitespace-nowrap">
-                  Appears {keyword.count} time{keyword.count > 1 ? 's' : ''} in job description
+                  {labels.keywordList.appears} {keyword.count} {labels.keywordList.time}
                </div>
             )}
          </div>
@@ -35,7 +35,7 @@ export const KeywordList = ({isPro, keywords}) => {
       <div className="space-y-8">
          {/* Premium Features Badge */}
          {isPro && (
-            <ProFeatureEnabled featureText={"Advanced keyword analysis enabled"}/>
+            <ProFeatureEnabled labels={labels} featureText={"Advanced keyword analysis enabled"}/>
          )}
 
          {/* Keyword Categories */}
@@ -46,9 +46,9 @@ export const KeywordList = ({isPro, keywords}) => {
                   <svg className="h-5 w-5 text-blue-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
                      <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
                   </svg>
-                  <h3 className="font-medium text-gray-800">Core Requirements</h3>
+                  <h3 className="font-medium text-gray-800">{labels.keywordList.coreRequirements}</h3>
                   <span className="ml-auto text-xs font-medium bg-blue-600 text-white px-2 py-0.5 rounded-full">
-                     Must Include
+                  {labels.keywordList.mustInclude}
                   </span>
                </div>
                <div className="p-5">
@@ -64,7 +64,7 @@ export const KeywordList = ({isPro, keywords}) => {
                         ))}
                      </div>
                   ) : (
-                     <p className="text-sm text-gray-500 italic">No hard skills identified</p>
+                     <p className="text-sm text-gray-500 italic">{labels.keywordList.noHardSkills}</p>
                   )}
                </div>
             </div>
@@ -76,7 +76,7 @@ export const KeywordList = ({isPro, keywords}) => {
                      <svg className="h-5 w-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                      </svg>
-                     <h3 className="font-medium text-gray-800">Tools & Technologies</h3>
+                     <h3 className="font-medium text-gray-800">{labels.keywordList.toolsAndTech}</h3>
                      <ProBadge className="ml-auto" size="xs" />
                   </div>
                   <div className="p-5">
@@ -92,7 +92,7 @@ export const KeywordList = ({isPro, keywords}) => {
                            ))}
                         </div>
                      ) : (
-                        <p className="text-sm text-gray-500 italic">No tools identified</p>
+                        <p className="text-sm text-gray-500 italic">{labels.keywordList.noTools}</p>
                      )}
                   </div>
                </div>
@@ -104,7 +104,7 @@ export const KeywordList = ({isPro, keywords}) => {
                   <svg className="h-5 w-5 text-purple-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                   </svg>
-                  <h3 className="font-medium text-gray-800">Soft Skills</h3>
+                  <h3 className="font-medium text-gray-800">{labels.keywordList.softSkills}</h3>
                </div>
                <div className="p-5">
                   {keywords.filter(k => k.type === 'soft_skill').length > 0 ? (
@@ -118,7 +118,7 @@ export const KeywordList = ({isPro, keywords}) => {
                         ))}
                      </div>
                   ) : (
-                     <p className="text-sm text-gray-500 italic">No soft skills identified</p>
+                     <p className="text-sm text-gray-500 italic">{labels.keywordList.noSoftSkills}</p>
                   )}
                </div>
             </div>
@@ -130,7 +130,7 @@ export const KeywordList = ({isPro, keywords}) => {
                      <svg className="h-5 w-5 text-yellow-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                      </svg>
-                     <h3 className="font-medium text-gray-800">Certifications</h3>
+                     <h3 className="font-medium text-gray-800">{labels.keywordList.certs}</h3>
                      <ProBadge className="ml-auto" size="xs" />
                   </div>
                   <div className="p-5">

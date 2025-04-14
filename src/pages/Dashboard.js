@@ -9,7 +9,7 @@ import { RoundedATSIndicador } from "../components/common/RoundedATSIndicator"
 function Dashboard() {
   const { config, language } = useConfig();
   const labels = config.labels[language];
-  const auth = useAuth();
+  const {user, system} = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
@@ -17,10 +17,10 @@ function Dashboard() {
 
   // Check for user's feedback
   useEffect(() => {
-    if (auth.user.feedback) {
+    if (user.feedback) {
       setSubmitted(true);
     }
-  }, [auth.user.feedback]);
+  }, [user.feedback]);
 
 
   // Handle click when users gives feedback
@@ -42,8 +42,8 @@ function Dashboard() {
   };
 
   // Credit-based quota calculations
-  const creditsUsed = auth.user.usage?.used_credits || 0;
-  const totalCredits = auth.user.usage?.total_credits || 6; // Default to 6 for free tier
+  const creditsUsed = user.usage?.used_credits || 0;
+  const totalCredits = user.usage?.total_credits || 6; // Default to 6 for free tier
   const creditsLeft = totalCredits - creditsUsed;
   const usagePercentage = Math.min(100, Math.round((creditsUsed / totalCredits) * 100));
 
@@ -52,7 +52,7 @@ function Dashboard() {
       {/* Welcome Section */}
       <div className="mb-8 bg-white p-6 rounded-xl shadow-sm">
         <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
-          {labels.dashboardPage.welcome}, <span className="text-blue-600">{auth.user.name}</span>!
+          {labels.dashboardPage.welcome}, <span className="text-blue-600">{user.name}</span>!
         </h1>
         <p className="text-gray-600 mt-2">{labels.dashboardPage.subWelcome}</p>
 
@@ -60,7 +60,7 @@ function Dashboard() {
         <div className="mt-6 bg-white border border-gray-200 rounded-lg p-4">
           <div className="flex justify-between items-center mb-2">
             <h2 className="font-medium text-gray-700">
-              {auth.user.subscription?.plan === 'pro' ? labels.user.proPlan : labels.user.freePlan}
+              {user.subscription?.plan === 'pro' ? labels.user.proPlan : labels.user.freePlan}
             </h2>
             <span className="text-sm font-medium">
               {creditsLeft}/{totalCredits} {labels.dashboardPage.creditsLeft}
@@ -83,14 +83,27 @@ function Dashboard() {
               {labels.dashboardPage.actionCosts}
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {/* Keyword Optimization */}
+
+              {/* Keyword Extraction */}
               <div className="flex items-center p-3 bg-blue-50 rounded-lg border border-blue-100">
                 <div className="flex-shrink-0 w-3 h-3 bg-blue-400 rounded-full mr-3"></div>
                 <div>
                   <p className="text-sm font-medium text-gray-700">{labels.dashboardPage.keywordOptimization}</p>
                   <p className="text-xs text-gray-500">
-                    {config.actionCosts.keyword_optimization} {labels.dashboardPage.credit}
-                    {config.actionCosts.keyword_optimization !== 1 && 's'}
+                    {system.keyword_extraction} {labels.dashboardPage.credit}
+                    {system.keyword_extraction !== 1 && 's'}
+                  </p>
+                </div>
+              </div>
+
+              {/* ATS Reanalyzis */}
+              <div className="flex items-center p-3 bg-blue-50 rounded-lg border border-blue-100">
+                <div className="flex-shrink-0 w-3 h-3 bg-blue-400 rounded-full mr-3"></div>
+                <div>
+                  <p className="text-sm font-medium text-gray-700">{labels.dashboardPage.atsReoptimization}</p>
+                  <p className="text-xs text-gray-500">
+                    {system.ats_analysis} {labels.dashboardPage.credit}
+                    {system.ats_analysis !== 1 && 's'}
                   </p>
                 </div>
               </div>
@@ -101,21 +114,21 @@ function Dashboard() {
                 <div>
                   <p className="text-sm font-medium text-gray-700">{labels.dashboardPage.resumeCreation}</p>
                   <p className="text-xs text-gray-500">
-                    {config.actionCosts.resume_creation} {labels.dashboardPage.credit}
-                    {config.actionCosts.resume_creation !== 1 && 's'}
+                    {system.resume_creation} {labels.dashboardPage.credit}
+                    {system.resume_creation !== 1 && 's'}
                   </p>
                 </div>
               </div>
 
               {/* Resume Optimization - Only show if exists */}
-              {config.actionCosts.resume_optimization && (
+              {system.resume_optimization && (
                 <div className="flex items-center p-3 bg-purple-50 rounded-lg border border-purple-100">
                   <div className="flex-shrink-0 w-3 h-3 bg-purple-400 rounded-full mr-3"></div>
                   <div>
                     <p className="text-sm font-medium text-gray-700">{labels.dashboardPage.resumeOptimization}</p>
                     <p className="text-xs text-gray-500">
-                      {config.actionCosts.resume_optimization} {labels.dashboardPage.credit}
-                      {config.actionCosts.resume_optimization !== 1 && 's'}
+                      {system.resume_optimization} {labels.dashboardPage.credit}
+                      {system.resume_optimization !== 1 && 's'}
                     </p>
                   </div>
                 </div>
@@ -124,7 +137,7 @@ function Dashboard() {
           </div>
 
           {/* Upgrade Prompt */}
-          {auth.user.subscription?.plan !== 'pro' && (
+          {user.subscription?.plan !== 'pro' && (
             <div className="mt-4 text-center">
               <Link
                 to="/pricing"
@@ -169,9 +182,9 @@ function Dashboard() {
       {activeTab === 'improvements' && (
         <div className="space-y-6">
 
-          {auth.user.improvements?.length > 0 ? (
+          {user.improvements?.length > 0 ? (
             <div className="space-y-3">
-              {auth.user.improvements.map((improvement) => (
+              {user.improvements.map((improvement) => (
                 <Link
                   to="/improved"
                   state={{ response_text: improvement.ai_improvements }}
@@ -220,9 +233,9 @@ function Dashboard() {
 
       {activeTab === 'creations' && (
         <div className="space-y-6">
-          {auth.user.creations?.length > 0 ? (
+          {user.creations?.length > 0 ? (
             <div className="space-y-3">
-              {auth.user.creations.map((draft) => (
+              {user.creations.map((draft) => (
                 (draft.status === "created" &&
                   <Link
                     to="/preview-resume"
@@ -285,9 +298,9 @@ function Dashboard() {
 
       {activeTab === 'drafts' && (
         <div className="space-y-6">
-          {auth.user.creations?.length > 0 ? (
+          {user.creations?.length > 0 ? (
             <div className="space-y-3">
-              {auth.user.creations.map((draft) => (
+              {user.creations.map((draft) => (
                 (draft.status === "draft" &&
                   <Link
                     to="/create-resume"

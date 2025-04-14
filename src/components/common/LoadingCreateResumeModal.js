@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const LoadingCreateResumeModal = ({ progress, currentStep, elapsedTime }) => {
+const LoadingCreateResumeModal = ({ progress, currentStep, elapsedTime, labels }) => {
   const [progressWidth, setProgressWidth] = useState('0%');
   
   // Format time as MM:SS
@@ -19,12 +19,12 @@ const LoadingCreateResumeModal = ({ progress, currentStep, elapsedTime }) => {
   }, [progress]);
 
   const steps = [
-    "Initializing resume creation",
-    "Analyzing content structure",
-    "Optimizing for ATS scoring",
-    "Generating your layout",
-    "Final quality checks",
-    "Preparing your resume"
+    labels.createResumePage.modalLoading.step1.title,
+    labels.createResumePage.modalLoading.step2.title,
+    labels.createResumePage.modalLoading.step3.title,
+    labels.createResumePage.modalLoading.step4.title,
+    labels.createResumePage.modalLoading.step5.title,
+    labels.createResumePage.modalLoading.step6.title,
   ];
 
   return (
@@ -42,10 +42,10 @@ const LoadingCreateResumeModal = ({ progress, currentStep, elapsedTime }) => {
             <div className="flex justify-between items-start">
               <div>
                 <h3 className="text-2xl font-bold text-white">
-                  Crafting Your Premium Resume
+                  {labels.createResumePage.modalLoading.title}
                 </h3>
                 <p className="mt-1 text-sm text-blue-300">
-                  This usually takes 15-30 seconds
+                  {labels.createResumePage.modalLoading.subtitle}
                 </p>
               </div>
               <div className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500 bg-opacity-20">
@@ -57,7 +57,7 @@ const LoadingCreateResumeModal = ({ progress, currentStep, elapsedTime }) => {
 
             {/* Add this timer display near the progress bar */}
             <div className="flex justify-between text-xs text-gray-400 mb-2">
-              <span>Progress</span>
+              <span>{labels.createResumePage.modalLoading.progress}</span>
               <div className="flex space-x-4">
                 <span>{progress}%</span>
                 <span className="text-blue-300">Time: {formatTime(elapsedTime)}</span>
@@ -67,7 +67,7 @@ const LoadingCreateResumeModal = ({ progress, currentStep, elapsedTime }) => {
             {/* Progress bar */}
             <div className="mt-8">
               <div className="flex justify-between text-xs text-gray-400 mb-2">
-                <span>Progress</span>
+                <span>{labels.createResumePage.modalLoading.progress}</span>
                 <span>{progress}%</span>
               </div>
               <div className="w-full bg-gray-700 rounded-full h-2.5">
@@ -93,7 +93,7 @@ const LoadingCreateResumeModal = ({ progress, currentStep, elapsedTime }) => {
                     {steps[currentStep - 1] || steps[0]}
                   </p>
                   <p className="text-xs text-gray-400">
-                    Step {currentStep} of {steps.length}
+                  {labels.createResumePage.modalLoading.step} {currentStep} {labels.createResumePage.modalLoading.stepOf} {steps.length}
                   </p>
                 </div>
               </div>
@@ -129,9 +129,9 @@ const LoadingCreateResumeModal = ({ progress, currentStep, elapsedTime }) => {
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <h4 className="text-sm font-medium text-yellow-300">Pro Tip</h4>
+                  <h4 className="text-sm font-medium text-yellow-300">{labels.proLabel.proTip}</h4>
                   <p className="mt-1 text-xs text-gray-300">
-                    Our AI is optimizing your resume for Applicant Tracking Systems (ATS) to maximize your interview chances.
+                    {labels.createResumePage.modalLoading.proTipInfo}
                   </p>
                 </div>
               </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { ProBadge, ProFeatureEnabled, ProIco } from './Badge';
 import { RoundedATSIndicador } from './RoundedATSIndicator';
 import { useAuth } from '../../contexts/AuthContext';
@@ -26,8 +26,7 @@ import {
   Bars3BottomLeftIcon,
   ArrowUturnLeftIcon,
   ArrowDownTrayIcon,
-  CheckIcon,
-  EnvelopeIcon
+  CheckIcon
 } from '@heroicons/react/24/outline';
 import { KeywordList } from './KeywordList';
 import ProTip from './ProTip';
@@ -54,22 +53,21 @@ export default function PreviewResumeLayout() {
   const highlightResume = (formatted_text, keyword) => {
     const keywords_array = keyword.map(obj => obj.keyword);
     const pattern = new RegExp(`\\b(${keywords_array.join('|')})\\b`, 'gi');
+    console.log(pattern)
     return formatted_text.replace(pattern, match => `!!${match}!!`);
   }
 
   // State management
   const [creation, setCreation] = useState({
     ats: {
-      ats_score: 0,
+      ats_score :0,
       tips: [],
     },
     keywords: [],
     resume: "",
-    cover_letter: ""
   })
   const [markdown, setMarkdown] = useState("");
   const [activeTab, setActiveTab] = useState('preview');
-  const [activeDocument, setActiveDocument] = useState('resume'); // 'resume' or 'coverLetter'
   const [isExportOpen, setIsExportOpen] = useState(false);
   const [isExportingPdf, setIsExportingPdf] = useState(false);
   const [isExportingDocx, setIsExportingDocx] = useState(false);
@@ -86,8 +84,10 @@ export default function PreviewResumeLayout() {
     }
   };
 
+
+
   //cost
-  const cost = () => {
+  const cost = ()=>{
     return (
       <>
         {config.actionCosts.resume_creation} {labels.dashboardPage.credit}
@@ -119,41 +119,23 @@ export default function PreviewResumeLayout() {
     };
   }, [history]);
 
+
   // DETECT USER AND SET CREATION
   useEffect(() => {
     if (user) {
       let currentCreation = user.creations.find(item => item.id === idCreation);
       setIsProUser(user.subscription.plan === "pro" || false);
       setCreation(currentCreation);
-      
-      // Set initial content based on active document
-      if (activeDocument === 'resume') {
-        setMarkdown(highlightResume(currentCreation.resume, currentCreation.keywords));
-      } else {
-        setMarkdown(currentCreation.cover_letter || "");
-      }
-      
+      setMarkdown(highlightResume(currentCreation.resume, currentCreation.keywords));
       setHistory([markdown]);
     }
-  }, [user, activeDocument]);
-
-  // Update markdown when switching between documents
-  useEffect(() => {
-    if (creation) {
-      if (activeDocument === 'resume') {
-        setMarkdown(highlightResume(creation.resume, creation.keywords));
-      } else {
-        setMarkdown(creation.cover_letter || "");
-      }
-      setHistory([markdown]);
-    }
-  }, [activeDocument]);
+  }, [user]);
 
   const handleReanalyze = () => {
     setShowReanalyzeModal(true);
   };
 
-  const confirmReanalyze = async() => {
+  const confirmReanalyze =  async() => {
     setIsLoading(true);
     try{
       const regex = /!!(.*?)!!/gs;
@@ -215,8 +197,8 @@ export default function PreviewResumeLayout() {
   const exportToPDF = async () => {
     setIsExportingPdf(true);
     try {
-      const element = document.getElementById('document-content');
-      if (!element) throw new Error('Document content not found');
+      const element = document.getElementById('resume-content');
+      if (!element) throw new Error('Resume content not found');
       const clone = element.cloneNode(true);
       const cleanedHTML = clone.innerHTML.replace(
         /<mark\b[^>]*>(.*?)<\/mark>/gi,
@@ -240,7 +222,7 @@ export default function PreviewResumeLayout() {
         <html>
         <head>
           <meta charset="UTF-8">
-          <title>${activeDocument === 'resume' ? 'Resume' : 'Cover Letter'}</title>
+          <title>Resume</title>
           <style>
             body {
               font-family: 'Segoe UI Emoji', 'Noto Color Emoji', 'Apple Color Emoji', 
@@ -270,7 +252,7 @@ export default function PreviewResumeLayout() {
       if (response.success) {
         const link = document.createElement('a');
         link.href = `data:application/pdf;base64,${response.pdf}`;
-        link.download = `${activeDocument === 'resume' ? 'resume' : 'cover_letter'}.${creation.job_title}.pdf`;
+        link.download = "resume."+creation.job_title+".pdf";
         link.click();
       } else {
         throw new Error(response.type_error || 'PDF generation failed');
@@ -286,7 +268,7 @@ export default function PreviewResumeLayout() {
   const exportToDOCX = async () => {
     setIsExportingDocx(true);
     try {
-      const clone = document.getElementById('document-content').cloneNode(true);
+      const clone = document.getElementById('resume-content').cloneNode(true);
       const cleanedHTML = clone.innerHTML
         .replace(/<mark[^>]*>(.*?)<\/mark>/gi, '$1');
 
@@ -303,7 +285,7 @@ export default function PreviewResumeLayout() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `${activeDocument === 'resume' ? 'resume' : 'cover_letter'}.${creation.job_title}.docx`;
+      a.download = "resume."+creation.job_title+".docx";
       a.style.display = 'none';
       document.body.appendChild(a);
       a.click();
@@ -319,41 +301,24 @@ export default function PreviewResumeLayout() {
     }
   };
 
-  const saveDocument = async () => {
+  const saveResume = async () => {
     setSaving(true);
-    try {
+    try{
       const regex = /!!(.*?)!!/gs;
-      let cleaned_markdown = markdown;
-      
-      // Only remove highlights for resume (cover letters don't have keyword highlights)
-      if (activeDocument === 'resume') {
-        cleaned_markdown = markdown.replace(regex, (match, p1) => p1);
-      }
-      
-      const payload = {
-        idCreation: creation.id,
-        [activeDocument === 'resume' ? 'resume' : 'cover_letter']: cleaned_markdown
-      };
-
-      await save_resume(payload).then(response => {
-        if (response.success) {
+      const cleaned_markdown = markdown.replace(regex, (match, p1) => p1);
+      await save_resume({idCreation:creation.id, resume: cleaned_markdown}).then(response=>{
+        if(response.success){
           setIsSaved(true);
           setTimeout(() => setIsSaved(false), 2000);
-          
-          // Update local state
-          setCreation(prev => ({
-            ...prev,
-            [activeDocument === 'resume' ? 'resume' : 'cover_letter']: cleaned_markdown
-          }));
         }
-      }).catch(error => {
-        if (error.status === 500) { // token expired
+      }).catch(error=>{
+        if (error.status === 500) {// token expired
           logout();
         }
-      });
-    } catch (error) {
-      console.error("Save failed:", error);
-    } finally {
+      })
+    }catch(error){
+
+    }finally{
       setSaving(false);
     }
   };
@@ -370,7 +335,7 @@ export default function PreviewResumeLayout() {
           <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
               <h2 className="text-lg font-bold text-gray-900">
-                {creation.job_title || (activeDocument === 'resume' ? 'Your Resume' : 'Your Cover Letter')}
+                {creation.job_title || 'Your Resume'}
                 {isProUser && <ProBadge />}
               </h2>
               <p className="text-sm text-gray-600">
@@ -384,43 +349,15 @@ export default function PreviewResumeLayout() {
                 className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg text-sm font-medium"
               >
                 <ArrowDownTrayIcon className="h-4 w-4" />
-                Export {activeDocument === 'resume' ? 'Resume' : 'Cover Letter'}
+                Export Resume
               </button>
             </div>
           </div>
         </header>
 
-        {/* Document Type Toggle */}
-        <div className="bg-white border-b border-gray-200 px-6 py-2">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex space-x-4">
-              <button
-                onClick={() => setActiveDocument('resume')}
-                className={`px-4 py-2 font-medium ${activeDocument === 'resume' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
-              >
-                <DocumentTextIcon className="inline h-5 w-5 mr-2" />
-                Resume
-              </button>
-              <button
-                onClick={() => setActiveDocument('coverLetter')}
-                //disabled={!isProUser}
-                disabled={true}
-                className={`px-4 py-2 font-medium ${activeDocument === 'coverLetter' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
-              >
-                
-                {!isProUser && <LockClosedIcon className="inline h-5 w-5 mr-2" />}
-                {isProUser && <EnvelopeIcon className="inline h-5 w-5 mr-2" />}
-                
-                Cover Letter
-                {!isProUser && <ProBadge />}
-              </button>
-            </div>
-          </div>
-        </div>
-
         {/* Main Content */}
         <main className="flex-1 overflow-hidden grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6 p-6">
-          {/* Left: Document Preview/Editor */}
+          {/* Left: Resume Preview/Editor */}
           <div className="bg-white shadow-sm rounded-lg overflow-y-auto">
             <div className="max-w-2xl mx-auto">
               {/* Tab Navigation */}
@@ -452,7 +389,7 @@ export default function PreviewResumeLayout() {
               {/* Content */}
               {activeTab === 'preview' ? (
                 markdown ? (
-                  <div id="document-content" className="prose max-w-none p-8 pt-2">
+                  <div id="resume-content" className="prose max-w-none p-8 pt-2">
                     <ReactMarkdown
                       remarkPlugins={[remarkGfm]}
                       components={MarkdownStyle()}
@@ -464,7 +401,7 @@ export default function PreviewResumeLayout() {
                 ) : (
                   <div className="text-center py-12 text-gray-500">
                     <DocumentTextIcon className="mx-auto h-12 w-12 mb-4 text-gray-300" />
-                    <p>Your {activeDocument === 'resume' ? 'resume' : 'cover letter'} will appear here</p>
+                    <p>Your resume will appear here</p>
                   </div>
                 )
               ) : (
@@ -472,67 +409,67 @@ export default function PreviewResumeLayout() {
                   {/* Markdown Toolbar (Pro Only) */}
                   {isProUser && (
                     <div className="flex items-center justify-between flex-wrap gap-1 p-2 bg-gray-50 border border-gray-200 rounded-t-lg">
-                      <div className="flex gap-1">
-                        <ToolbarButton
-                          icon={BoldIcon}
-                          onClick={() => formatText('**', '**', 'bold text')}
-                          tooltip="Bold"
-                        />
-                        <ToolbarButton
-                          icon={ItalicIcon}
-                          onClick={() => formatText('*', '*', 'italic text')}
-                          tooltip="Italic"
-                        />
-                        <ToolbarButton
-                          icon={Bars3BottomLeftIcon}
-                          onClick={() => formatText('[', '](url)', 'link text')}
-                          tooltip="Link"
-                        />
-                        <ToolbarButton
-                          icon={Bars3BottomLeftIcon}
-                          onClick={() => formatText('- ', '', 'list item')}
-                          tooltip="Bullet List"
-                        />
-                        <ToolbarButton
-                          icon={ListBulletIcon}
-                          onClick={() => formatText('1. ', '', 'ordered item')}
-                          tooltip="Numbered List"
-                        />
-                        <ToolbarButton
-                          icon={CodeBracketIcon}
-                          onClick={() => formatText('`', '`', 'code')}
-                          tooltip="Inline Code"
-                        />
-                        <ToolbarButton
-                          icon={ArrowUturnLeftIcon}
-                          onClick={undoChanges}
-                          tooltip="Undo (Ctrl + z)"
-                          disabled={history.length <= 1}
-                        />
-                      </div>
-                      <button
-                        onClick={saveDocument}
-                        className={`ml-auto flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium ${isSaved 
-                          ? 'bg-green-100 text-green-800' 
-                          : 'bg-blue-600 hover:bg-blue-700 text-white'}`}
-                      >
-                        {isSaved ? (
-                          <>
-                            <CheckIcon className="h-4 w-4" />
-                            Saved
-                          </>
-                        ) : (
-                          <>
-                            <DocumentTextIcon className="h-4 w-4" />
-                            {saving ?
-                              "Saving..."
-                              :
-                              `Save ${activeDocument === 'resume' ? 'Resume' : 'Cover Letter'}`
-                            }
-                          </>
-                        )}
-                      </button>
-                    </div>                  
+                    <div className="flex gap-1">
+                      <ToolbarButton
+                        icon={BoldIcon}
+                        onClick={() => formatText('**', '**', 'bold text')}
+                        tooltip="Bold"
+                      />
+                      <ToolbarButton
+                        icon={ItalicIcon}
+                        onClick={() => formatText('*', '*', 'italic text')}
+                        tooltip="Italic"
+                      />
+                      <ToolbarButton
+                        icon={Bars3BottomLeftIcon}
+                        onClick={() => formatText('[', '](url)', 'link text')}
+                        tooltip="Link"
+                      />
+                      <ToolbarButton
+                        icon={Bars3BottomLeftIcon}
+                        onClick={() => formatText('- ', '', 'list item')}
+                        tooltip="Bullet List"
+                      />
+                      <ToolbarButton
+                        icon={ListBulletIcon}
+                        onClick={() => formatText('1. ', '', 'ordered item')}
+                        tooltip="Numbered List"
+                      />
+                      <ToolbarButton
+                        icon={CodeBracketIcon}
+                        onClick={() => formatText('`', '`', 'code')}
+                        tooltip="Inline Code"
+                      />
+                      <ToolbarButton
+                        icon={ArrowUturnLeftIcon}
+                        onClick={undoChanges}
+                        tooltip="Undo (Ctrl + z)"
+                        disabled={history.length <= 1}
+                      />
+                    </div>
+                    <button
+                      onClick={saveResume}
+                      className={`ml-auto flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium ${isSaved 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-blue-600 hover:bg-blue-700 text-white'}`}
+                    >
+                      {isSaved ? (
+                        <>
+                          <CheckIcon className="h-4 w-4" />
+                          Saved
+                        </>
+                      ) : (
+                        <>
+                          <DocumentTextIcon className="h-4 w-4" />
+                          {saving ?
+                            "Saving..."
+                            :
+                            "Save Resume"
+                          }
+                        </>
+                      )}
+                    </button>
+                  </div>                  
                   )}
 
                   <textarea
@@ -547,8 +484,8 @@ export default function PreviewResumeLayout() {
                       } rounded-b-lg focus:ring-blue-500 focus:border-blue-500`}
                     placeholder={
                       isProUser
-                        ? `Edit your ${activeDocument === 'resume' ? 'resume' : 'cover letter'} in Markdown...`
-                        : "Upgrade to Pro to edit your document"
+                        ? "Edit your resume in Markdown..."
+                        : "Upgrade to Pro to edit your resume"
                     }
                     disabled={!isProUser}
                   />
@@ -557,221 +494,167 @@ export default function PreviewResumeLayout() {
             </div>
           </div>
 
-          {/* Right: Context Panel - Only shown for resume */}
-          {activeDocument === 'resume' && (
-            <div className="space-y-6">
-              {/* Resume Analysis Card */}
-              <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-xs">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                    <ChartBarIcon className="h-5 w-5 text-blue-600" />
-                    Resume Analysis
-                  </h3>
-                  <button 
-                    onClick={handleReanalyze}
-                    className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
-                  >
-                    <ArrowPathIcon className="h-4 w-4" />
-                    Re-analyze
-                  </button>
+          {/* Right: Context Panel */}
+          <div className="space-y-6">
+            {/* Resume Analysis Card */}
+            <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-xs">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                  <ChartBarIcon className="h-5 w-5 text-blue-600" />
+                  Resume Analysis
+                </h3>
+                <button 
+                  onClick={handleReanalyze}
+                  className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                >
+                  <ArrowPathIcon className="h-4 w-4" />
+                  Re-analyze
+                </button>
+              </div>
+              
+              <div className="flex items-center justify-center mb-5">
+                <div className="relative">
+                  <RoundedATSIndicador className={"w-24 h-24"} score={creation.ats.ats_score}/>
                 </div>
-                
-                <div className="flex items-center justify-center mb-5">
-                  <div className="relative">
-                    <RoundedATSIndicador className={"w-24 h-24"} score={creation.ats.ats_score}/>
+              </div>
+
+              {!isProUser ? (
+                <div className="space-y-4 mb-5">
+                  <div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="font-medium text-gray-700">Keyword Match</span>
+                      <span className="font-semibold text-gray-900"><span className='blur-sm'>00</span>%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2 blur-sm"></div>
+                  </div>
+
+                  <div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="font-medium text-gray-700">Structure</span>
+                      <span className="font-semibold text-gray-900"><span className='blur-sm'>00</span>%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2 blur-sm"></div>
+                  </div>
+
+                  <div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="font-medium text-gray-700">Readability</span>
+                      <span className="font-semibold text-gray-900"><span className='blur-sm'>00</span>%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2 blur-sm"></div>
                   </div>
                 </div>
-
-                {!isProUser ? (
+              ) : (
+                <>
                   <div className="space-y-4 mb-5">
+                    <ProFeatureEnabled labels={labels} featureText={"Breakdown analysis enabled"}/>
                     <div>
                       <div className="flex justify-between text-sm mb-1">
                         <span className="font-medium text-gray-700">Keyword Match</span>
-                        <span className="font-semibold text-gray-900"><span className='blur-sm'>00</span>%</span>
+                        <span className="font-semibold text-gray-900">{creation.ats.breakdown.keyword_match}%</span>
                       </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2 blur-sm"></div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div
+                          className="bg-blue-600 h-2 rounded-full"
+                          style={{ width: `${creation.ats.breakdown.keyword_match}%` }}
+                        ></div>
+                      </div>
                     </div>
 
                     <div>
                       <div className="flex justify-between text-sm mb-1">
                         <span className="font-medium text-gray-700">Structure</span>
-                        <span className="font-semibold text-gray-900"><span className='blur-sm'>00</span>%</span>
+                        <span className="font-semibold text-gray-900">{creation.ats.breakdown.structure}%</span>
                       </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2 blur-sm"></div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div
+                          className="bg-green-500 h-2 rounded-full"
+                          style={{ width: `${creation.ats.breakdown.structure}%` }}
+                        ></div>
+                      </div>
                     </div>
 
                     <div>
                       <div className="flex justify-between text-sm mb-1">
                         <span className="font-medium text-gray-700">Readability</span>
-                        <span className="font-semibold text-gray-900"><span className='blur-sm'>00</span>%</span>
+                        <span className="font-semibold text-gray-900">{creation.ats.breakdown.readability}%</span>
                       </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2 blur-sm"></div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div
+                          className="bg-purple-500 h-2 rounded-full"
+                          style={{ width: `${creation.ats.breakdown.readability}%` }}
+                        ></div>
+                      </div>
                     </div>
                   </div>
-                ) : (
-                  <>
-                    <div className="space-y-4 mb-5">
-                      <ProFeatureEnabled featureText={"Breakdown analysis enabled"}/>
-                      <div>
-                        <div className="flex justify-between text-sm mb-1">
-                          <span className="font-medium text-gray-700">Keyword Match</span>
-                          <span className="font-semibold text-gray-900">{creation.ats.breakdown.keyword_match}%</span>
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2">
-                          <div
-                            className="bg-blue-600 h-2 rounded-full"
-                            style={{ width: `${creation.ats.breakdown.keyword_match}%` }}
-                          ></div>
-                        </div>
-                      </div>
 
-                      <div>
-                        <div className="flex justify-between text-sm mb-1">
-                          <span className="font-medium text-gray-700">Structure</span>
-                          <span className="font-semibold text-gray-900">{creation.ats.breakdown.structure}%</span>
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2">
-                          <div
-                            className="bg-green-500 h-2 rounded-full"
-                            style={{ width: `${creation.ats.breakdown.structure}%` }}
-                          ></div>
-                        </div>
-                      </div>
+                  {/* Optimization Tips */}
+                  <div className="border-t border-gray-100 pt-4">
+                    <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                      <SparklesIcon className="h-4 w-4 text-yellow-500" />
+                      Optimization Tips
+                    </h4>
+                    <ul className="space-y-3">
+                      {creation.ats.tips.map((tip, index) => (
+                        <li key={index} className="flex items-start">
+                          <span className="flex-shrink-0 mt-0.5 mr-2">
+                            {tip.includes('density') ? (
+                              <svg className="h-4 w-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                              </svg>
+                            ) : (
+                              <svg className="h-4 w-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                              </svg>
+                            )}
+                          </span>
+                          <span className="text-sm text-gray-700">{tip}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </>
+              )}
 
-                      <div>
-                        <div className="flex justify-between text-sm mb-1">
-                          <span className="font-medium text-gray-700">Readability</span>
-                          <span className="font-semibold text-gray-900">{creation.ats.breakdown.readability}%</span>
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2">
-                          <div
-                            className="bg-purple-500 h-2 rounded-full"
-                            style={{ width: `${creation.ats.breakdown.readability}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
+              {/* Pro CTA */}
+              {!isProUser && (
+                <ProTip labels={labels} text={"Get a breakdown resume analysis and personalised AI tips to improve your score to 90%+"}/>
+              )}
 
-                    {/* Optimization Tips */}
-                    <div className="border-t border-gray-100 pt-4">
-                      <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                        <SparklesIcon className="h-4 w-4 text-yellow-500" />
-                        Optimization Tips
-                      </h4>
-                      <ul className="space-y-3">
-                        {creation.ats.tips.map((tip, index) => (
-                          <li key={index} className="flex items-start">
-                            <span className="flex-shrink-0 mt-0.5 mr-2">
-                              {tip.includes('density') ? (
-                                <svg className="h-4 w-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                                </svg>
-                              ) : (
-                                <svg className="h-4 w-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                </svg>
-                              )}
-                            </span>
-                            <span className="text-sm text-gray-700">{tip}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </>
-                )}
+              {/* Pro CTA */}
+              {!isProUser && (
+                <ProTip labels={labels} text={"Unlock all the keywords for our AI to analyse them and improve your score to 90%+"}/>
+              )}
+            </div>
 
-                {/* Pro CTA */}
-                {!isProUser && (
-                  <ProTip text={"Get a breakdown resume analysis and personalised AI tips to improve your score to 90%+"}/>
-                )}
+            {/* Job Description Card */}
+            <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+              <div className="flex justify-between items-start mb-3">
+                <h3 className="font-bold flex items-center gap-2 text-gray-800">
+                  <DocumentTextIcon className="h-5 w-5 text-gray-500" />
+                  Job Description
+                </h3>
               </div>
-
-              {/* Job Description Card */}
-              <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-                <div className="flex justify-between items-start mb-3">
-                  <h3 className="font-bold flex items-center gap-2 text-gray-800">
-                    <DocumentTextIcon className="h-5 w-5 text-gray-500" />
-                    Job Description
-                  </h3>
-                </div>
-                <div className="text-sm text-gray-700 max-h-60 overflow-y-auto">
-                  {creation.job_description || 'No job description provided'}
-                </div>
-              </div>
-
-              {/* Keywords Card */}
-              <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-                <h3 className="font-bold mb-3 text-gray-800">Target Keywords</h3>
-                <KeywordList isPro={isProUser} keywords={creation.keywords} />
+              <div className="text-sm text-gray-700 max-h-60 overflow-y-auto">
+                {creation.job_description || 'No job description provided'}
               </div>
             </div>
-          )}
 
-          {/* Right: Context Panel - For Cover Letter */}
-          {activeDocument === 'coverLetter' && (
-            <div className="space-y-6">
-              {/* Cover Letter Tips Card */}
-              <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-xs">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                    <SparklesIcon className="h-5 w-5 text-yellow-500" />
-                    Cover Letter Tips
-                  </h3>
-                </div>
-                
-                <div className="space-y-4">
-                  <div className="p-3 bg-blue-50 rounded-lg border border-blue-100">
-                    <h4 className="font-medium text-blue-800 mb-2">Personalization</h4>
-                    <p className="text-sm text-blue-700">
-                      Address the hiring manager by name if possible. Reference specific aspects of the company or job posting.
-                    </p>
-                  </div>
-                  
-                  <div className="p-3 bg-green-50 rounded-lg border border-green-100">
-                    <h4 className="font-medium text-green-800 mb-2">Structure</h4>
-                    <p className="text-sm text-green-700">
-                      Keep it to 3-4 paragraphs. Start with your interest, highlight relevant skills, and close with enthusiasm.
-                    </p>
-                  </div>
-                  
-                  <div className="p-3 bg-purple-50 rounded-lg border border-purple-100">
-                    <h4 className="font-medium text-purple-800 mb-2">Keywords</h4>
-                    <p className="text-sm text-purple-700">
-                      Incorporate keywords from the job description naturally throughout your letter.
-                    </p>
-                  </div>
-                </div>
+            {/* Keywords Card */}
+            <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="font-bold mb-3 text-gray-800">Target Keywords</h3>
+              <KeywordList labels={labels} isPro={isProUser} keywords={creation.keywords} />
 
-                {/* Pro CTA */}
-                {!isProUser && (
-                  <ProTip text={"Unlock all the keywords for our AI to analyse them and improve your score to 90%+"}/>
-                )}
-              </div>
-
-              {/* Job Description Card */}
-              <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-                <div className="flex justify-between items-start mb-3">
-                  <h3 className="font-bold flex items-center gap-2 text-gray-800">
-                    <DocumentTextIcon className="h-5 w-5 text-gray-500" />
-                    Job Description
-                  </h3>
-                </div>
-                <div className="text-sm text-gray-700 max-h-60 overflow-y-auto">
-                  {creation.job_description || 'No job description provided'}
-                </div>
-              </div>
-
-              {/* Keywords Card */}
-              <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-                <h3 className="font-bold mb-3 text-gray-800">Target Keywords</h3>
-                <KeywordList isPro={isProUser} keywords={creation.keywords} />
-              </div>
+              {/* Pro CTA */}
+              {!isProUser && (
+                <ProTip labels={labels} text={"Unlock all the keywords for our AI to analyse them and improve your score to 90%+"}/>
+              )}
             </div>
-          )}
+          </div>
         </main>
 
-        {/* Re-analyze Modal - Only for resume */}
-        {showReanalyzeModal && activeDocument === 'resume' && (
+        {/* Re-analyze Modal */}
+        {showReanalyzeModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg max-w-md w-full p-6 animate-scale-in">
               <div className="flex justify-between items-start mb-4">
@@ -821,9 +704,7 @@ export default function PreviewResumeLayout() {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg max-w-md w-full p-6 animate-scale-in">
               <div className="flex justify-between items-start mb-4">
-                <h3 className="text-lg font-bold">
-                  Export {activeDocument === 'resume' ? 'Resume' : 'Cover Letter'}
-                </h3>
+                <h3 className="text-lg font-bold">Export Resume</h3>
                 <button
                   onClick={() => setIsExportOpen(false)}
                   className="text-gray-400 hover:text-gray-500"

@@ -24,12 +24,12 @@ const FreeBadge = () => {
   );
 };
 
-const ProFeatureEnabled = ({featureText}) =>{
+const ProFeatureEnabled = ({featureText, labels}) =>{
   return(
     <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-xl p-4 flex items-center">
         <ProIco/>
         <span className="text-sm font-medium text-gray-800 ml-3">
-          Pro Feature: {featureText}
+          {labels.proLabel.proFeature} {featureText}
         </span>
     </div>
   )

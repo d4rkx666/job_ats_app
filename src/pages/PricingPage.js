@@ -7,30 +7,32 @@ const PricingPage = () => {
       name: 'Starter',
       price: 'Free',
       description: 'Basic resume creation with essential features',
-      cta: 'Get Started',
+      cta: 'Current Plan',
       href: '#',
       features: [
-        '3 resume downloads per month',
-        'Basic keyword analysis',
-        'Standard templates',
-        'Email support'
+         '15 credits per month',
+         'Only PDF resume downloads',
+         'Basic keyword analysis',
+         'Standard templates',
+         'Email support'
       ],
       featured: false
     },
     {
       name: 'Professional',
-      price: '$9',
+      price: '$14',
       term: '/month',
       description: 'For job seekers who want to stand out',
       cta: 'Start 7-Day Free Trial',
       href: '#',
       features: [
-        'Unlimited resume downloads',
-        'Advanced keyword optimization',
-        'ATS score tracking',
-        'All premium templates',
-        'Priority support',
-        'Cover letter generator'
+         '50 credits per month',
+         'PDF & DOCX resume downloads',
+         'Advanced keyword optimization',
+         'ATS score tracking',
+         'All premium templates',
+         'Priority support',
+         'Cover letter generator'
       ],
       featured: true
     }
@@ -39,33 +41,28 @@ const PricingPage = () => {
   const featureComparison = [
     {
       name: 'Resume Downloads',
-      starter: '3/month',
-      professional: 'Unlimited',
-      business: 'Unlimited'
+      starter: 'PDF',
+      professional: 'PDF / DOCX',
     },
     {
       name: 'ATS Optimization',
-      starter: 'Basic',
-      professional: 'Advanced',
-      business: 'Advanced + Bulk'
+      starter: 'Basic AI',
+      professional: 'Advanced AI',
     },
     {
       name: 'Templates',
-      starter: '3 Standard',
-      professional: 'All Premium',
-      business: 'All Premium + Custom'
+      starter: '2 Standard',
+      professional: '2 Standard and 2 Premium',
     },
     {
       name: 'Keyword Analysis',
       starter: '✓',
       professional: 'Advanced',
-      business: 'Advanced + AI Suggestions'
     },
     {
       name: 'Support',
       starter: 'Email',
       professional: 'Priority',
-      business: 'Dedicated Manager'
     }
   ];
 
@@ -156,19 +153,13 @@ const PricingPage = () => {
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
-                    Starter
+                    Free Plan
                   </th>
                   <th
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
-                    Professional
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Business
+                    Pro Plan
                   </th>
                 </tr>
               </thead>
@@ -189,9 +180,6 @@ const PricingPage = () => {
                         )}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {feature.business}
-                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -206,21 +194,25 @@ const PricingPage = () => {
           </h2>
           <div className="max-w-3xl mx-auto divide-y divide-gray-200">
             {[
+               {
+                  question: 'How does the ATS optimization work?',
+                  answer: 'Our system analyzes job descriptions and suggests the best keywords to include in your resume to pass automated screening systems.'
+               },
               {
                 question: "Can I switch plans later?",
                 answer: "Yes, you can upgrade or downgrade your plan at any time."
               },
               {
-                question: "Do you offer discounts for students?",
-                answer: "We offer 50% off for students with a valid .edu email address."
+                question: "Is there a contract or long-term commitment?",
+                answer: "No, all plans are month-to-month with no long-term contract."
               },
               {
                 question: "What payment methods do you accept?",
                 answer: "We accept all major credit cards and PayPal."
               },
               {
-                question: "Is there a contract or long-term commitment?",
-                answer: "No, all plans are month-to-month with no long-term contract."
+                 question: 'Do you store my resume data?',
+                 answer: 'We store your data securely and never share it with third parties. You can delete your account and all data at any time.'
               }
             ].map((faq, index) => (
               <div key={index} className="py-6">

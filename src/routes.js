@@ -45,7 +45,9 @@ function AppRoutes() {
                 <CreateResumePage />
               </ProtectedRoute>} />
             <Route path="/preview-resume" element={
-                <PreviewResumeLayout />} />
+              <ProtectedRoute>
+                <PreviewResumeLayout />
+              </ProtectedRoute>} />
             <Route path="/improved" element={
               <ProtectedRoute>
                 <PreviewResumeImprovements />
