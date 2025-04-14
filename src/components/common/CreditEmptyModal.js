@@ -1,12 +1,16 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import {useConfig} from "../../contexts/ConfigContext"
 import { BoltIcon, ArrowPathIcon, CheckIcon } from "@heroicons/react/24/outline";
 
 export function CreditEmptyModal() {
    const { user } = useAuth();
    const isPro = user.subscription?.plan === 'pro';
 
-   console.log(isPro)
+   // Language
+  const { config, language } = useConfig();
+  const labels = config.labels[language];
+  
    return (
       (!isPro ?
          (
@@ -18,18 +22,18 @@ export function CreditEmptyModal() {
                         <BoltIcon className="h-6 w-6 text-red-600" />
                      </div>
                      <h3 className="text-lg font-bold text-gray-900 mt-3">
-                        Out of Credits!
+                        {labels.creditEmptyModal.outOf}
                      </h3>
                      <p className="text-sm text-gray-500 mt-1">
-                        You've used all {user.usage.total_credits} free credits this month.
+                     {labels.creditEmptyModal.used} {user.usage.total_credits} {labels.creditEmptyModal.thisMonth}
                      </p>
                   </div>
 
                   {/* Progress Bar (Shows Usage) */}
                   <div className="mb-6">
                      <div className="flex justify-between text-xs text-gray-500 mb-1">
-                        <span>0 credits left</span>
-                        <span>{user.usage.total_credits}/{user.usage.total_credits} used</span>
+                        <span>{labels.creditEmptyModal.noCredits}</span>
+                        <span>{user.usage.total_credits}/{user.usage.total_credits} {labels.creditEmptyModal.used}</span>
                      </div>
                      <div className="w-full bg-gray-200 rounded-full h-2">
                         <div
@@ -45,28 +49,28 @@ export function CreditEmptyModal() {
                         to="/pro"
                         className="w-full flex items-center justify-center px-4 py-3 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
                      >
-                        Upgrade to Pro (50 credits/month)
+                        {labels.proLabel.upgradeToPro} (50 credits/month)
                      </Link>
 
                      <Link to="/dashboard" className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
                         <ArrowPathIcon className="h-4 w-4 mr-2" />
-                        Reset in {daysUntilReset()} days
+                        {labels.creditEmptyModal.resetIn} {daysUntilReset()} {labels.creditEmptyModal.days}
                      </Link>
                   </div>
 
                   {/* Feature Comparison (Subtle Upsell) */}
                   <div className="mt-6 pt-6 border-t border-gray-200">
                      <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                        Pro unlocks:
+                     {labels.proLabel.proUnlocks}
                      </h4>
                      <ul className="mt-2 space-y-1">
                         <li className="flex items-center">
                            <CheckIcon className="h-4 w-4 text-green-500 mr-2" />
-                           <span className="text-sm">AI-powered keyword extraction</span>
+                           <span className="text-sm">{labels.creditEmptyModal.poweredAIKWExtraction}</span>
                         </li>
                         <li className="flex items-center">
                            <CheckIcon className="h-4 w-4 text-green-500 mr-2" />
-                           <span className="text-sm">3× more credits</span>
+                           <span className="text-sm">{labels.creditEmptyModal.moreCredits}</span>
                         </li>
                      </ul>
                   </div>
@@ -84,7 +88,7 @@ export function CreditEmptyModal() {
                         {isPro ? "Need More Credits?" : "Out of Credits!"}
                      </h3>
                      <p className="text-sm text-gray-500 mt-1">
-                        You’ve used all 50 credits this month.
+                        {labels.creditEmptyModal.proUsed} 50 {labels.creditEmptyModal.proThisMonth}
                      </p>
                   </div>
 
@@ -94,10 +98,10 @@ export function CreditEmptyModal() {
                         to="/billing"
                         className="block text-center px-4 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-md font-medium"
                      >
-                        Buy Extra Credits
+                        {labels.proLabel.buyExtraCredits}
                      </Link>
                      <p className="text-xs text-gray-500 text-center">
-                        Credits reset in {daysUntilReset()} days.
+                        {labels.creditEmptyModal.resetIn} {daysUntilReset()} {labels.creditEmptyModal.days}
                      </p>
                   </div>
                </div>

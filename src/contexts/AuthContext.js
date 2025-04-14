@@ -7,6 +7,7 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null); // Store the logged-in user
+  const [system, setSystem] = useState(null); // Store the logged-in user
   const [verified, setVerified] = useState(true);
   const [improvementsLeft] = useState(0);
 
@@ -20,13 +21,12 @@ export function AuthProvider({ children }) {
         setVerified(firebaseUser.emailVerified);
 
         // Listen to Firestore updates for the user's document
-        const userRef = doc(db, "users", firebaseUser.uid);
+        const userRef = doc(db, process.env.REACT_APP_DATABASE_USER, firebaseUser.uid);
         const unsubscribeFirestore = onSnapshot(userRef, (doc) => {
           if (doc.exists()) {
             const userData = doc.data();
             userData.token = firebaseUser.accessToken;
             updateUserData(userData);
-          } else {
           }
         });
 
@@ -35,7 +35,33 @@ export function AuthProvider({ children }) {
       }
     });
 
-    preventUserDataLostRefreshing();
+    preventDataLostRefreshing();
+
+    return () => unsubscribe(); // Cleanup subscription
+  }, []);
+
+
+  // For System variables
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+
+      if (firebaseUser){
+
+        // Listen to Firestore updates for the user's document
+        const systemRef = doc(db, process.env.REACT_APP_DATABASE_SYSVAR, process.env.REACT_APP_COLLECTION_SYSVAR);
+        const unsubscribeFirestore = onSnapshot(systemRef, (doc) => {
+          if (doc.exists()) {
+            const systemData = doc.data();
+            updateSystemData(systemData);
+          }
+        });
+
+        // Clean up the Firestore listener when the component unmounts
+        return () => unsubscribeFirestore();
+      }
+    });
+
+    preventDataLostRefreshing();
 
     return () => unsubscribe(); // Cleanup subscription
   }, []);
@@ -95,7 +121,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, auth, verified, improvementsLeft, login, logout, resendVerificationEmail }}>
+    <AuthContext.Provider value={{ user, system, auth, verified, improvementsLeft, login, logout, resendVerificationEmail }}>
       {children}
     </AuthContext.Provider>
   );
@@ -117,10 +143,15 @@ export function AuthProvider({ children }) {
   }
 
   // Prevent user data lost from refreshing
-  function preventUserDataLostRefreshing(){
+  function preventDataLostRefreshing(){
     const storedUser = JSON.parse(localStorage.getItem("data_user"));
+    const storedSystem = JSON.parse(localStorage.getItem("data_system"));
     if (storedUser != null) {
       setUser(storedUser); // Restore user data
+    }
+
+    if (storedSystem != null) {
+      setSystem(storedSystem); // Restore system data
     }
   }
   
@@ -131,6 +162,13 @@ export function AuthProvider({ children }) {
       ...prevUser,
       ...newUserData, // Merge Firestore data with existing user data
     }));
+  }
+
+  
+  // Update system data
+  function updateSystemData(newSystemData){
+    localStorage.setItem("data_system", JSON.stringify(newSystemData));
+    setSystem(newSystemData);
   }
 }
 

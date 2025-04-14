@@ -3,7 +3,7 @@ import api from "./api";
 export const CallLogin = async (request_email, request_password) => {
   try{
 
-    const response = await api.post("/api/v1/login", {
+    const response = await api.post("/login", {
       email: request_email,
       password: request_password
     });
