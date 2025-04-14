@@ -166,13 +166,13 @@ const PricingPage = () => {
               <tbody className="bg-white divide-y divide-gray-200">
                 {featureComparison.map((feature) => (
                   <tr key={feature.name}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <td className="px-6 py-4 text-sm font-medium text-gray-900">
                       {feature.name}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 text-sm text-gray-500">
                       {feature.starter}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 text-sm text-gray-500">
                       <div className="flex items-center">
                         {feature.professional}
                         {feature.name === 'ATS Optimization' && (
