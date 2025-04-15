@@ -28,6 +28,7 @@ export const config = {
                seeHowItWorks: "See How It Works"
             },
             features:{
+               featureTitle: "Features",
                title:"Everything you need to beat the ATS",
                subtitle:"Our platform uses cutting-edge technology to give your resume the best chance of getting seen.",
                feature:{
@@ -392,6 +393,7 @@ export const config = {
                seeHowItWorks: "Ver cómo funciona"
             },
             features:{
+               featureTitle: "Características",
                title:"Todo lo que necesitas para vencer al ATS",
                subtitle:"Nuestra plataforma utiliza tecnologías innovadoras para darle a tu CV el mejor chance de ser visto por los reclutadores.",
                feature:{
@@ -438,7 +440,7 @@ export const config = {
             },
             footer: {
                title: "¿Ready para impulsar tu CV?",
-               title2: "Start your free trial today.",
+               title2: "Empieza tu prueba grátis de Pro play hoy.",
                subtitle: "Obtén 7 días de características Pro para que veas las diferencias por tí mismo. Debido a la sesión de pruebas pre venta, obtén más días grátis de Pro contactando al administrador.",
                tryPro: "Prueba 7 días grátis de Pro"
             },
