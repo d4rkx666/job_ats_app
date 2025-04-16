@@ -10,6 +10,7 @@ import PricingPage from "./pages/PricingPage";
 import Layout from "./components/layout/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import HideLoginPage from "./components/HideLoginPage";
+import HideHomePage from "./components/HideHomePage";
 import PreviewResumeImprovements from "./components/common/PreviewResumeImprovements";
 import PreviewResumeLayout from "./components/common/PreviewResumeLayout";
 
@@ -18,7 +19,10 @@ function AppRoutes() {
     <BrowserRouter>
       <Layout>
         <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={
+              <HideHomePage>
+                <Home/>
+              </HideHomePage>} />
             <Route path="/pricing" element={<PricingPage />}/>
             <Route path="/login" element={
               <HideLoginPage>
