@@ -1,19 +1,22 @@
-import { useAuth } from "../contexts/AuthContext"
+import { useAuth } from "../contexts/AuthContext";
 import { useConfig } from "../contexts/ConfigContext";
-import FeedbackForm from "../components/forms/FeedbackForm"
-import { feedback } from "../services/SetFeedback"
+import FeedbackForm from "../components/forms/FeedbackForm";
+import { feedback } from "../services/SetFeedback";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { RoundedATSIndicador } from "../components/common/RoundedATSIndicator"
+import { RoundedATSIndicador } from "../components/common/RoundedATSIndicator";
+import { ProBadge } from "../components/common/Badge";
+import { SparklesIcon, ArrowUpRightIcon, ClockIcon, CalendarIcon, DocumentTextIcon, ChartBarIcon } from "@heroicons/react/24/outline";
 
 function Dashboard() {
   const { config, language } = useConfig();
   const labels = config.labels[language];
-  const {user, system} = useAuth();
+  const { user, system } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
-  const [activeTab, setActiveTab] = useState('improvements'); // 'improvements' or 'drafts'
+  const [activeTab, setActiveTab] = useState('improvements');
+  const [sortOrder, setSortOrder] = useState('newest');
 
   // Check for user's feedback
   useEffect(() => {
@@ -22,8 +25,6 @@ function Dashboard() {
     }
   }, [user.feedback]);
 
-
-  // Handle click when users gives feedback
   const handleFeedback = async (data) => {
     setIsLoading(true);
     setError("");
@@ -43,24 +44,72 @@ function Dashboard() {
 
   // Credit-based quota calculations
   const creditsUsed = user.usage?.used_credits || 0;
-  const totalCredits = user.usage?.total_credits || 6; // Default to 6 for free tier
+  const totalCredits = user.usage?.total_credits || 6;
   const creditsLeft = totalCredits - creditsUsed;
   const usagePercentage = Math.min(100, Math.round((creditsUsed / totalCredits) * 100));
+
+  // Sort function for items
+  const sortItems = (items) => {
+    if (!items) return [];
+    return [...items].sort((a, b) => {
+      const dateA = new Date(a.createdAt.seconds * 1000 + a.createdAt.nanoseconds / 1000000);
+      const dateB = new Date(b.createdAt.seconds * 1000 + b.createdAt.nanoseconds / 1000000);
+      return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
+    });
+  };
+
+  // Format date with time
+  const formatDate = (timestamp, time=true) => {
+    const date = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
+    if(time){
+      return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }else{
+      return date.toLocaleDateString();
+    }
+  };
 
   return (
     <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
       {/* Welcome Section */}
-      <div className="mb-8 bg-white p-6 rounded-xl shadow-sm">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
-          {labels.dashboardPage.welcome}, <span className="text-blue-600">{user.name}</span>!
-        </h1>
-        <p className="text-gray-600 mt-2">{labels.dashboardPage.subWelcome}</p>
+      <div className="mb-8 bg-gradient-to-r from-blue-600 to-indigo-600 p-6 rounded-xl shadow-lg text-white">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold">
+              {labels.dashboardPage.welcome}, <span className="text-blue-200">{user.name}</span>!
+            </h1>
+            <p className="text-blue-100 mt-2">{labels.dashboardPage.subWelcome}</p>
+          </div>
+          
+          {/* Plan Status */}
+          <div className="mt-4 md:mt-0 bg-white/10 backdrop-blur-sm p-3 rounded-lg">
+            <div className="flex items-center">
+              <SparklesIcon className="h-5 w-5 text-yellow-300 mr-2" />
+              <span className="font-medium">
+                {user.subscription?.plan === 'pro' ? (
+                  <>
+                    Pro Plan <ProBadge className="ml-2" />
+                    <span className="block text-xs font-normal mt-1">
+                      {labels.dashboardPage.expires} {formatDate(user.subscription.current_period_end, false)}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    Free Plan
+                    <span className="block text-xs font-normal mt-1">
+                    {labels.dashboardPage.nextReset}: {formatDate(user.usage.next_reset, false)}
+                    </span>
+                  </>
+                )}
+              </span>
+            </div>
+          </div>
+        </div>
 
-        {/* New Credit Quota Widget */}
-        <div className="mt-6 bg-white border border-gray-200 rounded-lg p-4">
+        {/* Credit Quota Widget */}
+        <div className="mt-6 bg-white/10 backdrop-blur-sm p-4 rounded-lg">
           <div className="flex justify-between items-center mb-2">
-            <h2 className="font-medium text-gray-700">
-              {user.subscription?.plan === 'pro' ? labels.user.proPlan : labels.user.freePlan}
+            <h2 className="font-medium">
+              {user.subscription?.plan === 'pro' ? 'Unlimited credits' : 'Monthly credits'}
             </h2>
             <span className="text-sm font-medium">
               {creditsLeft}/{totalCredits} {labels.dashboardPage.creditsLeft}
@@ -68,72 +117,13 @@ function Dashboard() {
           </div>
 
           {/* Progress Bar */}
-          <div className="w-full bg-gray-200 rounded-full h-2.5 mb-3">
+          <div className="w-full bg-white/20 rounded-full h-2.5 mb-3">
             <div
-              className={`h-2.5 rounded-full ${usagePercentage >= 90 ? 'bg-red-500' :
-                usagePercentage >= 70 ? 'bg-yellow-500' : 'bg-blue-600'
+              className={`h-2.5 rounded-full ${usagePercentage >= 90 ? 'bg-red-400' :
+                usagePercentage >= 70 ? 'bg-yellow-400' : 'bg-green-400'
                 }`}
               style={{ width: `${usagePercentage}%` }}
             ></div>
-          </div>
-
-          {/* Action Costs */}
-          <div className="space-y-3 mt-4">
-            <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              {labels.dashboardPage.actionCosts}
-            </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-
-              {/* Keyword Extraction */}
-              <div className="flex items-center p-3 bg-blue-50 rounded-lg border border-blue-100">
-                <div className="flex-shrink-0 w-3 h-3 bg-blue-400 rounded-full mr-3"></div>
-                <div>
-                  <p className="text-sm font-medium text-gray-700">{labels.dashboardPage.keywordOptimization}</p>
-                  <p className="text-xs text-gray-500">
-                    {system.keyword_extraction} {labels.dashboardPage.credit}
-                    {system.keyword_extraction !== 1 && 's'}
-                  </p>
-                </div>
-              </div>
-
-              {/* ATS Reanalyzis */}
-              <div className="flex items-center p-3 bg-blue-50 rounded-lg border border-blue-100">
-                <div className="flex-shrink-0 w-3 h-3 bg-blue-400 rounded-full mr-3"></div>
-                <div>
-                  <p className="text-sm font-medium text-gray-700">{labels.dashboardPage.atsReoptimization}</p>
-                  <p className="text-xs text-gray-500">
-                    {system.ats_analysis} {labels.dashboardPage.credit}
-                    {system.ats_analysis !== 1 && 's'}
-                  </p>
-                </div>
-              </div>
-
-              {/* Resume Creation */}
-              <div className="flex items-center p-3 bg-purple-50 rounded-lg border border-indigo-100">
-                <div className="flex-shrink-0 w-3 h-3 bg-indigo-400 rounded-full mr-3"></div>
-                <div>
-                  <p className="text-sm font-medium text-gray-700">{labels.dashboardPage.resumeCreation}</p>
-                  <p className="text-xs text-gray-500">
-                    {system.resume_creation} {labels.dashboardPage.credit}
-                    {system.resume_creation !== 1 && 's'}
-                  </p>
-                </div>
-              </div>
-
-              {/* Resume Optimization - Only show if exists */}
-              {system.resume_optimization && (
-                <div className="flex items-center p-3 bg-purple-50 rounded-lg border border-purple-100">
-                  <div className="flex-shrink-0 w-3 h-3 bg-purple-400 rounded-full mr-3"></div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-700">{labels.dashboardPage.resumeOptimization}</p>
-                    <p className="text-xs text-gray-500">
-                      {system.resume_optimization} {labels.dashboardPage.credit}
-                      {system.resume_optimization !== 1 && 's'}
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
           </div>
 
           {/* Upgrade Prompt */}
@@ -141,175 +131,203 @@ function Dashboard() {
             <div className="mt-4 text-center">
               <Link
                 to="/pricing"
-                className="text-sm font-medium text-blue-600 hover:text-blue-800"
+                className="inline-flex items-center text-sm font-medium text-white hover:text-blue-200"
               >
-                {labels.dashboardPage.upgrade}
+                {labels.dashboardPage.upgrade} <ArrowUpRightIcon className="h-4 w-4 ml-1" />
               </Link>
             </div>
           )}
         </div>
       </div>
 
-      {/* Tab Navigation */}
-      <div className="flex border-b border-gray-200 mb-6">
-
-        {/* Improvements button*/}
-        <button
-          className={`px-4 py-2 font-medium ${activeTab === 'improvements' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
-          onClick={() => setActiveTab('improvements')}
-        >
-          {labels.dashboardPage.improvements}
-        </button>
-
-        {/* Creations button*/}
-        <button
-          className={`px-4 py-2 font-medium ${activeTab === 'creations' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
-          onClick={() => setActiveTab('creations')}
-        >
-          {labels.dashboardPage.creations}
-        </button>
-
-        {/* Drafts button*/}
-        <button
-          className={`px-4 py-2 font-medium ${activeTab === 'drafts' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
-          onClick={() => setActiveTab('drafts')}
-        >
-          {labels.dashboardPage.drafts}
-        </button>
-      </div>
-
-      {/* Content based on active tab */}
-      {activeTab === 'improvements' && (
-        <div className="space-y-6">
-
-          {user.improvements?.length > 0 ? (
+      {/* Main Content Area */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        {/* Left Sidebar - Quick Actions */}
+        <div className="lg:col-span-1 space-y-4">
+          {/* Action Costs */}
+          <div className="bg-white p-4 rounded-xl shadow-sm">
+            <h3 className="font-semibold text-gray-800 mb-3 flex items-center">
+              <DocumentTextIcon className="h-5 w-5 text-blue-500 mr-2" />
+              {labels.dashboardPage.actionCosts}
+            </h3>
             <div className="space-y-3">
-              {user.improvements.map((improvement) => (
-                <Link
-                  to="/improved"
-                  state={{ response_text: improvement.ai_improvements }}
-                  className="block no-underline"
-                  key={improvement.id}
-                >
-                  <div className="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:border-l-4 hover:border-l-blue-500">
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-lg font-semibold text-gray-800">
-                          {improvement.job_title}
-                        </h3>
-                        <p className="text-sm text-gray-600 line-clamp-2">
-                          {improvement.job_description}
-                        </p>
-                      </div>
-                      <div className="flex flex-col items-end">
-                        <span className="text-xs text-gray-500">
-                          {new Date(
-                            improvement.createdAt.seconds * 1000 +
-                            improvement.createdAt.nanoseconds / 1000000
-                          ).toLocaleDateString()}
-                        </span>
-                        <span
-                          className={`mt-1 inline-block px-2 py-1 text-xs font-semibold rounded-full ${improvement.status === "completed"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-yellow-100 text-yellow-800"
-                            }`}
-                        >
-                          {improvement.status}
-                        </span>
-                      </div>
-                    </div>
+              <div className="flex items-center p-2 hover:bg-blue-50 rounded-lg transition-colors">
+                <div className="flex-shrink-0 w-2 h-2 bg-blue-400 rounded-full mr-3"></div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-700">{labels.dashboardPage.keywordOptimization}</p>
+                </div>
+                <span className="text-xs font-medium bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                  {system.keyword_extraction} {labels.dashboardPage.credit}{system.keyword_extraction !== 1 && 's'}
+                </span>
+              </div>
+
+              <div className="flex items-center p-2 hover:bg-blue-50 rounded-lg transition-colors">
+                <div className="flex-shrink-0 w-2 h-2 bg-blue-400 rounded-full mr-3"></div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-700">{labels.dashboardPage.atsReoptimization}</p>
+                </div>
+                <span className="text-xs font-medium bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                  {system.ats_analysis} {labels.dashboardPage.credit}{system.ats_analysis !== 1 && 's'}
+                </span>
+              </div>
+
+              <div className="flex items-center p-2 hover:bg-indigo-50 rounded-lg transition-colors">
+                <div className="flex-shrink-0 w-2 h-2 bg-indigo-400 rounded-full mr-3"></div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-700">{labels.dashboardPage.resumeCreation}</p>
+                </div>
+                <span className="text-xs font-medium bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">
+                  {system.resume_creation} {labels.dashboardPage.credit}{system.resume_creation !== 1 && 's'}
+                </span>
+              </div>
+
+              {system.resume_optimization && (
+                <div className="flex items-center p-2 hover:bg-purple-50 rounded-lg transition-colors">
+                  <div className="flex-shrink-0 w-2 h-2 bg-purple-400 rounded-full mr-3"></div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-gray-700">{labels.dashboardPage.resumeOptimization}</p>
                   </div>
-                </Link>
-              ))}
+                  <span className="text-xs font-medium bg-purple-100 text-purple-800 px-2 py-1 rounded-full">
+                    {system.resume_optimization} {labels.dashboardPage.credit}{system.resume_optimization !== 1 && 's'}
+                  </span>
+                </div>
+              )}
             </div>
-          ) : (
-            <div className="bg-white p-6 rounded-lg text-center">
-              <p className="text-gray-500">{labels.dashboardPage.noImprovements}</p>
-            </div>
-          )}
-        </div>
-      )
-      }
+          </div>
 
-      {activeTab === 'creations' && (
-        <div className="space-y-6">
-          {user.creations?.length > 0 ? (
+          {/* Quick Links */}
+          <div className="bg-white p-4 rounded-xl shadow-sm">
+            <h3 className="font-semibold text-gray-800 mb-3">{labels.dashboardPage.quickActions}</h3>
+            <div className="space-y-2">
+              <Link
+                to="/create-resume"
+                className="flex items-center p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+              >
+                <SparklesIcon className="h-5 w-5 mr-2" />
+                {labels.dashboardPage.newResume}
+              </Link>
+              <Link
+                to="/resume"
+                className="flex items-center p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+              >
+                <ChartBarIcon className="h-5 w-5 mr-2" />
+                {labels.dashboardPage.improveCurrent}
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <div className="lg:col-span-3">
+          {/* Tab Navigation with Sort */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+            <div className="flex border-b border-gray-200">
+              <button
+                className={`px-4 py-2 font-medium flex items-center ${activeTab === 'improvements' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
+                onClick={() => setActiveTab('improvements')}
+              >
+                <SparklesIcon className="h-4 w-4 mr-2" />
+                {labels.dashboardPage.improvements}
+              </button>
+              <button
+                className={`px-4 py-2 font-medium flex items-center ${activeTab === 'creations' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
+                onClick={() => setActiveTab('creations')}
+              >
+                <DocumentTextIcon className="h-4 w-4 mr-2" />
+                {labels.dashboardPage.creations}
+              </button>
+              <button
+                className={`px-4 py-2 font-medium flex items-center ${activeTab === 'drafts' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
+                onClick={() => setActiveTab('drafts')}
+              >
+                <ClockIcon className="h-4 w-4 mr-2" />
+                {labels.dashboardPage.drafts}
+              </button>
+            </div>
+
+            <div className="flex items-center text-sm">
+              <span className="mr-2 text-gray-500">{labels.dashboardPage.sort}:</span>
+              <button
+                onClick={() => setSortOrder(sortOrder === 'newest' ? 'oldest' : 'newest')}
+                className="flex items-center text-blue-600 hover:text-blue-800"
+              >
+                {sortOrder === 'newest' ? labels.dashboardPage.newest : labels.dashboardPage.oldest}
+                <CalendarIcon className="h-4 w-4 ml-1" />
+              </button>
+            </div>
+          </div>
+
+          {/* Content based on active tab */}
+          {activeTab === 'improvements' && (
             <div className="space-y-3">
-              {user.creations.map((draft) => (
-                (draft.status === "created" &&
+              {user.improvements?.length > 0 ? (
+                sortItems(user.improvements).map((improvement) => (
                   <Link
-                    to="/preview-resume"
-                    state={{ idCreation: draft.id }}
-                    className="block no-underline"
-                    key={draft.id}
+                    to="/improved"
+                    state={{ response_text: improvement.ai_improvements }}
+                    className="block no-underline group"
+                    key={improvement.id}
                   >
-                    <div className="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:border-l-4 hover:border-l-blue-500">
-                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                        <div className="hidden lg:flex flex-col items-end">
-                          <div className="flex flex-col items-center">
-                            <p className="text-xs">ATS</p>
-                            <RoundedATSIndicador score={draft.ats.ats_score} className={"w-10 h-10"} />
-                          </div>
-                        </div>
+                    <div className="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 group-hover:ring-2 group-hover:ring-blue-200">
+                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                         <div className="flex-1 min-w-0">
-                          <h3 className="text-lg font-semibold text-gray-800">
-                            {draft.job_title}
+                          <h3 className="text-lg font-semibold text-gray-800 truncate">
+                            {improvement.job_title}
                           </h3>
                           <p className="text-sm text-gray-600 line-clamp-2">
-                            {draft.job_description}
+                            {improvement.job_description}
                           </p>
                         </div>
-                        <div className="flex flex-row items-center justify-between md:flex-col md:items-end gap-2">
-                          <div className="flex lg:hidden flex-col items-center">
-                            <p className="text-xs">ATS</p>
-                            <RoundedATSIndicador score={draft.ats.ats_score} className={"w-10 h-10"} />
-                          </div>
-                          <div className="flex flex-col items-end">
-                            <span className="text-xs text-gray-500">
-                              {new Date(
-                                draft.createdAt.seconds * 1000 +
-                                draft.createdAt.nanoseconds / 1000000
-                              ).toLocaleDateString()}
+                        <div className="flex items-center gap-4">
+                          <div className="text-right">
+                            <span className="text-xs text-gray-500 flex items-center">
+                              <CalendarIcon className="h-3 w-3 mr-1" />
+                              {formatDate(improvement.createdAt)}
                             </span>
                             <span
-                              className={`mt-1 inline-block px-2 py-1 text-xs font-semibold rounded-full ${draft.status === "created"
-                                  ? "bg-green-100 text-green-800"
-                                  : "bg-yellow-100 text-yellow-800"
+                              className={`mt-1 inline-block px-2 py-1 text-xs font-semibold rounded-full ${improvement.status === "completed"
+                                ? "bg-green-100 text-green-800"
+                                : "bg-yellow-100 text-yellow-800"
                                 }`}
                             >
-                              {draft.status}
+                              {improvement.status}
                             </span>
                           </div>
                         </div>
                       </div>
                     </div>
                   </Link>
-                )
-              ))}
-            </div>
-          ) : (
-            <div className="bg-white p-6 rounded-lg text-center">
-              <p className="text-gray-500">{labels.dashboardPage.noCreations}</p>
+                ))
+              ) : (
+                <div className="bg-white p-8 rounded-lg text-center">
+                  <DocumentTextIcon className="mx-auto h-12 w-12 text-gray-300" />
+                  <p className="text-gray-500 mt-4">{labels.dashboardPage.noImprovements}</p>
+                  <Link
+                    to="/improve-resume"
+                    className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
+                  >
+                    {labels.dashboardPage.noImprovements}
+                  </Link>
+                </div>
+              )}
             </div>
           )}
-        </div>
-      )}
 
-
-      {activeTab === 'drafts' && (
-        <div className="space-y-6">
-          {user.creations?.length > 0 ? (
+          {activeTab === 'creations' && (
             <div className="space-y-3">
-              {user.creations.map((draft) => (
-                (draft.status === "draft" &&
+              {user.creations?.filter(c => c.status === "created").length > 0 ? (
+                sortItems(user.creations.filter(c => c.status === "created")).map((draft) => (
                   <Link
-                    to="/create-resume"
-                    state={{ isOptimizedDraft: true, item: draft }}
-                    className="block no-underline"
+                    to="/preview-resume"
+                    state={{ idCreation: draft.id }}
+                    className="block no-underline group"
                     key={draft.id}
                   >
-                    <div className="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:border-l-4 hover:border-l-blue-500">
-                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div className="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 group-hover:ring-2 group-hover:ring-blue-200">
+                      <div className="flex items-start gap-4">
+                        <div className="flex-shrink-0">
+                          <RoundedATSIndicador score={draft.ats?.ats_score || 0} size="md" className={"w-10 h-10"} />
+                        </div>
                         <div className="flex-1 min-w-0">
                           <h3 className="text-lg font-semibold text-gray-800 truncate">
                             {draft.job_title}
@@ -318,41 +336,92 @@ function Dashboard() {
                             {draft.job_description}
                           </p>
                         </div>
-                        <div className="flex flex-row items-center justify-between md:flex-col md:items-end gap-2">
-                          <div className="flex flex-col items-end">
-                            <span className="text-xs text-gray-500">
-                              {new Date(
-                                draft.createdAt.seconds * 1000 +
-                                draft.createdAt.nanoseconds / 1000000
-                              ).toLocaleDateString()}
-                            </span>
-                            <span
-                              className={`mt-1 inline-block px-2 py-1 text-xs font-semibold rounded-full ${draft.status === "completed"
-                                ? "bg-green-100 text-green-800"
-                                : "bg-yellow-100 text-yellow-800"
-                                }`}
-                            >
-                              {draft.status}
-                            </span>
-                          </div>
+                        <div className="text-right">
+                          <span className="text-xs text-gray-500 flex items-center justify-end">
+                            <CalendarIcon className="h-3 w-3 mr-1" />
+                            {formatDate(draft.createdAt)}
+                          </span>
+                          <span
+                            className={`mt-1 inline-block px-2 py-1 text-xs font-semibold rounded-full ${draft.status === "created"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-yellow-100 text-yellow-800"
+                              }`}
+                          >
+                            {draft.status}
+                          </span>
                         </div>
                       </div>
                     </div>
                   </Link>
-                )
-              ))}
+                ))
+              ) : (
+                <div className="bg-white p-8 rounded-lg text-center">
+                  <DocumentTextIcon className="mx-auto h-12 w-12 text-gray-300" />
+                  <p className="text-gray-500 mt-4">{labels.dashboardPage.noCreations}</p>
+                  <Link
+                    to="/create-resume"
+                    className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
+                  >
+                    {labels.dashboardPage.noCreations}
+                  </Link>
+                </div>
+              )}
             </div>
-          ) : (
-            <div className="bg-white p-6 rounded-lg text-center">
-              <p className="text-gray-500">{labels.dashboardPage.noDrafts}</p>
+          )}
+
+          {activeTab === 'drafts' && (
+            <div className="space-y-3">
+              {user.creations?.filter(c => c.status === "draft").length > 0 ? (
+                sortItems(user.creations.filter(c => c.status === "draft")).map((draft) => (
+                  <Link
+                    to="/create-resume"
+                    state={{ isOptimizedDraft: true, item: draft }}
+                    className="block no-underline group"
+                    key={draft.id}
+                  >
+                    <div className="p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 group-hover:ring-2 group-hover:ring-blue-200">
+                      <div className="flex items-center justify-between gap-4">
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-lg font-semibold text-gray-800 truncate">
+                            {draft.job_title}
+                          </h3>
+                          <p className="text-sm text-gray-600 line-clamp-2">
+                            {draft.job_description}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <span className="text-xs text-gray-500 flex items-center justify-end">
+                            <CalendarIcon className="h-3 w-3 mr-1" />
+                            {formatDate(draft.createdAt)}
+                          </span>
+                          <span
+                            className={`mt-1 inline-block px-2 py-1 text-xs font-semibold rounded-full ${draft.status === "draft"
+                              ? "bg-yellow-100 text-yellow-800"
+                              : "bg-gray-100 text-gray-800"
+                              }`}
+                          >
+                            {draft.status}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))
+              ) : (
+                <div className="bg-white p-8 rounded-lg text-center">
+                  <ClockIcon className="mx-auto h-12 w-12 text-gray-300" />
+                  <p className="text-gray-500 mt-4">{labels.dashboardPage.noDrafts}</p>
+                </div>
+              )}
             </div>
           )}
         </div>
-      )}
+      </div>
 
       {/* Feedback Section */}
       <div className="mt-12 bg-white p-6 rounded-xl shadow-sm">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <SparklesIcon className="h-5 w-5 text-blue-500 mr-2" />
           {labels.formFeedback.title}
         </h2>
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
