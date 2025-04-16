@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { ProBadge, ProFeatureEnabled, ProIco } from './Badge';
 import { RoundedATSIndicador } from './RoundedATSIndicator';
 import { useAuth } from '../../contexts/AuthContext';
@@ -53,7 +53,6 @@ export default function PreviewResumeLayout() {
   const highlightResume = (formatted_text, keyword) => {
     const keywords_array = keyword.map(obj => obj.keyword);
     const pattern = new RegExp(`\\b(${keywords_array.join('|')})\\b`, 'gi');
-    console.log(pattern)
     return formatted_text.replace(pattern, match => `!!${match}!!`);
   }
 
@@ -225,20 +224,16 @@ export default function PreviewResumeLayout() {
           <title>Resume</title>
           <style>
             body {
-              font-family: 'Segoe UI Emoji', 'Noto Color Emoji', 'Apple Color Emoji', 
-                          'Roboto', 'Helvetica Neue', Arial, sans-serif;
+              font-family: 'Arial', 'Helvetica Neue', Arial, sans-serif;
             }
-            .emoji {
-              font-family: 'Segoe UI Emoji', 'Noto Color Emoji', 'Apple Color Emoji';
-              display: inline-block;
-              width: 1.2em;
-              text-align: center;
+            @page {
+              size: A4;
+              margin: 0.5in;
             }
-            .emoji.phone { color: inherit !important; }
           </style>
         </head>
         <body>
-          ${prepareIcons(cleanedHTML)}
+          ${cleanedHTML}
         </body>
         </html>
       `;

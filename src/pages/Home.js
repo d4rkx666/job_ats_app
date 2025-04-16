@@ -1,5 +1,6 @@
 import React from 'react';
-import { ArrowPathIcon, BoltIcon, ChartBarIcon, CloudArrowDownIcon, CommandLineIcon, DocumentTextIcon, SparklesIcon } from '@heroicons/react/24/outline';
+import { Link } from 'react-router-dom';
+import { BoltIcon, ChartBarIcon, CloudArrowDownIcon, CommandLineIcon, DocumentTextIcon, SparklesIcon } from '@heroicons/react/24/outline';
 import {useConfig} from "../contexts/ConfigContext"
 
 
@@ -66,12 +67,9 @@ function Home() {
                 </p>
                 <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                   <div className="rounded-md shadow">
-                    <a
-                      href="#"
-                      className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10"
-                    >
+                    <Link to="/signup" className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10">
                       {labels.home.getStartedBtn}
-                    </a>
+                    </Link>
                   </div>
                   <div className="mt-3 sm:mt-0 sm:ml-3">
                     <a
@@ -209,12 +207,9 @@ function Home() {
           <p className="mt-4 text-lg leading-6 text-blue-200">
           {labels.home.footer.subtitle}
           </p>
-          <a
-            href="#"
-            className="mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50 sm:w-auto"
-          >
-            {labels.home.footer.tryPro}
-          </a>
+          <Link to="/signup" className="mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50 sm:w-auto">
+          {labels.home.footer.tryPro}
+          </Link>
         </div>
       </div>
     </div>
