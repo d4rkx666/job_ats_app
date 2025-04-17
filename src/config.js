@@ -341,7 +341,9 @@ export const config = {
             noTools: "No tools identified",
             softSkills: "Soft Skills",
             noSoftSkills: "No soft skills identified",
-            certs: "Certifications"
+            certs: "Certifications",
+            proEnabled: "Advanced keyword analysis enabled",
+            lastExtracted: "Last extracted keywords"
          },
          creditEmptyModal:{
             outOf:"Out of Credits!",
@@ -711,7 +713,9 @@ export const config = {
             noTools: "Herramientas o Tecnologías no encontradas",
             softSkills: "Habilidades suaves",
             noSoftSkills: "Habilidades suaves no encontradas",
-            certs: "Certificaciones"
+            certs: "Certificaciones",
+            proEnabled: "Análisis de Palabras Clave habilitada",
+            lastExtracted: "Últimas Palabras Clave extraídas"
          },
          creditEmptyModal:{
             outOf:"¡Sin Créditos!",
