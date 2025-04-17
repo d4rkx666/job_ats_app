@@ -32,9 +32,12 @@ export function AuthProvider({ children }) {
 
         // Clean up the Firestore listener when the component unmounts
         return () => unsubscribeFirestore();
+      }else{
+        logout()
       }
     });
 
+    
     preventDataLostRefreshing();
 
     return () => unsubscribe(); // Cleanup subscription
