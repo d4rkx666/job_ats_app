@@ -1,5 +1,5 @@
 import { ProBadge, ProFeatureEnabled } from "./Badge";
-export const KeywordList = ({isPro, keywords, labels}) => {
+export const KeywordList = ({isPro, keywords, labels, profile = false}) => {
 
    const KeywordPill = ({ keyword, variant = 'primary', showCount = false }) => {
       const variants = {
@@ -35,7 +35,7 @@ export const KeywordList = ({isPro, keywords, labels}) => {
       <div className="space-y-8">
          {/* Premium Features Badge */}
          {isPro && (
-            <ProFeatureEnabled labels={labels} featureText={"Advanced keyword analysis enabled"}/>
+            <ProFeatureEnabled labels={labels} featureText={labels.keywordList.proEnabled}/>
          )}
 
          {/* Keyword Categories */}
