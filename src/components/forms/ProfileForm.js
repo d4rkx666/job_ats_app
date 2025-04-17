@@ -1,10 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import WorkExperienceSection from "../common/JobEntry"
 import EducationSection from "../common/EducationEntry"
+import FormInput from "../common/FormInputProfile"
+import { DocumentTextIcon, BriefcaseIcon, CodeBracketIcon, CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 
-function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkills, isLoading, labels, userData}) {
+function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkills, isLoading, isSavedForms, labels, userData}) {
   const { register, handleSubmit, control, reset, watch, setValue, trigger, formState:{errors} } = useForm({
     defaultValues: {
       jobs: userData.profile?.jobs || [{}], // Initialize with one empty job
@@ -14,7 +16,9 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
         phone: userData.profile?.contact?.phone || "",
         linkedin: userData.profile?.contact?.linkedin || "",
         website: userData.profile?.contact?.website || ""
-      }
+      },
+      skills: userData.profile?.skills || [],
+      projects: userData.profile?.projects || []
     },
     mode: "all",
   });
@@ -23,12 +27,6 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
   const [errorAutoSaved, setErrorAutoSaved] = useState("" || null);
   const [autoSaving, setAutoSaving] = useState("" || null)
   const [skillSaved, setSkillSaved] = useState("" || null);
-
-  useEffect(()=>{
-    setValue('skills', userData.profile?.skills || []);
-    setValue('projects', userData.profile?.projects || []);
-    
-  },[userData, reset]);
 
   // Watch personalData && skills fields
   const personalData = watch("personalData");
@@ -42,9 +40,8 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
       const currentValue = personalData[fieldName];
 
       // Don't save if no changes
-      if (currentValue !== userData?.[fieldName]) {
+      if (currentValue !== userData?.profile?.contact?.[fieldName]) {
         setAutoSaving(fieldName); // Saving
-
         // Save info
         const isSaved = await autoSavePersonalInformation(personalData);
         setAutoSaving(null); //stop
@@ -112,109 +109,160 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
       }
     }
   }
-  
 
   return (
-    <div className="p-8 bg-gray-100 min-h-screen">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {/* Personal Information (Auto-Save on Blur) */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <h2 className="text-xl font-semibold mb-1">{labels.formProfile.personalInformation.title}</h2>
-          <h5 className="text-sm text-gray-500 font-semibold">{labels.formProfile.personalInformation.subtitle}</h5>
-          <h5 className="text-sm text-gray-500 font-semibold mb-4">{labels.formProfile.personalInformation.subtitle2}</h5>
-          <div className="space-y-4">
-            <input
-              type='text'
-              value={userData.name}
-              disabled={true}
-              className={`w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
-            />
-            <input
-              {...register('personalData.email', { required: "Required",
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
+
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+        {/* Personal Information */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="p-6 border-b border-gray-100 bg-gray-50">
+            <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+              <DocumentTextIcon className="h-5 w-5 text-blue-600 mr-2" />
+              {labels.formProfile.personalInformation.title}
+            </h2>
+            <p className="text-sm text-gray-500 mt-1">{labels.formProfile.personalInformation.subtitle}</p>
+          </div>
+          <div className="p-6">
+            <FormInput
+              name="personalData.email"
+              register={register}
+              errors={errors}
+              recentlySaved={recentlySaved}
+              autoSaving={autoSaving}
+              errorAutoSaved={errorAutoSaved}
+              handlePersonalDataBlur={handlePersonalDataBlur}
+              label="Email"
+              type="text"
+              placeholder={userData.profile?.contact?.email || labels.formProfile.personalInformation.email}
+              rules={{ 
+                required: "Required",
                 pattern: {
                   value: /\S+@\S+\.\S+/,
                   message: labels.formPatternValidation.email,
-                },
-              })}
-              onBlur={() => handlePersonalDataBlur('email')}
-              type="email"
-              placeholder={userData.profile?.contact?.email || labels.formProfile.personalInformation.email}
-              className={`w-full p-2 border rounded ${ (errors.personalData?.email || errorAutoSaved === "email") ? "border-red-500" : "border-green-500"} ${recentlySaved === 'email' && 'ring-2 ring-green-500 animate-pulse-once'} ${autoSaving === "email" && "animate-auto-saving"}  ${recentlySaved === 'email' && "animate-pulse-once"} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+                }
+              }}
+              autoSave
             />
-            <input
-              {...register('personalData.phone', { required: "Required",
-                pattern: {
-                value: /^(\+\d{1,3}[- ]?)?\d{10}$/,
-                message: "Entered value does not match phone format",
-              }},)}
-              onBlur={() => handlePersonalDataBlur('phone')}
+            
+            <FormInput
+              name="personalData.phone"
+              register={register}
+              errors={errors}
+              recentlySaved={recentlySaved}
+              autoSaving={autoSaving}
+              errorAutoSaved={errorAutoSaved}
+              handlePersonalDataBlur={handlePersonalDataBlur}
+              label="Phone"
               type="tel"
               placeholder={userData.profile?.contact?.phone || labels.formProfile.personalInformation.phone}
-              className={`w-full p-2 border rounded ${ (errors.personalData?.phone || errorAutoSaved === "phone") ? "border-red-500" : "border-green-500"} ${recentlySaved === 'phone' && 'ring-2 ring-green-500 animate-pulse-once'} ${autoSaving === "phone" && "animate-auto-saving"}  ${recentlySaved === 'phone' && "animate-pulse-once"} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
-            />
-            <input
-              {...register('personalData.linkedin', {
+              rules={{ 
+                required: "Required",
                 pattern: {
-                  value: /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,
-                  message: 'Invalid URL format'
+                  value: /^(\+\d{1,3}[- ]?)?\d{10}$/,
+                  message: labels.formPatternValidation.phone,
                 }
-              })}
-              onBlur={() => handlePersonalDataBlur('linkedin')}
-              type="text"
+              }}
+              autoSave
+            />
+            
+            <FormInput
+              name="personalData.linkedin"
+              register={register}
+              errors={errors}
+              recentlySaved={recentlySaved}
+              autoSaving={autoSaving}
+              errorAutoSaved={errorAutoSaved}
+              handlePersonalDataBlur={handlePersonalDataBlur}
+              label="LinkedIn"
               placeholder={userData.profile?.contact?.linkedin || labels.formProfile.personalInformation.linkedin}
-              className={`w-full p-2 border rounded ${ (errors.personalData?.linkedin || errorAutoSaved === "linkedin") ? "border-red-500" : "border-green-500"} ${recentlySaved === 'linkedin' && 'ring-2 ring-green-500 animate-pulse-once'} ${autoSaving === "linkedin" && "animate-auto-saving"}  ${recentlySaved === 'linkedin' && "animate-pulse-once"} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
-            />
-            <input
-              {...register('personalData.website', {
+              rules={{
                 pattern: {
                   value: /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,
-                  message: 'Invalid URL format'
+                  message: labels.formPatternValidation.url,
                 }
-              })}
-              onBlur={() => handlePersonalDataBlur('website')}
-              type="text"
+              }}
+              autoSave
+            />
+            
+            <FormInput
+              name="personalData.website"
+              register={register}
+              errors={errors}
+              recentlySaved={recentlySaved}
+              autoSaving={autoSaving}
+              errorAutoSaved={errorAutoSaved}
+              handlePersonalDataBlur={handlePersonalDataBlur}
+              label="Website"
               placeholder={userData.website || labels.formProfile.personalInformation.website}
-              className={`w-full p-2 border rounded ${ (errors.personalData?.website || errorAutoSaved === "website") ? "border-red-500" : "border-green-500"} ${recentlySaved === 'website' && 'ring-2 ring-green-500 animate-pulse-once'} ${autoSaving === "website" && "animate-auto-saving"}  ${recentlySaved === 'website' && "animate-pulse-once"} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+              rules={{
+                pattern: {
+                  value: /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,
+                  message: labels.formPatternValidation.url,
+                }
+              }}
+              autoSave
             />
           </div>
         </div>
 
-        {/* Skills (Save on Button Click) */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <h2 className="text-xl font-semibold mb-1">{labels.formProfile.skills.title}</h2>
-          <h5 className="text-sm text-gray-500 font-semibold mb-4">{labels.formProfile.skills.subtitle}</h5>
-          <Controller
-            name="skills"
-            control={control}
-            defaultValue={[]}
-            render={({ field }) => (
-              <div>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {field.value.map((skill, index) => (
-                    <div key={index} className={`bg-blue-100 text-blue-800 px-3 py-1 rounded-full ${(recentlySaved === 'skills' && skill===skillSaved) && 'animate-pulse-once'} ${(autoSaving === "skills" && skill===skillSaved) && "animate-auto-saving"}`} >
-                      {skill}
-                      <button
-                        type="button"
-                        onClick={() => handleActionSkills("delete", field, index)}
-                        className="ml-2"
+        {/* Skills Section */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="p-6 border-b border-gray-100 bg-gray-50">
+            <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+              <CodeBracketIcon className="h-5 w-5 text-blue-600 mr-2" />
+              {labels.formProfile.skills.title}
+            </h2>
+            <p className="text-sm text-gray-500 mt-1">{labels.formProfile.skills.subtitle}</p>
+          </div>
+          <div className="p-6">
+            <Controller
+              name="skills"
+              control={control}
+              render={({ field }) => (
+                <div>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {field.value.map((skill, index) => (
+                      <div 
+                        key={index} 
+                        className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                          (recentlySaved === 'skills' && skill === skillSaved) ? 
+                          'bg-green-100 text-green-800 animate-pulse-once' : 
+                          'bg-blue-100 text-blue-800'
+                        }`}
                       >
-                        ×
-                      </button>
-                    </div>
-                  ))}
+                        {skill}
+                        <button
+                          type="button"
+                          onClick={() => handleActionSkills("delete", field, index)}
+                          className="ml-2 text-blue-600 hover:text-blue-800"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder={labels.formProfile.skills.addSkill}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      onChange={(e) => handleActionSkills("insert", field, 0, e)}
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                          handleActionSkills("insert", field, 0, e);
+                        }
+                      }}
+                    />
+                    {autoSaving === "skills" && (
+                      <div className="absolute right-3 top-3 w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-500 mt-2">{labels.formProfile.skills.subtitle2}</p>
                 </div>
-                <input
-                  type="text"
-                  placeholder={labels.formProfile.skills.addSkill}
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  onChange={(e) => handleActionSkills("insert", field, 0, e)}
-                  onKeyPress={(e) => {if (e.key === 'Enter') {handleActionSkills("insert", field, 0, e)}
-                  }}
-                />
-                <p className="text-gray-500 mt-1 font-semibold text-sm">{labels.formProfile.skills.subtitle2}</p>
-              </div>
-            )}
-          />
+              )}
+            />
+          </div>
         </div>
 
         {/* Education Section */}
@@ -226,7 +274,7 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
           errors={errors}
         />
 
-        {/* Work History Section */}
+        {/* Work Experience Section */}
         <WorkExperienceSection 
           control={control}
           register={register}
@@ -235,70 +283,116 @@ function CreateResumeForm({ onSubmit, autoSavePersonalInformation, autoSaveSkill
           errors={errors}
         />
 
-        {/* Projects (Save on Button Click) */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4">{labels.formProfile.project.title}</h2>
-          <Controller
-            name="projects"
-            control={control}
-            defaultValue={[]}
-            render={({ field }) => (
-              <div>
-                {field.value.map((project, index) => {
-                  const err = errors?.projects?.[index] || {};
-
-                  return (
-                    <div key={index} className="space-y-4 mb-6 p-4 border rounded-lg relative">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const newProjects = field.value.filter((_, i) => i !== index);
-                          setValue('projects', newProjects);
-                        }}
-                        className="absolute top-2 right-1 text-red-500 hover:text-red-700"
-                      >
-                        ×
-                      </button>
-                      <input
-                        {...register(`projects[${index}].name`, {required: "Required"})}
-                        placeholder={labels.formProfile.project.name}
-                        className={`w-full p-2 border rounded-md ${ err?.name ? "border-red-500" : ""} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
-                      />
-                      <textarea
-                        {...register(`projects[${index}].description`, {required: "Required"})}
-                        placeholder={labels.formProfile.project.description}
-                        className={`w-full p-2 border rounded-md ${ err?.description ? "border-red-500" : ""} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
-                      />
-                      <input
-                        {...register(`projects[${index}].technologies`, {required: "Required"})}
-                        placeholder={labels.formProfile.project.technologies}
-                        className={`w-full p-2 border rounded-md ${ err?.technologies ? "border-red-500" : ""} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
-                      />
-                    </div>
-                  );
-                })}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setValue('projects', [...field.value, { name: '', description: '', technologies: '' }]);
-                  }}
-                  className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
-                >
-                  {labels.formProfile.project.btnAdd}
-                </button>
-              </div>
-            )}
-          />
+        {/* Projects Section */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="p-6 border-b border-gray-100 bg-gray-50">
+            <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+              <BriefcaseIcon className="h-5 w-5 text-blue-600 mr-2" />
+              {labels.formProfile.project.title}
+            </h2>
+            <p className="text-sm text-gray-500 mt-1">{labels.formProfile.saveChanges}</p>
+          </div>
+          <div className="p-6">
+            <Controller
+              name="projects"
+              control={control}
+              render={({ field }) => (
+                <div className="space-y-4">
+                  {field.value.map((project, index) => {
+                    const err = errors?.projects?.[index] || {};
+                    return (
+                      <div key={index} className="relative p-4 border rounded-lg hover:border-blue-300 transition-colors">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const newProjects = field.value.filter((_, i) => i !== index);
+                            setValue('projects', newProjects);
+                          }}
+                          className="absolute top-2 right-2 text-gray-400 hover:text-red-500"
+                        >
+                          <XMarkIcon className="h-5 w-5" />
+                        </button>
+                        
+                        <FormInput
+                          name={`projects[${index}].name`}
+                          register={register}
+                          errors={errors}
+                          recentlySaved={recentlySaved}
+                          autoSaving={autoSaving}
+                          errorAutoSaved={errorAutoSaved}
+                          label={labels.formProfile.project.name}
+                          rules={{ required: "Required" }}
+                        />
+                        
+                        <div className="mb-4">
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            {labels.formProfile.project.description}
+                          </label>
+                          <textarea
+                            {...register(`projects[${index}].description`, { required: "Required" })}
+                            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                              err?.description ? "border-red-500" : "border-gray-300"
+                            }`}
+                            rows={3}
+                          />
+                        </div>
+                        
+                        <FormInput
+                          name={`projects[${index}].technologies`}
+                          register={register}
+                          errors={errors}
+                          recentlySaved={recentlySaved}
+                          autoSaving={autoSaving}
+                          errorAutoSaved={errorAutoSaved}
+                          label={labels.formProfile.project.technologies}
+                          rules={{ required: "Required" }}
+                        />
+                      </div>
+                    );
+                  })}
+                  
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setValue('projects', [...field.value, { name: '', description: '', technologies: '' }]);
+                    }}
+                    className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    {labels.formProfile.project.btnAdd}
+                  </button>
+                </div>
+              )}
+            />
+          </div>
         </div>
 
-        {/* Submit Button (Manual Save) */}
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="w-full mt-5 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
-        >
-          {isLoading ? labels.formProfile.btnSaving : labels.formProfile.btnSave}
-        </button>
+        {/* Submit Button */}
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            disabled={isLoading}
+            className={`w-full px-6 py-3 ${isSavedForms 
+              ? 'bg-green-100 text-green-800' 
+              : 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-lg shadow-md hover:from-blue-700 hover:to-indigo-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'} `}
+          >
+            {isLoading ? (
+              <div className='flex justify-center'>
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  {labels.formProfile.btnSaving}
+              </div>
+            ) : isSavedForms ? (
+              <div className='flex justify-center'>
+                  <CheckIcon className="h-5 w-5" />
+                  {labels.formProfile.btnSaved}
+              </div>
+            ) : (
+              labels.formProfile.btnSave
+            )}
+          </button>
+        </div>
       </form>
     </div>
   );

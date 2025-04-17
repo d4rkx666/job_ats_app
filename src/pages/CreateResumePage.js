@@ -93,7 +93,7 @@ function CreateResumePage() {
     }, 1000);
 
 
-    if(user.usage.current_credits < Number(process.env.REACT_APP_RESUME_CREATION_COST)){ 
+    if(user.usage.current_credits < Number(system.resume_creation)){ 
       setShowCreditModal(true);
       setIsLoading(false);
       return;
@@ -159,7 +159,7 @@ function CreateResumePage() {
   // Click when extracts keywords
   const handleOnExtraction = async () => {
     setIsLoadingKeywords(true);
-    if(user.usage.current_credits < Number(process.env.REACT_APP_KEYWORDS_OPTIMIZATION_COST)){ 
+    if(user.usage.current_credits < Number(system.keyword_extraction)){ 
       setShowCreditModal(true);
       setIsLoadingKeywords(false);
       return;
