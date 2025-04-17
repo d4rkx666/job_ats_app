@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { auth, db } from "../services/firebase";
-import { onAuthStateChanged, sendEmailVerification, signOut, reload, getIdToken  } from "firebase/auth";
+import { onAuthStateChanged, sendEmailVerification, signOut, reload, getIdToken, setPersistence, browserSessionPersistence  } from "firebase/auth";
 import { doc, onSnapshot } from "firebase/firestore"; // Import Firestore functions
 
 const AuthContext = createContext();
@@ -13,18 +13,20 @@ export function AuthProvider({ children }) {
 
   // Check if user is verified
   useEffect(() => {
+
+    // Logout users if browser closed
+    const initAuth = async () => {
+      await setPersistence(auth, browserSessionPersistence);
+    };
+    initAuth();
+
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
 
       if (firebaseUser){
 
-        const token = await getIdToken(firebaseUser, true);
+        // Set user state after refresh when user is valid
+        preventDataLostRefreshing();
 
-        // Check if token is expired
-        if (checkTokenExpiration(token)) {
-          logout();
-          return;
-        }
-        
         // Detect email verified
         setVerified(firebaseUser.emailVerified);
 
@@ -57,26 +59,8 @@ export function AuthProvider({ children }) {
       }
     });
 
-    
-    preventDataLostRefreshing();
-
     return () => unsubscribe(); // Cleanup subscription
   }, []);
-
-
-  const checkTokenExpiration = (token) => {
-    if (!token) return true; // Consider missing token as expired
-    
-    try {
-      // Decode the token (Firebase tokens are JWTs)
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      const expirationTime = payload.exp * 1000; // Convert to milliseconds
-      return Date.now() > expirationTime;
-    } catch (error) {
-      console.error("Error decoding token:", error);
-      return true; // Consider invalid token as expired
-    }
-  };
 
 
   // Check every 10 secs if user is verified

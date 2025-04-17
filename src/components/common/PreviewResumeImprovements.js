@@ -9,7 +9,7 @@ function PreviewResumeImprovements() {
   const labels = config.labels[language];
 
   const location = useLocation();
-  const { response_text, response_json = null } = location.state || "";
+  const { response_text, response_json = null, job_title} = location.state || "";
 
   // clean response:
   const cleaned_resume = response_text?.replace(/\s+/g, " ").trim();
@@ -51,7 +51,7 @@ function PreviewResumeImprovements() {
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
           {/* Header with gradient */}
           <div className="bg-gradient-to-r from-indigo-600 to-blue-500 p-8 text-white">
-            <h2 className="text-3xl font-bold mb-2">{labels.previewImprovement.title}</h2>
+            <h2 className="text-3xl font-bold mb-2">{job_title}</h2>
             <p className="text-blue-100">{labels.previewImprovement.subtitle}</p>
           </div>
 

@@ -266,7 +266,8 @@ function Dashboard() {
                     to="/improved"
                     state={{
                       response_text: improvement.ai_improvements ? improvement.ai_improvements : null,
-                      response_json: improvement.improvements_list ? improvement.improvements_list : null
+                      response_json: improvement.improvements_list ? improvement.improvements_list : null,
+                      job_title: improvement.job_title,
                     }}
                     className="block no-underline group"
                     key={improvement.id}
