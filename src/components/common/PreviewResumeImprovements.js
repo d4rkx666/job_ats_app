@@ -9,11 +9,11 @@ function PreviewResumeImprovements() {
   const labels = config.labels[language];
 
   const location = useLocation();
-  const { response_text } = location.state || "";
+  const { response_text, response_json = null } = location.state || "";
 
   // clean response:
   const cleaned_resume = response_text?.replace(/\s+/g, " ").trim();
-  const improvements = cleaned_resume ? JSON.parse(cleaned_resume).improvements : [];
+  const improvements = cleaned_resume ? JSON.parse(cleaned_resume).improvements : response_json != null ? response_json : [];
 
   // Animation variants
   const containerVariants = {
@@ -57,7 +57,7 @@ function PreviewResumeImprovements() {
 
           {/* Content */}
           <div className="p-8">
-            {improvements.length > 0 ? (
+            {improvements.length > 0 && response_text ? (
               <motion.div
                 variants={containerVariants}
                 initial="hidden"
@@ -110,6 +110,77 @@ function PreviewResumeImprovements() {
                               </span>
                               <span className="text-gray-700">{suggestion}</span>
                             </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            ) : improvements.length > 0 && response_json ? (
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                className="space-y-6"
+              >
+                {improvements.map((category, index) => (
+                  <motion.div
+                    key={index}
+                    variants={itemVariants}
+                    className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
+                  >
+                    <div className="flex items-start">
+                      <div className="flex-shrink-0 bg-gradient-to-br from-indigo-500 to-purple-600 p-3 rounded-lg shadow-sm">
+                        <svg
+                          className="h-6 w-6 text-white"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                      </div>
+                      <div className="ml-4 flex-1">
+                        <h3 className="text-xl font-bold text-gray-900 mb-3 tracking-tight">
+                          {category.category}
+                        </h3>
+                        <ul className="space-y-4">
+                          {category.suggestions.map((suggestion, idx) => (
+                            <motion.li
+                              key={idx}
+                              className="group"
+                              whileHover={{ x: 2 }}
+                            >
+                              <div className="flex items-start">
+                                <span className="flex-shrink-0 mt-1 mr-3">
+                                  <svg
+                                    className="h-5 w-5 text-indigo-400 group-hover:text-indigo-600 transition-colors"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M9 5l7 7-7 7"
+                                    />
+                                  </svg>
+                                </span>
+                                <div>
+                                  <p className="text-gray-800 font-medium">{suggestion.suggestion}</p>
+                                  {suggestion.advice && (
+                                    <p className="text-gray-500 mt-1 text-sm">{suggestion.advice}</p>
+                                  )}
+                                </div>
+                              </div>
+                            </motion.li>
                           ))}
                         </ul>
                       </div>
