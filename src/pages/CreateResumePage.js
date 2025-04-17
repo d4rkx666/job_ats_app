@@ -314,7 +314,7 @@ function CreateResumePage() {
                   to="/profile"
                   className="bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:from-blue-700 hover:to-blue-600 relative flex items-center justify-center px-6 py-3 font-medium  rounded-lg group"
                 >
-                    {labels.CreateResumeForm.getStartedBtn}
+                    {labels.createResumePage.getStartedBtn}
                     <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                     </svg>
