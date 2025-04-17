@@ -16,13 +16,21 @@ export function AuthProvider({ children }) {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
 
       if (firebaseUser){
+
+        const token = await getIdToken(firebaseUser, true);
+
+        // Check if token is expired
+        if (checkTokenExpiration(token)) {
+          logout();
+          return;
+        }
         
         // Detect email verified
         setVerified(firebaseUser.emailVerified);
 
         // Listen to Firestore updates for the user's document
         const userRef = doc(db, process.env.REACT_APP_DATABASE_USER, firebaseUser.uid);
-        const unsubscribeFirestore = onSnapshot(userRef, (doc) => {
+        const unsubscribeFirestoreUser = onSnapshot(userRef, (doc) => {
           if (doc.exists()) {
             const userData = doc.data();
             userData.token = firebaseUser.accessToken;
@@ -30,8 +38,20 @@ export function AuthProvider({ children }) {
           }
         });
 
+        // Listen to Firestore updates for the user's document
+        const systemRef = doc(db, process.env.REACT_APP_DATABASE_SYSVAR, process.env.REACT_APP_COLLECTION_SYSVAR);
+        const unsubscribeFirestoreSystem = onSnapshot(systemRef, (doc) => {
+          if (doc.exists()) {
+            const systemData = doc.data();
+            updateSystemData(systemData);
+          }
+        });
+
         // Clean up the Firestore listener when the component unmounts
-        return () => unsubscribeFirestore();
+        return () => {
+          unsubscribeFirestoreUser();
+          unsubscribeFirestoreSystem();
+        };
       }else{
         logout()
       }
@@ -44,30 +64,19 @@ export function AuthProvider({ children }) {
   }, []);
 
 
-  // For System variables
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-
-      if (firebaseUser){
-
-        // Listen to Firestore updates for the user's document
-        const systemRef = doc(db, process.env.REACT_APP_DATABASE_SYSVAR, process.env.REACT_APP_COLLECTION_SYSVAR);
-        const unsubscribeFirestore = onSnapshot(systemRef, (doc) => {
-          if (doc.exists()) {
-            const systemData = doc.data();
-            updateSystemData(systemData);
-          }
-        });
-
-        // Clean up the Firestore listener when the component unmounts
-        return () => unsubscribeFirestore();
-      }
-    });
-
-    preventDataLostRefreshing();
-
-    return () => unsubscribe(); // Cleanup subscription
-  }, []);
+  const checkTokenExpiration = (token) => {
+    if (!token) return true; // Consider missing token as expired
+    
+    try {
+      // Decode the token (Firebase tokens are JWTs)
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const expirationTime = payload.exp * 1000; // Convert to milliseconds
+      return Date.now() > expirationTime;
+    } catch (error) {
+      console.error("Error decoding token:", error);
+      return true; // Consider invalid token as expired
+    }
+  };
 
 
   // Check every 10 secs if user is verified
