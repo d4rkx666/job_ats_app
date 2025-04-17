@@ -15,6 +15,7 @@ function CreateResume() {
   const {user, logout} = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isSavedForms, setIsSavedForms] = useState(false);
 
   // Handler for form submission (manual save)
   const handleSubmit = async (data) => {
@@ -22,7 +23,10 @@ function CreateResume() {
 
     try {
       await save_profile({educations: data.educations, jobs: data.jobs, projects: data.projects}).then(response =>{
-        
+        if(response.success){
+          setIsSavedForms(true);
+          setTimeout(() => setIsSavedForms(false), 2000);
+        }
       }).catch(error =>{
         if (error.status === 500) {// token expired
           logout();
@@ -41,7 +45,7 @@ function CreateResume() {
 
     try {
       isSaved = await save_personal_information(data).then(response =>{
-        if(response.data.status === "success"){
+        if(response.success){
           return true;
         }else{
           return false;
@@ -65,7 +69,7 @@ function CreateResume() {
 
     try {
       isSaved = await save_skills({skills:data}).then(response =>{
-        if(response.data.status === "success"){
+        if(response.success){
           return true;
         }else{
           return false;
@@ -89,6 +93,7 @@ function CreateResume() {
     autoSaveSkills={autoSaveSkills}
     userData={user}
     isLoading={isLoading}
+    isSavedForms={isSavedForms}
     labels={labels}
     />
   );

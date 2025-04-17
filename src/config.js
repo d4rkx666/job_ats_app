@@ -198,7 +198,8 @@ export const config = {
             startDate: "Start Date",
             endDate: "EndDate",
             btnSave: "Save all",
-            btnSaving: "Save all",
+            btnSaving: "Saving...",
+            btnSaved: "Saved",
          },
          formFeedback:{
             title: "Your feedback",
@@ -211,7 +212,8 @@ export const config = {
          },
          formPatternValidation:{
             phone: "Phone must be a valid format (10 digits).",
-            email: "Email must be a valid format."
+            email: "Email must be a valid format.",
+            url: "URL must be a valid format."
          },
          previewResume:{
             title: "AI suggestions",
@@ -343,13 +345,12 @@ export const config = {
          },
          creditEmptyModal:{
             outOf:"Out of Credits!",
-            used: "You've used all",
+            used: "You've used all your",
             thisMonth: "free credits this month.",
             noCredits: "0 credits left",
-            used: "used",
             resetIn: "Credits reset in",
             days: "days",
-            poweredAIKWExtraction: "AI-powered keyword extraction",
+            poweredAIKWExtraction: "Smarter AI, Tools+",
             moreCredits: "x3 more credits",
             proUsed:"You’ve used all",
             proThisMonth: "credits this month.",
@@ -572,6 +573,7 @@ export const config = {
             endDate: "Fecha de terminación",
             btnSave: "Guardar todo",
             btnSaving: "Guardando...",
+            btnSaved: "Guardado",
          },
          formFeedback:{
             title: "Comentarios",
@@ -583,8 +585,9 @@ export const config = {
             btnLoading: "Enviando comentarios..."
          },
          formPatternValidation:{
-            phone: "El teléfono debe ser de un formato válido (10 digits).",
-            email: "El correo debe ser de un formato válido."
+            phone: "El teléfono debe ser de un formato válido (10 digitos).",
+            email: "El correo debe ser de un formato válido.",
+            url: "La URL debe tener un formato válido."
          },
          dashboardPage:{
             welcome: "Bienvenid@",
@@ -715,10 +718,9 @@ export const config = {
             used: "Has usado todos tus",
             thisMonth: "créditos gratuitos de este mes.",
             noCredits: "0 créditos disponibles",
-            used: "usado",
             resetIn: "Reseteo de créditos en",
             days: "días",
-            poweredAIKWExtraction: "Extracción de palabras clave impulsada por IA",
+            poweredAIKWExtraction: "IA más inteligente, Herramientas+",
             moreCredits: "x3+ veces más créditos",
             proUsed:"Has usado todos tus",
             proThisMonth: "créditos de este mes.",

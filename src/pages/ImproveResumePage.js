@@ -36,7 +36,7 @@ function ImproveResumePage() {
       setIsLoading(true);
 
       // Check credits
-      if(user.usage.current_credits < Number(process.env.REACT_APP_KEYWORDS_OPTIMIZATION_COST)){ 
+      if(user.usage.current_credits < Number(system.resume_optimization)){ 
          setShowCreditModal(true);
          setIsLoading(false);
          return;

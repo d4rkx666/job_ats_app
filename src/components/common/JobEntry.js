@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 import MonthYearPicker from "./Datepicker"
+import { SparklesIcon, DocumentTextIcon, AcademicCapIcon, BriefcaseIcon, CodeBracketIcon, CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const JobEntry = ({ id, index, isCurrentJobCheck, control, register, onDelete, labels, setValue, errors }) => {
 
@@ -11,16 +12,16 @@ const JobEntry = ({ id, index, isCurrentJobCheck, control, register, onDelete, l
   }, [isCurrentJobCheck]);
   
   return (
-    <div className="mb-6 p-4 border rounded-lg relative">
+    <div className="relative p-4 border rounded-lg hover:border-blue-300 transition-colors">
       <button
         type="button"
         onClick={onDelete}
-        className="absolute top-2 right-1 text-red-500 hover:text-red-700"
+        className="absolute top-2 right-2 text-gray-400 hover:text-red-500"
       >
-        ×
+        <XMarkIcon className="h-5 w-5" />
       </button>
 
-      <div className="space-y-4">
+      <div className="space-y-4 mt-4">
         <input
           {...register(`jobs.${index}.title`, {required: "Required"})}
           placeholder={labels.formProfile.work.jobTitle}
@@ -105,45 +106,52 @@ const WorkExperienceSection = ({ control, register, setValue, labels, errors }) 
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-      <h2 className="text-xl font-semibold mb-1">{labels.formProfile.work.title}</h2>
-      <h5 className="text-sm text-gray-500 font-semibold mb-4">{labels.formProfile.saveChanges}</h5>
+    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="p-6 border-b border-gray-100 bg-gray-50">
+        <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+          <DocumentTextIcon className="h-5 w-5 text-blue-600 mr-2" />
+          {labels.formProfile.work.title}
+        </h2>
+        <p className="text-sm text-gray-500 mt-1">{labels.formProfile.saveChanges}</p>
+      </div>
       
-      <Controller
-        name="jobs"
-        control={control}
-        defaultValue={[{}]} // Initialize with one empty job
-        render={({ field }) => (
-          <div>
-            {(field.value || []).map((job, index) => {
-              const isCurrentJob = job.endDate?.month === 0 && job.endDate?.year === 0 ? true : false;
-              
-              return (
-                <JobEntry
-                  key={jobIds[index]}
-                  id={jobIds[index]}
-                  index={index}
-                  isCurrentJobCheck={isCurrentJob}
-                  control={control}
-                  register={register}
-                  setValue={setValue}
-                  labels={labels}
-                  errors={errors?.jobs?.[index] || {}}
-                  onDelete={() => removeJob(index)}
-                />
-              );
-            })}
+      <div className="p-6">
+        <Controller
+          name="jobs"
+          control={control}
+          defaultValue={[{}]} // Initialize with one empty job
+          render={({ field }) => (
+            <div className='space-y-4'>
+              {(field.value || []).map((job, index) => {
+                const isCurrentJob = job.endDate?.month === 0 && job.endDate?.year === 0 ? true : false;
+                
+                return (
+                  <JobEntry
+                    key={jobIds[index]}
+                    id={jobIds[index]}
+                    index={index}
+                    isCurrentJobCheck={isCurrentJob}
+                    control={control}
+                    register={register}
+                    setValue={setValue}
+                    labels={labels}
+                    errors={errors?.jobs?.[index] || {}}
+                    onDelete={() => removeJob(index)}
+                  />
+                );
+              })}
 
-            <button
-              type="button"
-              onClick={addJob}
-              className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-            >
-              {labels.formProfile.work.btnAdd}
-            </button>
-          </div>
-        )}
-      />
+              <button
+                type="button"
+                onClick={addJob}
+                className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+              >
+                {labels.formProfile.work.btnAdd}
+              </button>
+            </div>
+          )}
+        />
+      </div>
     </div>
   );
 };
