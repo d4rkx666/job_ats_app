@@ -264,7 +264,10 @@ function Dashboard() {
                 sortItems(user.improvements).map((improvement) => (
                   <Link
                     to="/improved"
-                    state={{ response_text: improvement.ai_improvements }}
+                    state={{
+                      response_text: improvement.ai_improvements ? improvement.ai_improvements : null,
+                      response_json: improvement.improvements_list ? improvement.improvements_list : null
+                    }}
                     className="block no-underline group"
                     key={improvement.id}
                   >

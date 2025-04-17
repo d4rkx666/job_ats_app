@@ -56,8 +56,9 @@ function ImproveResumePage() {
          .then((response) => {
             if(response.success){
                // send json in text
-               const response_text = response.optimized_resume;
-               navigate("/improved",{ state:{ response_text }});
+               const response_json = JSON.parse(response.optimized_resume);
+               
+               navigate("/improved",{ state:{ response_json }});
             }else{
                switch(response.type_error){
                   case "no_credits_left":
