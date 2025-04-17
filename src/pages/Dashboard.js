@@ -303,7 +303,7 @@ function Dashboard() {
                   <DocumentTextIcon className="mx-auto h-12 w-12 text-gray-300" />
                   <p className="text-gray-500 mt-4">{labels.dashboardPage.noImprovements}</p>
                   <Link
-                    to="/improve-resume"
+                    to="/resume"
                     className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
                   >
                     {labels.dashboardPage.noImprovements}
