@@ -2,9 +2,9 @@
   "routes": [
     {
       "src": "/sitemap.xml",
+      "dest": "/src/sitemap",
       "headers": {
-        "Content-Type": "application/xml",
-        "Content-Encoding": "identity"
+        "Cache-Control": "no-store"
       }
     }
   ]

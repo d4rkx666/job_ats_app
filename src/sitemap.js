@@ -1,0 +1,58 @@
+export default function handler(req, res) {
+   const xml = `<?xml version="1.0" encoding="UTF-8"?>
+   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+     <url>
+         <loc>https://jobbooster.vercel.app/</loc>
+         <changefreq>daily</changefreq>
+         <priority>1.0</priority>
+      </url>
+      <url>
+         <loc>https://jobbooster.vercel.app/pricing</loc>
+         <changefreq>monthly</changefreq>
+         <priority>0.8</priority>
+      </url>
+      <url>
+         <loc>https://jobbooster.vercel.app/login</loc>
+         <changefreq>monthly</changefreq>
+         <priority>0.5</priority>
+      </url>
+      <url>
+         <loc>https://jobbooster.vercel.app/signup</loc>
+         <changefreq>monthly</changefreq>
+         <priority>0.5</priority>
+      </url>
+      <url>
+         <loc>https://jobbooster.vercel.app/dashboard</loc>
+         <changefreq>daily</changefreq>
+         <priority>0.9</priority>
+      </url>
+      <url>
+         <loc>https://jobbooster.vercel.app/profile</loc>
+         <changefreq>weekly</changefreq>
+         <priority>0.7</priority>
+      </url>
+      <url>
+         <loc>https://jobbooster.vercel.app/resume</loc>
+         <changefreq>weekly</changefreq>
+         <priority>0.7</priority>
+      </url>
+      <url>
+         <loc>https://jobbooster.vercel.app/create-resume</loc>
+         <changefreq>weekly</changefreq>
+         <priority>0.9</priority>
+      </url>
+      <url>
+         <loc>https://jobbooster.vercel.app/preview-resume</loc>
+         <changefreq>weekly</changefreq>
+         <priority>0.6</priority>
+      </url>
+      <url>
+         <loc>https://jobbooster.vercel.app/improved</loc>
+         <changefreq>weekly</changefreq>
+         <priority>0.6</priority>
+      </url>
+   </urlset>`;
+   
+   res.setHeader('Content-Type', 'application/xml');
+   res.send(xml);
+ }
