@@ -1,4 +1,5 @@
-export const UpgradeProKeywords = ({keywords}) => {
+import UpgradeProButton from "./UpgradeProButton"
+export const UpgradeProKeywords = ({keywords, labels}) => {
   return (
     <div className="mt-6 mb-6 space-y-4">
       {/* Pro Value Highlight */}
@@ -10,12 +11,11 @@ export const UpgradeProKeywords = ({keywords}) => {
             </svg>
           </div>
           <div className="ml-4">
-            <h3 className="text-lg font-medium text-gray-900">Unlock Full Keyword Analysis</h3>
+            <h3 className="text-lg font-medium text-gray-900">{labels.proLabel.unlockFullKwAnalysis}</h3>
             <p className="mt-1 text-sm text-gray-600">
-              Free users see {keywords.filter(k => ['hard_skill', 'soft_skill'].includes(k.type)).length} keywords.
-              Pro members get <span className="font-semibold">+{
+              {labels.keywordList.freeUsersSee} {keywords.filter(k => ['hard_skill', 'soft_skill'].includes(k.type)).length} {labels.keywordList.freeUsersSeeKw}. {labels.keywordList.proMembersGet} <span className="font-semibold">+{
                 keywords.filter(k => ['tool', 'certification'].includes(k.type)).length
-              } more</span> including:
+              } {labels.keywordList.proMembersGetMore} </span> {labels.keywordList.proMembersGetIncluding}:
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
               {keywords
@@ -34,15 +34,7 @@ export const UpgradeProKeywords = ({keywords}) => {
               )}
             </div>
             <div className="mt-4">
-              <button
-                type="button"
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
-              >
-                Upgrade to Pro
-                <svg className="ml-2 -mr-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                </svg>
-              </button>
+              <UpgradeProButton labels={labels}/>
             </div>
           </div>
         </div>

@@ -9,12 +9,18 @@ function Layout({ children }) {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <div className="flex flex-1">
-        {user && <Sidebar />}
-        <main className="flex-1">
-          {/* In case email is not verified */}
-          {(user && !verified) ? <VerifyEmailReminder/> : ""}
-          {children}</main>
+      
+      <div className="flex">
+        <div className="flex-none">
+          {user && <Sidebar />}
+        </div>
+        <div className="flex-1">
+          <main>
+            {/* In case email is not verified */}
+            {(user && !verified) ? <VerifyEmailReminder/> : ""}
+            {children}
+          </main>
+        </div>
       </div>
       <Footer />
     </div>

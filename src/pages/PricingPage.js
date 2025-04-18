@@ -68,7 +68,7 @@ const PricingPage = () => {
 
   return (
     <div className="bg-white py-5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-2 md:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto">
           <h1 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
@@ -110,7 +110,7 @@ const PricingPage = () => {
               </div>
               <a
                 href={plan.href}
-                className={`block w-full py-3 px-6 text-center rounded-md font-medium ${
+                className={`block w-full py-3 px-2 md:px-6 text-center rounded-md font-medium ${
                   plan.featured
                     ? 'bg-blue-600 text-white hover:bg-blue-700'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -145,19 +145,19 @@ const PricingPage = () => {
                 <tr>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-2 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Feature
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-2 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Free Plan
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-2 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Pro Plan
                   </th>
@@ -166,13 +166,13 @@ const PricingPage = () => {
               <tbody className="bg-white divide-y divide-gray-200">
                 {featureComparison.map((feature) => (
                   <tr key={feature.name}>
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                    <td className="px-2 md:px-6 py-4 text-sm font-medium text-gray-900">
                       {feature.name}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-500">
+                    <td className="px-2 md:px-6 py-4 text-sm text-gray-500">
                       {feature.starter}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-500">
+                    <td className="px-2 md:px-6 py-4 text-sm text-gray-500">
                       <div className="flex items-center">
                         {feature.professional}
                         {feature.name === 'ATS Optimization' && (

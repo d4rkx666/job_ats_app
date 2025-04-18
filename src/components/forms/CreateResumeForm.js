@@ -188,7 +188,7 @@ const CreateResumeForm = ({
             </div>
 
             {keywords?.length > 0 && !isPro && (
-              <UpgradeProKeywords keywords={keywords}/>
+              <UpgradeProKeywords keywords={keywords} labels={labels}/>
             )}
 
             {/* Extraction Panel (Shows when no keywords exist) */}
