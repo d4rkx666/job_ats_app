@@ -34,8 +34,8 @@ function Login() {
    };
 
    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-         <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+      <div className="min-h-screen items-center justify-center bg-gray-100 sm:pt-6">
+         <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md mx-auto">
             <div>
                <h1 className="text-3xl font-bold mb-6 text-center">{labels.menu.login}</h1>
                {error && <p className="text-red-500 text-sm mb-4">{error}</p>}

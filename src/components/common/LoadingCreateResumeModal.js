@@ -131,7 +131,7 @@ const LoadingCreateResumeModal = ({ progress, currentStep, elapsedTime, labels }
                 <div className="ml-3">
                   <h4 className="text-sm font-medium text-yellow-300">{labels.proLabel.proTip}</h4>
                   <p className="mt-1 text-xs text-gray-300">
-                    {labels.createResumePage.modalLoading.proTipInfo}
+                    {labels.createResumePage.modalLoading.proTipInf}
                   </p>
                 </div>
               </div>

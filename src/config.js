@@ -113,6 +113,7 @@ export const config = {
                   {label: "Mexico", value: "mex"},
                   {label: "Canada", value: "cad"},
                   {label: "USA", value: "usa"},
+                  {label: "Australia", value: "aut"},
                   {label: "Bosnia and Herzegovina", value:"ba"}
                ]
             },
@@ -133,7 +134,7 @@ export const config = {
             loginHere:"Login Here",
          },
          formImproveResume:{
-            title: "Optimize Your Resume",
+            title: "Let's analyse your resume and get you the best advice to stand out for recruiters",
             resumeFile:{
                label: "Upload Your Resume (PDF)",
                placeholder: "Click to upload or drag and drop",
@@ -226,7 +227,7 @@ export const config = {
             actionCosts: "Action Costs",
             atsReoptimization: "ATS Score analysis",
             keywordOptimization: "Keyword Extraction",
-            resumeOptimization: "Resume Optimization",
+            resumeOptimization: "Resume advice",
             credit: "credit",
             upgrade: "Upgrade to Pro for 50 credits/month →",
             resumeCreation: "Resume Creation",
@@ -303,7 +304,7 @@ export const config = {
                progress:"Progress",
                step:"Step",
                stepOf:"of",
-               proTipInf:"Our AI is crafting your resume for Applicant Tracking Systems (ATS) to maximize your interview chances.",
+               proTipInf:"Our AI is crafting your resume to Stand Out for recruiters and maximize your interview chances! We wil also ensure a high change to beat the Applicant Tracking Systems (ATS).",
                step1:{
                   title: "Initializing resume creation"
                },
@@ -330,6 +331,7 @@ export const config = {
             proUnlocks: "Pro unlocks:",
             buyExtraCredits: "Buy Extra Credits",
             proTip:"Pro Tip",
+            unlockFullKwAnalysis: "Unlock Full Keyword Analysis"
          },
          keywordList:{
             appears:"Appears",
@@ -343,7 +345,12 @@ export const config = {
             noSoftSkills: "No soft skills identified",
             certs: "Certifications",
             proEnabled: "Advanced keyword analysis enabled",
-            lastExtracted: "Last extracted keywords"
+            lastExtracted: "Last extracted keywords",
+            freeUsersSee:"Free users see",
+            freeUsersSeeKw: "keywords",
+            proMembersGet: "Pro members get",
+            proMembersGetMore: "more",
+            proMembersGetIncluding: "including",
          },
          creditEmptyModal:{
             outOf:"Out of Credits!",
@@ -387,8 +394,8 @@ export const config = {
             mobileMenu: "Menú",
             mobileMyAccount: "Mi cuenta",
             dashboard: "Mi panel",
-            resume: "Mejorar curriculum",
-            createResume: "Crear curriculum",
+            resume: "Impulsar CV",
+            createResume: "Crear currículum",
             pricing: "Precios",
             profile: "Perfil",
          },
@@ -414,7 +421,7 @@ export const config = {
                   },
                   two:{
                      name: "Seguimiento de puntaje ATS",
-                     description: "Obtén retroalimentación en tiempo real de qué tan bien tu CV actúa en Sistemas de Seguimiento de Aplicantes",
+                     description: "Obtén retroalimentación en tiempo real del desempeño de tu CV para los Sistemas de Seguimiento de Aplicantes",
                   },
                   three:{
                      name: "Análisis de Palabras Clave",
@@ -422,7 +429,7 @@ export const config = {
                   },
                   four:{
                      name: "Descargas instantes",
-                     description: "Exporta tu CV en múltiples formatos con un click",
+                     description: "Exporta tu CV en múltiples formatos con un solo clic",
                   },
                }
             },
@@ -433,7 +440,7 @@ export const config = {
                steps:{
                   step1:{
                      title: "Configura tu Perfil",
-                     description: "Configura tu Perfil con todas tus habilidades, en nuestro sistema",
+                     description: "Crea tu Perfil con todas tus habilidades y experiencias de trabajo",
                   },
                   step2:{
                      title: "Agrega la descripción de trabajo",
@@ -451,11 +458,11 @@ export const config = {
             },
             footer: {
                title: "¿Ready para impulsar tu CV?",
-               title2: "Empieza tu prueba grátis de Pro play hoy.",
-               subtitle: "Obtén 7 días de características Pro para que veas las diferencias por tí mismo. Debido a la sesión de pruebas pre venta, obtén más días grátis de Pro contactando al administrador.",
-               tryPro: "Prueba 7 días grátis de Pro"
+               title2: "Empieza tu prueba gratis de Pro play hoy.",
+               subtitle: "Obtén 7 días de características Pro para que veas las diferencias por tí mismo. Debido a la sesión de pruebas pre venta, obtén más días gratis de Pro contactando al administrador.",
+               tryPro: "Prueba 7 días gratis de Pro"
             },
-            getStartedBtn:"Inicia - Es grátis"
+            getStartedBtn:"Inicia - Es gratis"
          },
          formLogin:{
             email: {
@@ -489,6 +496,7 @@ export const config = {
                   {label: "México", value: "mex"},
                   {label: "Canadá", value: "cad"},
                   {label: "USA", value: "usa"},
+                  {label: "Australia", value: "aut"},
                   {label: "Bosnia y Herzegovina", value:"ba"}
                ]
             },
@@ -509,11 +517,11 @@ export const config = {
             loginHere:"Inicia sesión aquí",
          },
          formImproveResume:{
-            title: "Optimiza tu curriculum",
+            title: "Analicemos tu CV para darte los mejores consejos de cómo destacar para los reclutadores",
             resumeFile:{
                label: "Sube tu curriculum (PDF)",
-               placeholder: "Click para subir o arrastra y suelta tu archivo",
-               required: "El archivo de curriculum es obligatorio",
+               placeholder: "Clic para subir o arrastra y suelta tu archivo",
+               required: "El archivo de currículum es obligatorio",
                invalidType: "Sólo se permiten archivos PDF",
                invalidSize: "El tamaño del archivo debe ser menos de 5MB",
             },
@@ -564,7 +572,7 @@ export const config = {
                btnAdd: "+ Agregar otro trabajo"
             },
             project: {
-               title: "Projectos",
+               title: "Proyectos",
                name: "Nombre del proyecto",
                description : "Descripción",
                technologies : "Tecnologías",
@@ -596,9 +604,9 @@ export const config = {
             subWelcome: "Qué gusto tenerte por aquí.",
             creditsLeft: "créditos disponibles",
             actionCosts: "Costo de Acciones",
-            atsReoptimization: "Anáisis de puntaje de ATS",
+            atsReoptimization: "Análisis de puntaje de ATS",
             keywordOptimization: "Extracción de palabras clave",
-            resumeOptimization: "Optimización de CV",
+            resumeOptimization: "Consejos de CV",
             resumeCreation: "Creación de CV",
             credit: "crédito",
             upgrade: "Actualizar a Pro para tener 50 créditos/mes →",
@@ -675,7 +683,8 @@ export const config = {
                progress:"Progreso",
                step:"Paso",
                stepOf:"de",
-               proTipInf:"Nuestra IA está creando tu CV para Sistemas de Seguimiento de Aplicantes (ATS) para maximizar tus chances de entrevistas.",
+               proTipInf:"Our AI is crafting your resume to Stand Out for recruiters and maximize your interview chances! We wil also ensure a high change to beat the Applicant Tracking Systems (ATS).",
+               proTipInf:"¡Nuestra IA está construyendo tu CV para destacarte con los reclutadores y maximizar tus chances de tener entrevistas! También aseguramos un gran chance de pasar los Sitemas de Seguimiento de Aplicantes (ATS).",
                step1:{
                   title: "Inicializando la creación de CV"
                },
@@ -702,6 +711,7 @@ export const config = {
             proUnlocks: "Desbloqueos de Pro:",
             buyExtraCredits: "Comprar Créditos extras",
             proTip:"Tip Pro",
+            unlockFullKwAnalysis: "Desbloquea el análisis completo de Palabras Clave"
          },
          keywordList:{
             appears:"Aparece",
@@ -715,7 +725,12 @@ export const config = {
             noSoftSkills: "Habilidades suaves no encontradas",
             certs: "Certificaciones",
             proEnabled: "Análisis de Palabras Clave habilitada",
-            lastExtracted: "Últimas Palabras Clave extraídas"
+            lastExtracted: "Últimas Palabras Clave extraídas",
+            freeUsersSee:"Usuarios con plan gratuito ven",
+            freeUsersSeeKw: "Palabras Clave",
+            proMembersGet: "Miembros Pro obtienen",
+            proMembersGetMore: "más",
+            proMembersGetIncluding: "incluyendo",
          },
          creditEmptyModal:{
             outOf:"¡Sin Créditos!",

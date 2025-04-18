@@ -27,8 +27,8 @@ function Header() {
   }, [location]);
 
   return (
-    <div>
-      <nav className="relative px-4 py-4 flex justify-between items-center bg-white">
+    <div className="sticky top-0 z-20">
+      <nav className="relative px-4 py-2 md:py-4 flex justify-between items-center bg-white sticky top-0">
 
         {/* App Name */}
         <div className="text-2xl font-bold">
