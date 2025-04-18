@@ -2,10 +2,16 @@
   "routes": [
     {
       "src": "/sitemap.xml",
-      "dest": "/src/sitemap",
       "headers": {
-        "Cache-Control": "no-store"
-      }
+        "Content-Type": "application/xml",
+        "Cache-Control": "no-cache"
+      },
+      "continue": true
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html",
+      "status": 200
     }
   ]
 }
