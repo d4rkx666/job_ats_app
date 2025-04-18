@@ -2,11 +2,11 @@
   "routes": [
     {
       "src": "/sitemap.xml",
+      "dest": "/api/sitemap",
       "headers": {
-        "Content-Type": "application/xml",
-        "Cache-Control": "no-cache"
-      },
-      "continue": true
+        "Cache-Control": "no-store",
+        "Content-Type": "application/xml"
+      }
     },
     {
       "src": "/(.*)",
