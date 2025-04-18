@@ -32,8 +32,11 @@ function Header() {
 
         {/* App Name */}
         <div className="text-2xl font-bold">
-          <NavLink to="/" className="text-blue-700 no-underline hover:text-blue-300 transition duration-300">
+          <NavLink to="/" className="hidden md:flex text-blue-700 no-underline hover:text-blue-300 transition duration-300">
             {config.appName}
+          </NavLink>
+          <NavLink to="/" className="md:hidden text-blue-700 no-underline hover:text-blue-300 transition duration-300">
+            <img src="/logo.svg" alt="logo" className="w-10"/>
           </NavLink>
         </div>
 
@@ -124,7 +127,7 @@ function Header() {
         <nav className="fixed top-0 left-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-white border-r overflow-y-auto">
           <div className="flex items-center mb-8">
             <NavLink to="/" className="mr-auto text-3xl font-bold leading-none">
-              {config.appName}
+              <img src="/logo.svg" alt="logo" className="w-10"/>
             </NavLink>
             <button className="navbar-close" onClick={() => handleMobileMenu(false)}>
               <svg className="h-6 w-6 text-gray-400 cursor-pointer hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
