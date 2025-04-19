@@ -4,9 +4,12 @@
       "src": "/sitemap.xml",
       "dest": "/api/sitemap",
       "headers": {
-        "Cache-Control": "no-store",
         "Content-Type": "application/xml"
       }
+    },
+    {
+      "src": "/(.*)", 
+      "dest": "/index.html"
     }
   ]
 }
