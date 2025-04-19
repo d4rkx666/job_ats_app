@@ -48,7 +48,4 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "sitemap": "^8.0.0"
-  }
 }
