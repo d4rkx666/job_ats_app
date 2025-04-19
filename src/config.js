@@ -23,8 +23,8 @@ export const config = {
          home:{
             header:{
                title: "Land More Interviews",
-               title2: "With an ATS-Optimized Resume",
-               subtitle: "Our AI-powered platform analyzes job descriptions and optimizes your resume to beat applicant tracking systems.",
+               title2: "With an Applicant Tracking System-Optimized Resume",
+               subtitle: "Our AI-powered platform analyzes job descriptions and optimizes your resume to beat Applicant Tracking Systems (ATS).",
                seeHowItWorks: "What is ATS?"
             },
             whatIsAts:{
@@ -418,15 +418,15 @@ export const config = {
          },
          home:{
             header:{
-               title: "Aterriza más entrevistas",
-               title2: "Con un CV optimizado para ATS",
-               subtitle: "Nuestra plataforma de IA potenciada analiza descripciones de trabajo y crea/optimiza tu CV para vencer a el Sistema de Seguimiento de Candidatos (ATS).",
+               title: "Consigue más entrevistas de trabajo",
+               title2: "Con un Curriculum Vitae optimizado para el Sistema de Selección Automatizado",
+               subtitle: "Nuestra plataforma de IA potenciada analiza descripciones de trabajo y crea/optimiza tu Currículum Vitae (CV) para vencer al Sistema de Selección Automatizado (ATS).",
                seeHowItWorks: "¿Qué es el ATS?"
             },
             whatIsAts:{
                title: "Entendiendo al ATS",
-               subtitle: "¿Qué es el Sistema de Seguimiento de Candidatos?",
-               whatIs: "ATS (Applicant Tracking System o Sistema de Seguimiento de Candidatos) es un software usado por los reclutadores y empleadores para gestionar y filtrar las aplicaciones de candidatos.",
+               subtitle: "¿Qué es el Sistema de Selección Automatizado?",
+               whatIs: "ATS (Applicant Tracking System o Sistema de Selección Automatizado) es un software usado por los reclutadores y empleadores para gestionar y filtrar las aplicaciones de candidatos automáticamente.",
                affects: "¿Cómo el ATS afecta en tu búsqueda de empleo?",
                bulletPoints:[
                   "• Más del 75% de grandes compañías utilizan el ATS para filtrar los CVs de los candidatos antes de que lleguen a manos de un reclutador humano.",
@@ -447,7 +447,7 @@ export const config = {
                   },
                   two:{
                      name: "Seguimiento de puntaje ATS",
-                     description: "Obtén retroalimentación en tiempo real del desempeño de tu CV para el Sistema de Seguimiento de Candidatos",
+                     description: "Obtén retroalimentación en tiempo real del desempeño de tu CV para el Sistema de Selección Automatizado",
                   },
                   three:{
                      name: "Análisis de Palabras Clave",
@@ -709,7 +709,7 @@ export const config = {
                progress:"Progreso",
                step:"Paso",
                stepOf:"de",
-               proTipInf:"¡Nuestra IA está construyendo tu CV para destacarte con los reclutadores y maximizar tus chances de tener entrevistas! También aseguramos un gran chance de pasar los Sistema de Seguimiento de Candidatos (ATS).",
+               proTipInf:"¡Nuestra IA está construyendo tu CV para destacarte con los reclutadores y maximizar tus chances de tener entrevistas! También aseguramos un gran chance de pasar los Sistema de Selección Automatizado (ATS).",
                step1:{
                   title: "Inicializando la creación de CV"
                },
