@@ -25,7 +25,20 @@ export const config = {
                title: "Land More Interviews",
                title2: "With an ATS-Optimized Resume",
                subtitle: "Our AI-powered platform analyzes job descriptions and optimizes your resume to beat applicant tracking systems.",
-               seeHowItWorks: "See How It Works"
+               seeHowItWorks: "What is ATS?"
+            },
+            whatIsAts:{
+               title: "Understanding ATS",
+               subtitle: "What is an Applicant Tracking System?",
+               whatIs: "ATS (Applicant Tracking System) is a software used by recruiters and employers to manage job applications and filter candidates.",
+               affects: "How ATS Affects Your Job Search",
+               bulletPoints:[
+                  "• Over 75% of large companies use ATS to screen resumes before a human sees them.",
+                  "• ATS scans your resume for keywords and ranks candidates based on match percentage.",
+                  "• Poorly formatted resumes or missing keywords get automatically rejected.",
+                  "• Job Booster helps you optimize your resume specifically for ATS requirements and stand out for human recruiters.",
+               ],
+               howToBeat:"See how we work"
             },
             features:{
                featureTitle: "Features",
@@ -407,8 +420,21 @@ export const config = {
             header:{
                title: "Aterriza más entrevistas",
                title2: "Con un CV optimizado para ATS",
-               subtitle: "Nuestra plataforma de IA potenciada analiza descripciones de trabajo y crea/optimiza tu CV para vencer a los Sistemas de Seguimiento de Aplicantes (ATS).",
-               seeHowItWorks: "Ver cómo funciona"
+               subtitle: "Nuestra plataforma de IA potenciada analiza descripciones de trabajo y crea/optimiza tu CV para vencer a el Sistema de Seguimiento de Candidatos (ATS).",
+               seeHowItWorks: "¿Qué es el ATS?"
+            },
+            whatIsAts:{
+               title: "Entendiendo al ATS",
+               subtitle: "¿Qué es el Sistema de Seguimiento de Candidatos?",
+               whatIs: "ATS (Applicant Tracking System o Sistema de Seguimiento de Candidatos) es un software usado por los reclutadores y empleadores para gestionar y filtrar las aplicaciones de candidatos.",
+               affects: "¿Cómo el ATS afecta en tu búsqueda de empleo?",
+               bulletPoints:[
+                  "• Más del 75% de grandes compañías utilizan el ATS para filtrar los CVs de los candidatos antes de que lleguen a manos de un reclutador humano.",
+                  "• El ATS escanea tu CV en búsqueda de Palabras Clave y clasifica a los candidatos basados en el porcentaje de coincidencia.",
+                  "• Los CVs con malos formatos o con Palabras Clave faltantes son rechazados automáticamente.",
+                  "• Job Booster te ayuda a optimizar tu CV específicamente para los requerimientos del ATS, y ser destacado entre los candidatos para cuando tu CV llegue a manos de un reclutador humano.",
+               ],
+               howToBeat:"Míra cómo lo hacemos"
             },
             features:{
                featureTitle: "Características",
@@ -421,7 +447,7 @@ export const config = {
                   },
                   two:{
                      name: "Seguimiento de puntaje ATS",
-                     description: "Obtén retroalimentación en tiempo real del desempeño de tu CV para los Sistemas de Seguimiento de Aplicantes",
+                     description: "Obtén retroalimentación en tiempo real del desempeño de tu CV para el Sistema de Seguimiento de Candidatos",
                   },
                   three:{
                      name: "Análisis de Palabras Clave",
@@ -683,8 +709,7 @@ export const config = {
                progress:"Progreso",
                step:"Paso",
                stepOf:"de",
-               proTipInf:"Our AI is crafting your resume to Stand Out for recruiters and maximize your interview chances! We wil also ensure a high change to beat the Applicant Tracking Systems (ATS).",
-               proTipInf:"¡Nuestra IA está construyendo tu CV para destacarte con los reclutadores y maximizar tus chances de tener entrevistas! También aseguramos un gran chance de pasar los Sitemas de Seguimiento de Aplicantes (ATS).",
+               proTipInf:"¡Nuestra IA está construyendo tu CV para destacarte con los reclutadores y maximizar tus chances de tener entrevistas! También aseguramos un gran chance de pasar los Sistema de Seguimiento de Candidatos (ATS).",
                step1:{
                   title: "Inicializando la creación de CV"
                },
