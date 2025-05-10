@@ -116,7 +116,7 @@ function CreateResumePage() {
           if (prev >= steps) return steps;
           return prev + 1;
         });
-      }, 1800);
+      }, 2300);
 
       let to_insert = {
         template: data.template,
