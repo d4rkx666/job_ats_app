@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import CreateResumeForm from "../components/forms/CreateResumeForm"
 import { CreditEmptyModal } from "../components/common/CreditEmptyModal"
 import { useAuth } from "../contexts/AuthContext";
@@ -8,14 +8,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { set_new_resume } from "../services/SetNewResume"
 import LoadingCreateResumeModal from "../components/common/LoadingCreateResumeModal"
 
-// For construction page
-import { WrenchScrewdriverIcon } from '@heroicons/react/24/outline';
-
 
 function CreateResumePage() {
-
-  // DEBUG
-  const [debug] = useState(false);
 
   // Language
   const { config, language } = useConfig();
@@ -69,7 +63,7 @@ function CreateResumePage() {
   }
 
   // Detects coming from Drafts
-  useEffect(() => {
+  useMemo(() => {
     if (draft.isOptimizedDraft) {
       setCurrentStep(2) // go to step 2
       setMatchScore(draft.item.ats_score);
@@ -78,7 +72,7 @@ function CreateResumePage() {
       setContext("draft")
       setIdDraft(draft.item.id);
     }
-  }, [draft.isOptimizedDraft])
+  }, [draft, isOptimized])
 
   // Form submission
   const handleOnSubmit = async (data) => {

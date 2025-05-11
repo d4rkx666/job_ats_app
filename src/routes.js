@@ -10,10 +10,8 @@ import PricingPage from "./pages/PricingPage";
 import Layout from "./components/layout/Layout";
 import PreviewResumeImprovements from "./components/common/PreviewResumeImprovements";
 import PreviewResumeLayout from "./components/common/PreviewResumeLayout";
-import CheckoutPage from "./pages/CheckoutPage";
-import UserSettingsPage from "./pages/UserSettingsPage"
+import WelcomeProPage from "./pages/WelcomeProPage";
 import { useAuth } from "./contexts/AuthContext";
-import StripeProvider from "./contexts/StripeContext"
 
 function AppRoutes() {
 
@@ -25,8 +23,7 @@ function AppRoutes() {
         <Routes>
             <Route path="/" element={redirectIfAuth(<Home/>)} />
             <Route path="/pricing" element={<PricingPage />}/>
-            <Route path="/checkout" element={requireAuth(<StripeProvider><CheckoutPage /></StripeProvider>)}/>
-            <Route path="/settings" element={requireAuth(<StripeProvider><UserSettingsPage/></StripeProvider>)} />
+            <Route path="/welcome" element={<WelcomeProPage/>}/>
             <Route path="/login" element={redirectIfAuth(<Login/>)} />
             <Route path="/signup" element={redirectIfAuth(<SignupPage/>)} />
             <Route path="/dashboard" element={requireAuth(<Dashboard/>)} />

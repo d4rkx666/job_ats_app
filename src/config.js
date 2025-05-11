@@ -20,13 +20,14 @@ export const config = {
             title:"Simple Prices For Bigger Dreams",
             subtitle:"Whether you are an active or casual job hunter, we have created the best plan designed to take care of your wallet.",
             faqLabel: "Frequently Asked Questions",
+            currentPlan: "Current Plan",
+            includes: "This includes:",
             freeTierPlan:{
                plan: "Free Plan",
                description: "Unlock your career potential with the ultimate tool designed to enhance and boost your resume and stand out to recruiters.",
                price: "USD 0",
                priceRecurrent: "per month",
-               currentPlan: "Current Plan",
-               includes: "This includes:",
+               cta: "Get Started for free!",
                items:{
                   kwExtraction: "Keywords Extraction",
                   AI: "Powerful AI assistant",
@@ -35,6 +36,23 @@ export const config = {
                   editor: "Unlock Resume Editor+",
                   credits: "Credits Reset / month",
                   templates: "Basic Resume Templates",
+               }
+            },
+            proTierPlan:{
+               plan: "Pro Plan",
+               description: "Unlock your career potential with the ultimate tool designed to enhance and boost your resume and stand out to recruiters.",
+               price: "USD 0",
+               priceRecurrent: "per month",
+               cta: "Get 7 Free Trial Days!",
+               ctaLoading:"We're almost there...",
+               items:{
+                  kwExtraction: "Pro+ Keywords Extraction",
+                  AI: "SUPER AI assistant",
+                  downloads: "PDF+WORD Resume Downloads Formats",
+                  breakdown: "Advanced Breakdown Analysis",
+                  editor: "Unlock Resume Editor+",
+                  credits: "+50 Credits Reset / month",
+                  templates: "Premium Resume Templates",
                }
             },
             faq: [
@@ -466,21 +484,40 @@ export const config = {
             title:"Precios simples para sueños grandes",
             subtitle:"Seas un cazador de trabajos activo o casual, tenemos el mejor plan pensado para cuidar de tu bolsillo.",
             faqLabel: "Preguntas Frecuentes",
+            currentPlan: "Plan Actual",
+            includes: "Esto incluye:",
             freeTierPlan:{
                plan: "Plan Gratuito",
                description: "Unlock your career potential with the ultimate tool designed to enhance and boost your resume and stand out to recruiters.",
                price: "MXN 0",
                priceRecurrent: "por mes",
-               currentPlan: "Plan Actual",
-               includes: "Esto incluye:",
+               cta: "Empieza totalmente GRATIS",
+               ctaLoading:"Casi listo...",
                items:{
-                  kwExtraction: "Extracción de Plabras Clave",
+                  kwExtraction: "Extracción de Palabras Clave",
                   AI: "Potente Inteligencia Artificial de Asistente ",
                   downloads: "Sólo descargas en formato PDF",
                   breakdown: "Resúmen detallado del análisis de Currículum",
                   editor: "Editor de Currículum+",
                   credits: "Creditos reset / mes",
                   templates: "Plantillas básicas para Currículums",
+               }
+            },
+            proTierPlan:{
+               plan: "Plan Pro",
+               description: "Unlock your career potential with the ultimate tool designed to enhance and boost your resume and stand out to recruiters.",
+               price: "MXN 0",
+               priceRecurrent: "por mes",
+               cta: "¡Prueba 7 Días de Pro Plan Gratis!",
+               ctaLoading:"Casi listo...",
+               items:{
+                  kwExtraction: "Pro+ Keywords Extraction",
+                  AI: "SUPER AI assistant",
+                  downloads: "PDF+WORD Resume Downloads Formats",
+                  breakdown: "Advanced Breakdown Analysis",
+                  editor: "Unlock Resume Editor+",
+                  credits: "+50 Credits Reset / month",
+                  templates: "Premium Resume Templates",
                }
             },
             faq: [

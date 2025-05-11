@@ -90,13 +90,15 @@ function Dashboard() {
       {/* Right side actions */}
       <div className="flex flex-col sm:flex-row gap-3">
         {/* Settings Link */}
-        <Link 
-          to="https://billing.stripe.com/p/login/test_4gMdR2dlbdkxabh9rO5kk00" 
-          className="flex items-center justify-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-lg transition-all duration-200"
-        >
-          <Cog6ToothIcon className="h-5 w-5 text-blue-200" />
-          <span className="text-sm font-medium">{labels.dashboardPage.settings}</span>
-        </Link>
+        {user.subscription?.plan === 'pro' &&
+          <Link 
+            to="https://billing.stripe.com/p/login/test_4gMdR2dlbdkxabh9rO5kk00" 
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-lg transition-all duration-200"
+          >
+            <Cog6ToothIcon className="h-5 w-5 text-blue-200" />
+            <span className="text-sm font-medium">{labels.dashboardPage.settings}</span>
+          </Link>
+        }
         
         {/* Plan Status */}
         <div className="bg-white/10 backdrop-blur-sm p-3 rounded-lg min-w-[180px]">

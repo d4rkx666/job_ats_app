@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import MonthYearPicker from "./Datepicker"
-import { SparklesIcon, DocumentTextIcon, AcademicCapIcon, BriefcaseIcon, CodeBracketIcon, CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { AcademicCapIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 
 // Create a separate EducationEntry component to use hooks

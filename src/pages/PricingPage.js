@@ -1,16 +1,133 @@
-import React from "react"
+import React, { useState } from "react"
 import { useAuth } from '../contexts/AuthContext';
 import { useConfig } from '../contexts/ConfigContext';
-import {BoltIcon} from "@heroicons/react/24/outline"
+import PriceTable from "../components/common/PriceTable";
+import { create_session } from "../services/Checkout";
+import { loadStripe } from "@stripe/stripe-js";
+import { useNavigate } from "react-router-dom";
 
 const PricingPage = () => {
   const { user } = useAuth();
+  const isPro = user && user.subscription.currentPlan === "pro";
+
+  const navigate = useNavigate();
 
   // Language
   const { config, language } = useConfig();
   const labels = config.labels[language];
 
   const frequentQuestions = labels.pricingPage.faq;
+
+  const freePlan={
+    name: labels.pricingPage.freeTierPlan.plan,
+    description: labels.pricingPage.freeTierPlan.description,
+    price: labels.pricingPage.freeTierPlan.price,
+    recurrent: labels.pricingPage.freeTierPlan.priceRecurrent,
+    cta: labels.pricingPage.freeTierPlan.cta,
+    ctaLoading: labels.pricingPage.freeTierPlan.ctaLoading,
+    features:[
+      {
+        item: labels.pricingPage.freeTierPlan.items.kwExtraction,
+        included: true
+      },
+      {
+        item: labels.pricingPage.freeTierPlan.items.AI,
+        included: true
+      },
+      {
+        item: labels.pricingPage.freeTierPlan.items.downloads,
+        included: true
+      },
+      {
+        item: labels.pricingPage.freeTierPlan.items.breakdown,
+        included: true
+      },
+      {
+        item: labels.pricingPage.freeTierPlan.items.editor,
+        included: true
+      },
+      {
+        item: labels.pricingPage.freeTierPlan.items.credits,
+        included: true
+      },
+      {
+        item: labels.pricingPage.freeTierPlan.items.templates,
+        included: true
+      },
+    ]
+  }
+
+  const proPlan={
+    name: labels.pricingPage.proTierPlan.plan,
+    description: labels.pricingPage.proTierPlan.description,
+    price: labels.pricingPage.proTierPlan.price,
+    recurrent: labels.pricingPage.proTierPlan.priceRecurrent,
+    cta: labels.pricingPage.proTierPlan.cta,
+    ctaLoading: labels.pricingPage.proTierPlan.ctaLoading,
+    features:[
+      {
+        item: labels.pricingPage.proTierPlan.items.kwExtraction,
+        included: true
+      },
+      {
+        item: labels.pricingPage.proTierPlan.items.AI,
+        included: true
+      },
+      {
+        item: labels.pricingPage.proTierPlan.items.downloads,
+        included: true
+      },
+      {
+        item: labels.pricingPage.proTierPlan.items.breakdown,
+        included: true
+      },
+      {
+        item: labels.pricingPage.proTierPlan.items.editor,
+        included: true
+      },
+      {
+        item: labels.pricingPage.proTierPlan.items.credits,
+        included: true
+      },
+      {
+        item: labels.pricingPage.proTierPlan.items.templates,
+        included: true
+      },
+    ]
+  }
+
+  const handleFreeOnClick = ()=>{
+    if(!user){
+      navigate("/signup");
+    }
+  }
+
+  const [isProLoading, setIsProLoading] = useState(false);
+  const handleProOnClick = async()=>{
+    setIsProLoading(true);
+    if(!user){
+      navigate("/signup");
+    }
+    try {
+      const response = await create_session();
+
+      const session = response.session_id
+
+      const stripe = await loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+      console.log("passing", session)
+      const { error } = await stripe.redirectToCheckout({
+        sessionId: session,
+      });
+
+      if(error){
+        console.log(error)
+      }
+    } catch (err) {
+      console.error('Checkout error:', err);
+    } finally {
+      setIsProLoading(false);
+    }
+  }
 
   return (
     <div className="bg-white py-5">
@@ -29,103 +146,14 @@ const PricingPage = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
+              <div className="order-2 md:order-1">
+                <PriceTable labels={labels} user={user} currentPlan={!user && !isPro ? false : true} plan={freePlan} hadleOnClick={handleFreeOnClick}/>
+              </div>
 
-              <div className="order-2 md:order-1 mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-                {/* Badge section */}
-                <div className="flex flex-col items-center p-6">
-
-                  {/* Product details */}
-                  <div className="mt-4">
-                    <h2 className="text-lg font-semibold text-gray-800">{labels.pricingPage.freeTierPlan.plan}</h2>
-                    <p className="text-gray-500 mt-2 text-sm">
-                      {labels.pricingPage.freeTierPlan.description}
-                    </p>
-                  </div>
-
-                  {/* Price and button */}
-                  <div className="w-full mt-6">
-                    <div className="text-center">
-                      <span className="text-3xl font-bold text-gray-800">{labels.pricingPage.freeTierPlan.price}</span>
-                      <p className="text-gray-500 text-sm">{labels.pricingPage.freeTierPlan.priceRecurrent}</p>
-                    </div>
-                    {(user && user.subscription.currentPlan === "free") &&
-                    <button disabled className="w-full mt-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition disabled:bg-purple-300">
-                      {labels.pricingPage.freeTierPlan.currentPlan}
-                    </button>
-                    }
-                  </div>
-
-                  {/* Features list */}
-                  <div className="w-full mt-6 text-left">
-                    <p className="font-semibold text-gray-700">{labels.pricingPage.freeTierPlan.includes}</p>
-                    <ul className="mt-2 space-y-2">
-                      <li className="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="text-gray-400 size-3 mr-3" viewBox="0 0 16 16" fill="currentColor">
-                          <path fillRule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14Zm3.844-8.791a.75.75 0 0 0-1.188-.918l-3.7 4.79-1.649-1.833a.75.75 0 1 0-1.114 1.004l2.25 2.5a.75.75 0 0 0 1.15-.043l4.25-5.5Z" clipRule="evenodd" />
-                        </svg>
-                        <span className="text-sm text-gray-600">{labels.pricingPage.freeTierPlan.items.kwExtraction}</span>
-                      </li>
-                      <li className="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="text-gray-400 size-3 mr-3" viewBox="0 0 16 16" fill="currentColor">
-                          <path fillRule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14Zm3.844-8.791a.75.75 0 0 0-1.188-.918l-3.7 4.79-1.649-1.833a.75.75 0 1 0-1.114 1.004l2.25 2.5a.75.75 0 0 0 1.15-.043l4.25-5.5Z" clipRule="evenodd" />
-                        </svg>
-                        <span className="text-sm text-gray-600">{labels.pricingPage.freeTierPlan.items.AI}</span>
-                      </li>
-                      <li className="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="text-gray-400 size-3 mr-3" viewBox="0 0 16 16" fill="currentColor">
-                          <path fillRule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14Zm3.844-8.791a.75.75 0 0 0-1.188-.918l-3.7 4.79-1.649-1.833a.75.75 0 1 0-1.114 1.004l2.25 2.5a.75.75 0 0 0 1.15-.043l4.25-5.5Z" clipRule="evenodd" />
-                        </svg>
-                        <span className="text-sm text-gray-600">{labels.pricingPage.freeTierPlan.items.downloads}</span>
-                      </li>
-                      <li className="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="text-gray-400 size-3 mr-3" viewBox="0 0 16 16" fill="currentColor">
-                          <path fillRule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14Zm3.844-8.791a.75.75 0 0 0-1.188-.918l-3.7 4.79-1.649-1.833a.75.75 0 1 0-1.114 1.004l2.25 2.5a.75.75 0 0 0 1.15-.043l4.25-5.5Z" clipRule="evenodd" />
-                        </svg>
-                        <span className="text-sm text-gray-600">{labels.pricingPage.freeTierPlan.items.breakdown}</span>
-                      </li>
-                      <li className="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="text-gray-400 size-3 mr-3" viewBox="0 0 16 16" fill="currentColor">
-                          <path fillRule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14Zm3.844-8.791a.75.75 0 0 0-1.188-.918l-3.7 4.79-1.649-1.833a.75.75 0 1 0-1.114 1.004l2.25 2.5a.75.75 0 0 0 1.15-.043l4.25-5.5Z" clipRule="evenodd" />
-                        </svg>
-                        <span className="text-sm text-gray-600">{labels.pricingPage.freeTierPlan.items.editor}</span>
-                      </li>
-                      <li className="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="text-gray-400 size-3 mr-3" viewBox="0 0 16 16" fill="currentColor">
-                          <path fillRule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14Zm3.844-8.791a.75.75 0 0 0-1.188-.918l-3.7 4.79-1.649-1.833a.75.75 0 1 0-1.114 1.004l2.25 2.5a.75.75 0 0 0 1.15-.043l4.25-5.5Z" clipRule="evenodd" />
-                        </svg>
-                        <span className="text-sm text-gray-600">+15 {labels.pricingPage.freeTierPlan.items.credits}</span>
-                      </li>
-                      <li className="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="text-gray-400 size-3 mr-3" viewBox="0 0 16 16" fill="currentColor">
-                          <path fillRule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14Zm3.844-8.791a.75.75 0 0 0-1.188-.918l-3.7 4.79-1.649-1.833a.75.75 0 1 0-1.114 1.004l2.25 2.5a.75.75 0 0 0 1.15-.043l4.25-5.5Z" clipRule="evenodd" />
-                        </svg>
-                        <span className="text-sm text-gray-600">{labels.pricingPage.freeTierPlan.items.templates}</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+              <div className="order-1 md:order-2">
+                <PriceTable labels={labels} user={user} currentPlan={isPro ? true : false} plan={proPlan} hadleOnClick={handleProOnClick} isLoading={isProLoading}/>
               </div>
               
-              <div className='relative order-1 md:order-2'>
-                {(user && user.subscription.currentPlan === "pro") &&
-                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                  <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-blue-600 text-white">
-                    <BoltIcon className="h-4 w-4 mr-1" />
-                    Current Plan
-                  </span>
-                </div>
-                }
-                {language === "es" ? (
-                <stripe-pricing-table pricing-table-id="prctbl_1RNJst4EcbVoOhTGavbD5JlQ"
-                  publishable-key="pk_test_51RIgdm4EcbVoOhTGxtbTOcFLkdmrg33fDYPXbHaTTKIkZR3Mj2ZXKObnTWk8EInXc91S0MjJ2VUopGEQOJcBzJeq00csJvyJfw">
-                </stripe-pricing-table>
-                ):(
-                  <stripe-pricing-table pricing-table-id="prctbl_1RNKDM4EcbVoOhTGIBYAquON"
-                  publishable-key="pk_test_51RIgdm4EcbVoOhTGxtbTOcFLkdmrg33fDYPXbHaTTKIkZR3Mj2ZXKObnTWk8EInXc91S0MjJ2VUopGEQOJcBzJeq00csJvyJfw">
-                  </stripe-pricing-table>
-                )}
-              </div>
             </div>
           </div>
         </div>
