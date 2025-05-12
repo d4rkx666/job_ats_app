@@ -26,8 +26,8 @@ function CreateResume() {
 
   // Get last keyword extraction from draft
   const lastKeywordExtraction = () => {
-    const lastKw = user.creations.filter(creation => creation.status === "draft");
-    if(lastKw.length > 0){
+    const lastKw = user.creations?.filter(creation => creation.status === "draft");
+    if(lastKw && lastKw.length > 0){
       return lastKw[lastKw.length - 1].keywords;
     }else{
       return []

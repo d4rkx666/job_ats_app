@@ -6,12 +6,13 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { RoundedATSIndicador } from "../components/common/RoundedATSIndicator";
 import { ProBadge } from "../components/common/Badge";
-import { SparklesIcon, ArrowUpRightIcon, ClockIcon, CalendarIcon, DocumentTextIcon, ChartBarIcon } from "@heroicons/react/24/outline";
+import {create_portal_session} from "../services/Checkout"
+import { SparklesIcon, ArrowUpRightIcon, ClockIcon, CalendarIcon, DocumentTextIcon, ChartBarIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
 
 function Dashboard() {
   const { config, language } = useConfig();
   const labels = config.labels[language];
-  const { user, system } = useAuth();
+  const { user, logout, system } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
@@ -42,6 +43,23 @@ function Dashboard() {
     }
   };
 
+  const handleSessionStripe = async ()=>{
+    setIsLoading(true);
+    try{
+      await create_portal_session().then(resp =>{
+        if(resp.success){
+          window.location.href = resp.url;
+        }
+      }).catch(err=>{
+        if (err.status === 500) {// token expired
+            logout();
+        }
+      })
+    }catch{}finally{
+      setIsLoading(false);
+    }
+  }
+
   // Credit-based quota calculations
   const creditsUsed = user.usage?.used_credits || 0;
   const totalCredits = user.usage?.total_credits || 6;
@@ -71,45 +89,71 @@ function Dashboard() {
   return (
     <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
       {/* Welcome Section */}
-      <div className="mb-8 bg-gradient-to-r from-blue-600 to-indigo-600 p-6 rounded-xl shadow-lg text-white">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold">
-              {labels.dashboardPage.welcome}, <span className="text-blue-200">{user.name}</span>!
-            </h1>
-            <p className="text-blue-100 mt-2">{labels.dashboardPage.subWelcome}</p>
-          </div>
-          
-          {/* Plan Status */}
-          <div className="mt-4 md:mt-0 bg-white/10 backdrop-blur-sm p-3 rounded-lg">
-            <div className="flex items-center">
-              <SparklesIcon className="h-5 w-5 text-yellow-300 mr-2" />
-              <span className="font-medium">
-                {user.subscription?.plan === 'pro' ? (
-                  <>
+      <div className="mb-8 bg-gradient-to-r from-blue-600 to-indigo-600 p-6 rounded-xl shadow-lg text-white relative overflow-hidden">
+  {/* Decorative elements */}
+  <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 rounded-full -mr-10 -mt-10"></div>
+  <div className="absolute bottom-0 left-0 w-40 h-40 bg-indigo-500/20 rounded-full -ml-10 -mb-10"></div>
+  
+  <div className="relative z-10">
+    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="flex-1">
+        <h1 className="text-2xl md:text-3xl font-bold">
+          {labels.dashboardPage.welcome}, <span className="text-blue-200">{user.name}</span>!
+        </h1>
+        <p className="text-blue-100 mt-2 text-sm md:text-base">
+          {labels.dashboardPage.subWelcome}
+        </p>
+      </div>
+      
+      {/* Right side actions */}
+      <div className="flex flex-col sm:flex-row gap-3">
+        {/* Settings Link */}
+        {user.subscription?.plan === 'pro' &&
+          <button 
+          type="button"
+          onClick={handleSessionStripe}
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-lg transition-all duration-200"
+          >
+            <Cog6ToothIcon className="h-5 w-5 text-blue-200" />
+            <span className="text-sm font-medium">{isLoading ? labels.dashboardPage.settingsLoading: labels.dashboardPage.settings}</span>
+          </button>
+        }
+        
+        {/* Plan Status */}
+        <div className="bg-white/10 backdrop-blur-sm p-3 rounded-lg min-w-[180px]">
+          <div className="flex items-center">
+            <SparklesIcon className="h-5 w-5 text-yellow-300 mr-2" />
+            <span className="font-medium">
+              {user.subscription?.plan === 'pro' ? (
+                <>
+                  <div className="flex items-center">
                     Pro Plan <ProBadge className="ml-2" />
-                    <span className="block text-xs font-normal mt-1">
-                      {labels.dashboardPage.expires} {formatDate(user.subscription.current_period_end, false)}
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    Free Plan
-                    <span className="block text-xs font-normal mt-1">
+                  </div>
+                  <span className="block text-xs font-normal mt-1">
+                    {labels.dashboardPage.expires} {formatDate(user.subscription.current_period_end, false)}
+                  </span>
+                </>
+              ) : (
+                <>
+                  Free Plan
+                  <span className="block text-xs font-normal mt-1">
                     {labels.dashboardPage.nextReset}: {formatDate(user.usage.next_reset, false)}
-                    </span>
-                  </>
-                )}
-              </span>
-            </div>
+                  </span>
+                </>
+              )}
+            </span>
           </div>
         </div>
+      </div>
+    </div>
 
-        {/* Credit Quota Widget */}
-        <div className="mt-6 bg-white/10 backdrop-blur-sm p-4 rounded-lg">
+    {/* Credit Quota Widget */}
+    <div className="mt-6 bg-white/10 backdrop-blur-sm p-4 rounded-lg border border-white/5">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex-1">
           <div className="flex justify-between items-center mb-2">
-            <h2 className="font-medium">
-              {user.subscription?.plan === 'pro' ? 'Unlimited credits' : 'Monthly credits'}
+            <h2 className="font-medium text-sm md:text-base">
+              {labels.dashboardPage.monthlyCredits}
             </h2>
             <span className="text-sm font-medium">
               {creditsLeft}/{totalCredits} {labels.dashboardPage.creditsLeft}
@@ -119,26 +163,29 @@ function Dashboard() {
           {/* Progress Bar */}
           <div className="w-full bg-white/20 rounded-full h-2.5 mb-3">
             <div
-              className={`h-2.5 rounded-full ${usagePercentage >= 90 ? 'bg-red-400' :
+              className={`h-2.5 rounded-full transition-all duration-500 ${
+                usagePercentage >= 90 ? 'bg-red-400' :
                 usagePercentage >= 70 ? 'bg-yellow-400' : 'bg-green-400'
-                }`}
+              }`}
               style={{ width: `${usagePercentage}%` }}
             ></div>
           </div>
-
-          {/* Upgrade Prompt */}
-          {user.subscription?.plan !== 'pro' && (
-            <div className="mt-4 text-center">
-              <Link
-                to="/pricing"
-                className="inline-flex items-center text-sm font-medium text-white hover:text-blue-200"
-              >
-                {labels.dashboardPage.upgrade} <ArrowUpRightIcon className="h-4 w-4 ml-1" />
-              </Link>
-            </div>
-          )}
         </div>
+        
+        {/* Upgrade Prompt */}
+        {user.subscription?.plan !== 'pro' && (
+          <Link
+            to="/pricing"
+            className="flex-shrink-0 flex items-center justify-center gap-1 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium transition-colors duration-200"
+          >
+            {labels.dashboardPage.upgrade}
+            <ArrowUpRightIcon className="h-4 w-4" />
+          </Link>
+        )}
       </div>
+    </div>
+  </div>
+</div>
 
       {/* Main Content Area */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 import MonthYearPicker from "./Datepicker"
-import { SparklesIcon, DocumentTextIcon, AcademicCapIcon, BriefcaseIcon, CodeBracketIcon, CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { DocumentTextIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const JobEntry = ({ id, index, isCurrentJobCheck, control, register, onDelete, labels, setValue, errors }) => {
 

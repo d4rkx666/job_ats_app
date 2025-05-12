@@ -8,54 +8,30 @@ import Profile from "./pages/ProfilePage";
 import CreateResumePage from "./pages/CreateResumePage";
 import PricingPage from "./pages/PricingPage";
 import Layout from "./components/layout/Layout";
-import ProtectedRoute from "./components/ProtectedRoute";
-import HideLoginPage from "./components/HideLoginPage";
-import HideHomePage from "./components/HideHomePage";
 import PreviewResumeImprovements from "./components/common/PreviewResumeImprovements";
 import PreviewResumeLayout from "./components/common/PreviewResumeLayout";
+import WelcomeProPage from "./pages/WelcomeProPage";
+import { useAuth } from "./contexts/AuthContext";
 
 function AppRoutes() {
+
+  const { requireAuth, redirectIfAuth } = useAuth();
+
   return (
     <BrowserRouter>
       <Layout>
         <Routes>
-            <Route path="/" element={
-              <HideHomePage>
-                <Home/>
-              </HideHomePage>} />
+            <Route path="/" element={redirectIfAuth(<Home/>)} />
             <Route path="/pricing" element={<PricingPage />}/>
-            <Route path="/login" element={
-              <HideLoginPage>
-                <Login/>
-              </HideLoginPage>} />
-              <Route path="/signup" element={
-              <HideLoginPage>
-                <SignupPage/>
-              </HideLoginPage>} />
-            <Route path="/dashboard" element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>} />
-            <Route path="/profile" element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>} />
-            <Route path="/resume" element={
-              <ProtectedRoute>
-                <ImproveResumePage />
-              </ProtectedRoute>} />
-            <Route path="/create-resume" element={
-              <ProtectedRoute>
-                <CreateResumePage />
-              </ProtectedRoute>} />
-            <Route path="/preview-resume" element={
-              <ProtectedRoute>
-                <PreviewResumeLayout />
-              </ProtectedRoute>} />
-            <Route path="/improved" element={
-              <ProtectedRoute>
-                <PreviewResumeImprovements />
-              </ProtectedRoute>} />
+            <Route path="/welcome" element={<WelcomeProPage/>}/>
+            <Route path="/login" element={redirectIfAuth(<Login/>)} />
+            <Route path="/signup" element={redirectIfAuth(<SignupPage/>)} />
+            <Route path="/dashboard" element={requireAuth(<Dashboard/>)} />
+            <Route path="/profile" element={requireAuth(<Profile/>)} />
+            <Route path="/resume" element={requireAuth(<ImproveResumePage/>)} />
+            <Route path="/create-resume" element={requireAuth(<CreateResumePage/>)} />
+            <Route path="/preview-resume" element={requireAuth(<PreviewResumeLayout/>)} />
+            <Route path="/improved" element={requireAuth(<PreviewResumeImprovements/>)} />
         </Routes>
       </Layout>
     </BrowserRouter>

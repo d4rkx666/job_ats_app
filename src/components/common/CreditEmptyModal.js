@@ -46,7 +46,7 @@ export function CreditEmptyModal() {
                   {/* Upgrade Options */}
                   <div className="space-y-3">
                      <Link
-                        to="/pro"
+                        to="/pricing"
                         className="w-full flex items-center justify-center px-4 py-3 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
                      >
                         {labels.proLabel.upgradeToPro} (50 credits/month)
@@ -95,7 +95,7 @@ export function CreditEmptyModal() {
                   {/* Pro-Specific CTA */}
                   <div className="space-y-3">
                      <Link
-                        to="/billing"
+                        to="/pricing"
                         className="block text-center px-4 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-md font-medium"
                      >
                         {labels.proLabel.buyExtraCredits}

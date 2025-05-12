@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import CreateResumeForm from "../components/forms/CreateResumeForm"
 import { CreditEmptyModal } from "../components/common/CreditEmptyModal"
 import { useAuth } from "../contexts/AuthContext";
@@ -8,14 +8,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { set_new_resume } from "../services/SetNewResume"
 import LoadingCreateResumeModal from "../components/common/LoadingCreateResumeModal"
 
-// For construction page
-import { WrenchScrewdriverIcon } from '@heroicons/react/24/outline';
-
 
 function CreateResumePage() {
-
-  // DEBUG
-  const [debug] = useState(false);
 
   // Language
   const { config, language } = useConfig();
@@ -69,7 +63,7 @@ function CreateResumePage() {
   }
 
   // Detects coming from Drafts
-  useEffect(() => {
+  useMemo(() => {
     if (draft.isOptimizedDraft) {
       setCurrentStep(2) // go to step 2
       setMatchScore(draft.item.ats_score);
@@ -78,7 +72,7 @@ function CreateResumePage() {
       setContext("draft")
       setIdDraft(draft.item.id);
     }
-  }, [draft.isOptimizedDraft])
+  }, [draft, isOptimized])
 
   // Form submission
   const handleOnSubmit = async (data) => {
@@ -116,7 +110,7 @@ function CreateResumePage() {
           if (prev >= steps) return steps;
           return prev + 1;
         });
-      }, 1800);
+      }, 2300);
 
       let to_insert = {
         template: data.template,
@@ -133,10 +127,9 @@ function CreateResumePage() {
         }
       })
       const endTime = performance.now();
-      console.log(`API call TOOK ${(endTime - startTime) / 1000} seconds`);
 
       if (response.success === true) {
-        // API completed - set to 100% and close modal
+        // API completed, 100% and close modal
         setCurrentStepLoading(6)
         setProgress(100);
         await new Promise(resolve => setTimeout(resolve, 2000));

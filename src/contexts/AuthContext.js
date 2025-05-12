@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { auth, db } from "../services/firebase";
+import { Navigate } from "react-router-dom";
 import { onAuthStateChanged, sendEmailVerification, signOut, reload, getIdToken, setPersistence, browserSessionPersistence  } from "firebase/auth";
 import { doc, onSnapshot } from "firebase/firestore"; // Import Firestore functions
+import Loader from "../components/common/Loader";
 
 const AuthContext = createContext();
 
@@ -10,6 +12,7 @@ export function AuthProvider({ children }) {
   const [system, setSystem] = useState(null); // Store the logged-in user
   const [verified, setVerified] = useState(true);
   const [improvementsLeft] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   // Check if user is verified
   useEffect(() => {
@@ -55,7 +58,8 @@ export function AuthProvider({ children }) {
           unsubscribeFirestoreSystem();
         };
       }else{
-        logout()
+        logout();
+        setLoading(false);
       }
     });
 
@@ -116,12 +120,6 @@ export function AuthProvider({ children }) {
     setUser(null); // Clear the user data
   };
 
-  return (
-    <AuthContext.Provider value={{ user, system, auth, verified, improvementsLeft, login, logout, resendVerificationEmail }}>
-      {children}
-    </AuthContext.Provider>
-  );
-
 
   // Get new token
   async function generateNewToken(firebaseUser){
@@ -149,6 +147,7 @@ export function AuthProvider({ children }) {
     if (storedSystem != null) {
       setSystem(storedSystem); // Restore system data
     }
+    setLoading(false);
   }
   
   // Update user data
@@ -158,6 +157,7 @@ export function AuthProvider({ children }) {
       ...prevUser,
       ...newUserData, // Merge Firestore data with existing user data
     }));
+    setLoading(false);
   }
 
   
@@ -166,6 +166,22 @@ export function AuthProvider({ children }) {
     localStorage.setItem("data_system", JSON.stringify(newSystemData));
     setSystem(newSystemData);
   }
+
+  const requireAuth = (element) => {
+    if (loading) return <Loader/>;
+    return user ? element : <Navigate to="/login" replace />;
+  };
+
+  const redirectIfAuth = (element) => {
+    if (loading) return <Loader/>;
+    return user ? <Navigate to="/dashboard" replace /> : element;
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, requireAuth, redirectIfAuth, system, auth, verified, improvementsLeft, login, logout, resendVerificationEmail }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 // Custom hook to use the AuthContext
