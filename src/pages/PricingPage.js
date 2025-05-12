@@ -7,8 +7,8 @@ import { loadStripe } from "@stripe/stripe-js";
 import { useNavigate } from "react-router-dom";
 
 const PricingPage = () => {
-  const { user } = useAuth();
-  const isPro = user && user.subscription.currentPlan === "pro";
+  const { user, logout } = useAuth();
+  const isPro = user && user.subscription.plan === "pro";
 
   const navigate = useNavigate();
 
@@ -40,11 +40,11 @@ const PricingPage = () => {
       },
       {
         item: labels.pricingPage.freeTierPlan.items.breakdown,
-        included: true
+        included: false
       },
       {
         item: labels.pricingPage.freeTierPlan.items.editor,
-        included: true
+        included: false
       },
       {
         item: labels.pricingPage.freeTierPlan.items.credits,
@@ -109,22 +109,22 @@ const PricingPage = () => {
       navigate("/signup");
     }
     try {
-      const response = await create_session();
-
-      const session = response.session_id
-
-      const stripe = await loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
-      console.log("passing", session)
-      const { error } = await stripe.redirectToCheckout({
-        sessionId: session,
+      const response = await create_session().catch(err=>{
+        if (err.status === 500) {// token expired
+            logout();
+        }
       });
 
-      if(error){
-        console.log(error)
+      if(response.success){
+        const session = response.session_id
+
+        const stripe = await loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+        console.log("passing", session)
+        const { error } = await stripe.redirectToCheckout({
+          sessionId: session,
+        });
       }
-    } catch (err) {
-      console.error('Checkout error:', err);
-    } finally {
+    } catch {} finally {
       setIsProLoading(false);
     }
   }
@@ -147,7 +147,7 @@ const PricingPage = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="order-2 md:order-1">
-                <PriceTable labels={labels} user={user} currentPlan={!user && !isPro ? false : true} plan={freePlan} hadleOnClick={handleFreeOnClick}/>
+                <PriceTable labels={labels} user={user} currentPlan={!isPro ? true : false} plan={freePlan} hadleOnClick={handleFreeOnClick}/>
               </div>
 
               <div className="order-1 md:order-2">

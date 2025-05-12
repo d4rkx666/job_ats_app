@@ -16,6 +16,11 @@ export const config = {
             pricing: "Pricing",
             profile: "Profile",
          },
+         welcomePro:{
+            welcome: "Welcome Aboard!",
+            text: "Thank you for your purchase. Your plan has been successfully activated.",
+            redirecting: "Redirecting to your dashboard...",
+         },
          pricingPage: {
             title:"Simple Prices For Bigger Dreams",
             subtitle:"Whether you are an active or casual job hunter, we have created the best plan designed to take care of your wallet.",
@@ -24,7 +29,7 @@ export const config = {
             includes: "This includes:",
             freeTierPlan:{
                plan: "Free Plan",
-               description: "Unlock your career potential with the ultimate tool designed to enhance and boost your resume and stand out to recruiters.",
+               description: "Take advantage of all the basic tools that will make you stand out to job recruiters.",
                price: "USD 0",
                priceRecurrent: "per month",
                cta: "Get Started for free!",
@@ -61,6 +66,10 @@ export const config = {
                   answer: 'Our speciality is to analyse Job Descriptions. Our advanced Artifitial Intelligence looks for the important keywords and adds/suggests them for your resume to pass automated screening systems.'
                },
                {
+                  question: 'How do Credits work in Job Booster?',
+                  answer: "Credits are used to perform each action, i.e., creating or optimizing your Resume, which will cost credits. To view the Action Cost table, visit your Dashboard."
+               },
+               {
                   question: "Can I change my plan later?",
                   answer: "Yes, you can upgrade or downgrade your plan at any time."
                },
@@ -78,7 +87,7 @@ export const config = {
                },
                {
                   question: 'Do you store my resume data?',
-                  answer: 'We store your data securely and never share it with third parties. You can delete your account and all data at any time.'
+                  answer: 'We store your profile data securely and never share it with third parties. You can delete your account and all data at any time.'
                }
             ]
          },
@@ -326,6 +335,7 @@ export const config = {
             newest: "Newest first",
             oldest: "Oldest first",
             settings: "Manage My Plan",
+            settingsLoading: "Generating Management...",
          },
          createResumePage: {
             title: "Complete Your Profile",
@@ -480,6 +490,11 @@ export const config = {
             pricing: "Precios",
             profile: "Perfil",
          },
+         welcomePro:{
+            welcome: "¡Bienvenido abordo!",
+            text: "Gracias por tu suscripción. Tu plan ha sido exitosamente activado.",
+            redirecting: "Redirigiéndote a tu Panel de Usuario...",
+         },
          pricingPage: {
             title:"Precios simples para sueños grandes",
             subtitle:"Seas un cazador de trabajos activo o casual, tenemos el mejor plan pensado para cuidar de tu bolsillo.",
@@ -488,7 +503,7 @@ export const config = {
             includes: "Esto incluye:",
             freeTierPlan:{
                plan: "Plan Gratuito",
-               description: "Unlock your career potential with the ultimate tool designed to enhance and boost your resume and stand out to recruiters.",
+               description: "Sácale provecho a todas las herramientas básicas que te harán destacar para los reclutadores de tabajo.",
                price: "MXN 0",
                priceRecurrent: "por mes",
                cta: "Empieza totalmente GRATIS",
@@ -499,31 +514,35 @@ export const config = {
                   downloads: "Sólo descargas en formato PDF",
                   breakdown: "Resúmen detallado del análisis de Currículum",
                   editor: "Editor de Currículum+",
-                  credits: "Creditos reset / mes",
+                  credits: "+15 Creditos reset / mes",
                   templates: "Plantillas básicas para Currículums",
                }
             },
             proTierPlan:{
                plan: "Plan Pro",
-               description: "Unlock your career potential with the ultimate tool designed to enhance and boost your resume and stand out to recruiters.",
+               description: "Desbloquea el potencial de tu carrera con las herramientas de última tecnología para mejorar e impulsar tu Currículum y destacar para los empleadores.",
                price: "MXN 0",
                priceRecurrent: "por mes",
                cta: "¡Prueba 7 Días de Pro Plan Gratis!",
                ctaLoading:"Casi listo...",
                items:{
-                  kwExtraction: "Pro+ Keywords Extraction",
-                  AI: "SUPER AI assistant",
-                  downloads: "PDF+WORD Resume Downloads Formats",
-                  breakdown: "Advanced Breakdown Analysis",
-                  editor: "Unlock Resume Editor+",
-                  credits: "+50 Credits Reset / month",
-                  templates: "Premium Resume Templates",
+                  kwExtraction: "Extracción de Palabras Clave Pro+",
+                  AI: "SUPER Inteligencia Artificial de Asistente",
+                  downloads: "Descargas en Formado PDF+WORD",
+                  breakdown: "Resumen detallado de análisis de Currículum",
+                  editor: "Editor de Currículum+",
+                  credits: "+50 Créditos reset / mes",
+                  templates: "Plantillas Premium para Currículums",
                }
             },
             faq: [
                {
                   question: '¿Cómo funciona Job Booster?',
                   answer: 'Nuestra especialidad es analizar las Descripciones de Trabajo. Nuestra Avanzada Inteligencia Artificial busca las palabras clave más importantes y las agrega/o sugiere en tu Curriculum para destacar para los reclutadores de trabajo.'
+               },
+               {
+                  question: '¿Cómo funcionan los Créditos en Job Booster?',
+                  answer: 'Los Créditos se utilizan para realizar cada acción, es decir, la creación u optimización de tu CV, costará créditos. Para ver la tabla de Costos de Acción, visita tu Panel de Usuario.'
                },
                {
                   question: "¿Puedo cambiar mi plan en cualquier momento?",
@@ -543,7 +562,7 @@ export const config = {
                },
                {
                   question: '¿Almacenan mis datos de Currículum?',
-                  answer: 'Tus datos se almacenan seguros, y NUNCA los compartimos con terceros. Puedes eliminar tus perfil en cualquier momento.'
+                  answer: 'Tus datos de perfil se almacenan seguros, y NUNCA los compartimos con terceros. Puedes eliminar tus perfil en cualquier momento.'
                }
             ]
          },
@@ -787,6 +806,7 @@ export const config = {
             newest: "Nuevos primero",
             oldest: "Viejos primero",
             settings: "Administrar mi Plan",
+            settingsLoading: "Generando administración...",
          },
          createResumePage: {
             title: "Completa tu Perfil",

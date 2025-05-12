@@ -127,10 +127,9 @@ function CreateResumePage() {
         }
       })
       const endTime = performance.now();
-      console.log(`API call TOOK ${(endTime - startTime) / 1000} seconds`);
 
       if (response.success === true) {
-        // API completed - set to 100% and close modal
+        // API completed, 100% and close modal
         setCurrentStepLoading(6)
         setProgress(100);
         await new Promise(resolve => setTimeout(resolve, 2000));

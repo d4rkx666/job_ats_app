@@ -6,12 +6,13 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { RoundedATSIndicador } from "../components/common/RoundedATSIndicator";
 import { ProBadge } from "../components/common/Badge";
+import {create_portal_session} from "../services/Checkout"
 import { SparklesIcon, ArrowUpRightIcon, ClockIcon, CalendarIcon, DocumentTextIcon, ChartBarIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
 
 function Dashboard() {
   const { config, language } = useConfig();
   const labels = config.labels[language];
-  const { user, system } = useAuth();
+  const { user, logout, system } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
@@ -41,6 +42,23 @@ function Dashboard() {
       setIsLoading(false);
     }
   };
+
+  const handleSessionStripe = async ()=>{
+    setIsLoading(true);
+    try{
+      await create_portal_session().then(resp =>{
+        if(resp.success){
+          window.location.href = resp.url;
+        }
+      }).catch(err=>{
+        if (err.status === 500) {// token expired
+            logout();
+        }
+      })
+    }catch{}finally{
+      setIsLoading(false);
+    }
+  }
 
   // Credit-based quota calculations
   const creditsUsed = user.usage?.used_credits || 0;
@@ -91,13 +109,14 @@ function Dashboard() {
       <div className="flex flex-col sm:flex-row gap-3">
         {/* Settings Link */}
         {user.subscription?.plan === 'pro' &&
-          <Link 
-            to="https://billing.stripe.com/p/login/test_4gMdR2dlbdkxabh9rO5kk00" 
+          <button 
+          type="button"
+          onClick={handleSessionStripe}
             className="flex items-center justify-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-lg transition-all duration-200"
           >
             <Cog6ToothIcon className="h-5 w-5 text-blue-200" />
-            <span className="text-sm font-medium">{labels.dashboardPage.settings}</span>
-          </Link>
+            <span className="text-sm font-medium">{isLoading ? labels.dashboardPage.settingsLoading: labels.dashboardPage.settings}</span>
+          </button>
         }
         
         {/* Plan Status */}
