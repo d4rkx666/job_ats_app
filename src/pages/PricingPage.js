@@ -120,7 +120,7 @@ const PricingPage = () => {
 
         const stripe = await loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
         console.log("passing", session)
-        const { error } = await stripe.redirectToCheckout({
+        await stripe.redirectToCheckout({
           sessionId: session,
         });
       }

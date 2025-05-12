@@ -46,7 +46,7 @@ export const config = {
             proTierPlan:{
                plan: "Pro Plan",
                description: "Unlock your career potential with the ultimate tool designed to enhance and boost your resume and stand out to recruiters.",
-               price: "USD 0",
+               price: "USD 12.99",
                priceRecurrent: "per month",
                cta: "Get 7 Free Trial Days!",
                ctaLoading:"We're almost there...",
@@ -521,7 +521,7 @@ export const config = {
             proTierPlan:{
                plan: "Plan Pro",
                description: "Desbloquea el potencial de tu carrera con las herramientas de última tecnología para mejorar e impulsar tu Currículum y destacar para los empleadores.",
-               price: "MXN 0",
+               price: "MXN 249",
                priceRecurrent: "por mes",
                cta: "¡Prueba 7 Días de Pro Plan Gratis!",
                ctaLoading:"Casi listo...",
