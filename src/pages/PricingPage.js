@@ -147,7 +147,7 @@ const PricingPage = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="order-2 md:order-1">
-                <PriceTable labels={labels} user={user} currentPlan={!isPro ? true : false} plan={freePlan} hadleOnClick={handleFreeOnClick}/>
+                <PriceTable labels={labels} user={user} currentPlan={!user ? false : isPro ? false : true} plan={freePlan} hadleOnClick={handleFreeOnClick}/>
               </div>
 
               <div className="order-1 md:order-2">
