@@ -1,9 +1,7 @@
 import { useAuth } from "../contexts/AuthContext";
 import { useConfig } from "../contexts/ConfigContext";
-import FeedbackForm from "../components/forms/FeedbackForm";
-import { feedback } from "../services/SetFeedback";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { RoundedATSIndicador } from "../components/common/RoundedATSIndicator";
 import { ProBadge } from "../components/common/Badge";
 import {create_portal_session} from "../services/Checkout"
@@ -14,34 +12,8 @@ function Dashboard() {
   const labels = config.labels[language];
   const { user, logout, system } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState('improvements');
   const [sortOrder, setSortOrder] = useState('newest');
-
-  // Check for user's feedback
-  useEffect(() => {
-    if (user.feedback) {
-      setSubmitted(true);
-    }
-  }, [user.feedback]);
-
-  const handleFeedback = async (data) => {
-    setIsLoading(true);
-    setError("");
-    try {
-      await feedback(data.rate, data.feedback);
-      setSubmitted(true);
-    } catch (err) {
-      if (err.response?.data?.detail === "403: Email not verified") {
-        setError(labels.error.userNotVerified);
-      } else {
-        setError(labels.error.universalError);
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleSessionStripe = async ()=>{
     setIsLoading(true);
@@ -467,21 +439,6 @@ function Dashboard() {
             </div>
           )}
         </div>
-      </div>
-
-      {/* Feedback Section */}
-      <div className="mt-12 bg-white p-6 rounded-xl shadow-sm">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-          <SparklesIcon className="h-5 w-5 text-blue-500 mr-2" />
-          {labels.formFeedback.title}
-        </h2>
-        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-        <FeedbackForm
-          onSubmit={handleFeedback}
-          isLoading={isLoading}
-          submitted={submitted}
-          labels={labels}
-        />
       </div>
     </div>
   );
