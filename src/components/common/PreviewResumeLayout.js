@@ -55,8 +55,14 @@ export default function PreviewResumeLayout() {
 
   // Format highlight
   const highlightResume = (formatted_text, keyword) => {
-    const keywords_array = keyword.map(obj => obj.keyword);
-    const pattern = new RegExp(`\\b(${keywords_array.join('|')})\\b`, 'gi');
+    // Escape special characters in the keywords
+    const escapeRegExp = (str) => {
+      return str.replace(/[.*+?^=!:${}()|\[\]\/\\]/g, '\\$&'); // Escapes all special characters
+    };
+
+    const keywords_array = keyword.map(obj => escapeRegExp(obj.keyword)); // Escape each keyword
+    const pattern = new RegExp(`\\b(${keywords_array.join('|')})\\b`, 'gi'); // Build regex pattern
+
     return formatted_text.replace(pattern, match => `!!${match}!!`);
   }
 
