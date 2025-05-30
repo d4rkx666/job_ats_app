@@ -30,8 +30,15 @@ function SignupPage() {
                isError = true;
             });
          if (!isError) {
+            // get current_work in case user haven't login
+            const params = new URLSearchParams(window.location.search);
+            const current_work = params.get('current_work');
+
             await FirebaseLogin(data.email, data.password, login, navigate, labels.error.userNotFound);
             await resendVerificationEmail();
+            if(current_work){
+               window.close();
+            }
          }
       } catch (error) {
          setError(error.message)

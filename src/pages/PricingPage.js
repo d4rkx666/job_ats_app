@@ -5,9 +5,10 @@ import PriceTable from "../components/common/PriceTable";
 import { create_session } from "../services/Checkout";
 import { loadStripe } from "@stripe/stripe-js";
 import { useNavigate } from "react-router-dom";
+import { DocumentTextIcon } from "@heroicons/react/24/outline";
 
 const PricingPage = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, system } = useAuth();
   const isPro = user && user.subscription.plan === "pro";
 
   const navigate = useNavigate();
@@ -157,6 +158,57 @@ const PricingPage = () => {
             </div>
           </div>
         </div>
+
+        {/* Action Costs */}
+          <div className="w-full max-w-3xl mx-auto bg-white p-4 rounded-xl shadow-sm">
+            <h3 className="font-semibold text-gray-800 mb-3 flex items-center">
+              <DocumentTextIcon className="h-5 w-5 text-blue-500 mr-2" />
+              {labels.dashboardPage.actionCosts}
+            </h3>
+            <div className="space-y-3">
+              <div className="flex items-center p-2 hover:bg-blue-50 rounded-lg transition-colors">
+                <div className="flex-shrink-0 w-2 h-2 bg-blue-400 rounded-full mr-3"></div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-700">{labels.dashboardPage.keywordOptimization}</p>
+                </div>
+                <span className="text-xs font-medium bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                  {system.keyword_extraction} {labels.dashboardPage.credit}{system.keyword_extraction !== 1 && 's'}
+                </span>
+              </div>
+
+              <div className="flex items-center p-2 hover:bg-blue-50 rounded-lg transition-colors">
+                <div className="flex-shrink-0 w-2 h-2 bg-blue-400 rounded-full mr-3"></div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-700">{labels.dashboardPage.atsReoptimization}</p>
+                </div>
+                <span className="text-xs font-medium bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                  {system.ats_analysis} {labels.dashboardPage.credit}{system.ats_analysis !== 1 && 's'}
+                </span>
+              </div>
+
+              <div className="flex items-center p-2 hover:bg-indigo-50 rounded-lg transition-colors">
+                <div className="flex-shrink-0 w-2 h-2 bg-indigo-400 rounded-full mr-3"></div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-700">{labels.dashboardPage.resumeCreation}</p>
+                </div>
+                <span className="text-xs font-medium bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">
+                  {system.resume_creation} {labels.dashboardPage.credit}{system.resume_creation !== 1 && 's'}
+                </span>
+              </div>
+
+              {system.resume_optimization && (
+                <div className="flex items-center p-2 hover:bg-purple-50 rounded-lg transition-colors">
+                  <div className="flex-shrink-0 w-2 h-2 bg-purple-400 rounded-full mr-3"></div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-gray-700">{labels.dashboardPage.resumeOptimization}</p>
+                  </div>
+                  <span className="text-xs font-medium bg-purple-100 text-purple-800 px-2 py-1 rounded-full">
+                    {system.resume_optimization} {labels.dashboardPage.credit}{system.resume_optimization !== 1 && 's'}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
 
         {/* FAQ Section */}
         <div className="mt-24">

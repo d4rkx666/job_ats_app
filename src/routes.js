@@ -28,7 +28,7 @@ function AppRoutes() {
             <Route path="/signup" element={redirectIfAuth(<SignupPage/>)} />
             <Route path="/dashboard" element={requireAuth(<Dashboard/>)} />
             <Route path="/profile" element={requireAuth(<Profile/>)} />
-            <Route path="/resume" element={requireAuth(<ImproveResumePage/>)} />
+            <Route path="/resume" element={<ImproveResumePage/>} />
             <Route path="/create-resume" element={requireAuth(<CreateResumePage/>)} />
             <Route path="/preview-resume" element={requireAuth(<PreviewResumeLayout/>)} />
             <Route path="/improved" element={requireAuth(<PreviewResumeImprovements/>)} />
