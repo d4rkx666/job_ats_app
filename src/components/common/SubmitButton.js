@@ -1,7 +1,8 @@
-function SubmitButton({ className, label, loading, loadingLabel, type="submit", onClick = null, cost = null }) {
+function SubmitButton({ ref=null, className, label, loading, loadingLabel, type="submit", onClick = null, cost = null }) {
   return (
     <button
       type={type}
+      ref={ref}
       disabled={loading}
       onClick={()=> onClick !== null ? onClick() : ""}
       className={`

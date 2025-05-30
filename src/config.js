@@ -157,7 +157,7 @@ export const config = {
                   },
                   step4: {
                      title: "Download & Apply Confidently",
-                     description: "Get an ATS-optimized resume tailored to the job",
+                     description: "You're all set up to apply with your new ATS-optimized resume and tailored!",
                   },
                },
             },
@@ -165,7 +165,7 @@ export const config = {
                title: "Ready to transform your resume?",
                title2: "Start your free trial today.",
                subtitle: "Get 7 days of Pro features to see the difference for yourself. Due the beta version for testing, get more free days of Pro Plan contacting the admin.",
-               tryPro: "Try Pro Free for 7 Days"
+               tryPro: "Try Free Pro Plan for 7 Days"
             },
             getStartedBtn: "Get Started - It's Free"
          },
@@ -455,6 +455,22 @@ export const config = {
             proUsed: "You’ve used all",
             proThisMonth: "credits this month.",
          },
+         continueLoginModal:{
+            noUserTitle: "You are just one step away to stand out for recruiters!",
+            doNotCloseWindow: "Do not close this window!",
+            noUserSubtitle: "Once you have login, please return to this page so you don't lose this current resume!",
+            please: "Please",
+            signUp: "Sign Up",
+            login: "Login",
+            or: "or",
+            continue: "to continue working on this resume.",
+            userVerified: "Our IA is about to analyze your resume",
+            titleVerified: "You are few seconds away to get the best advice to stand out for recruiters and to beat the ATS!",
+            notVerified: "Thank you for your registration",
+            titleNotVerified: "Before analysing your resume by our powerful AI, please check your email and active your account. Don't forget to come back to this page!",
+            closingModal:"Closing modal in",
+            seconds: "seconds..."
+         },
          previewImprovement: {
             title: "AI suggestions",
             subtitle: "Here you go your new suggestions to boost your job hunting. Please read carefully and keep it up!",
@@ -497,7 +513,7 @@ export const config = {
          },
          pricingPage: {
             title:"Precios simples para sueños grandes",
-            subtitle:"Seas un cazador de trabajos activo o casual, tenemos el mejor plan pensado para cuidar de tu bolsillo.",
+            subtitle:"Seas un buscador de trabajo activo o casual, tenemos el mejor plan pensado para cuidar de tu bolsillo.",
             faqLabel: "Preguntas Frecuentes",
             currentPlan: "Plan Actual",
             includes: "Esto incluye:",
@@ -632,13 +648,13 @@ export const config = {
                   },
                   step4: {
                      title: "Descarga y aplica con confianza",
-                     description: "Obtén un CV optimizado para el ATS y adaptado al puesto de trabajo para la cual aplica",
+                     description: "¡Y listo, ya puedes aplicar a este puesto de trabajo con tu nuevo CV optimizado y adaptado!",
                   },
                },
             },
             footer: {
                title: "¿Ready para impulsar tu CV?",
-               title2: "Empieza tu prueba gratis de Pro play hoy.",
+               title2: "Empieza tu prueba gratis de Pro Plan hoy.",
                subtitle: "Obtén 7 días de características Pro para que veas las diferencias por tí mismo. Debido a la sesión de pruebas pre venta, obtén más días gratis de Pro contactando al administrador.",
                tryPro: "Prueba 7 días gratis de Pro"
             },
@@ -925,6 +941,22 @@ export const config = {
             moreCredits: "x3+ veces más créditos",
             proUsed: "Has usado todos tus",
             proThisMonth: "créditos de este mes.",
+         },
+         continueLoginModal:{
+            noUserTitle: "¡Estás a un paso de destacar para los empleadores!",
+            doNotCloseWindow: "No cierres esta ventana",
+            noUserSubtitle: "Una vez que inicies sesión, regresa a esta página para que no pierdas este análisis de tu CV.",
+            please: "Por favor",
+            signUp: "Regístrate",
+            login: "Inicia sesión",
+            or: "o",
+            continue: "para continuar trabajando en este CV.",
+            userVerified: "Nuestra IA está apunto de analizar tu CV",
+            titleVerified: "¡Estás a pocos secondos de obtener los mejores consejos para destacar para los empleadores y derrotar a los sistemas de filtro automático!",
+            notVerified: "Gracias por registrar tu cuenta.",
+            titleNotVerified: "Antes de que nuestra poderosa IA analice tu CV, por favor revisa tu correo y activa tu cuenta. ¡No olvides regresar a esta página!",
+            closingModal:"Cerrando popup en",
+            seconds: "segundos..."
          },
          previewImprovement: {
             title: "Sugerencias de IA",

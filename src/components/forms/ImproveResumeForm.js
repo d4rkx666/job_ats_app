@@ -2,7 +2,7 @@ import React, {useState, useRef} from "react";
 import { useForm } from "react-hook-form";
 import SubmitButton from "../common/SubmitButton";
 
-function ImproveResumeForm({ onSubmit, isLoading, labels, cost, error}) {
+function ImproveResumeForm({ onSubmit, isLoading, labels, cost, submitButtonRef, error}) {
   const {
     register,
     handleSubmit,
@@ -193,6 +193,7 @@ function ImproveResumeForm({ onSubmit, isLoading, labels, cost, error}) {
           {/* Submit Button */}
           <div className="pt-4">
             <SubmitButton
+              ref={submitButtonRef}
               className="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white py-3 px-4 rounded-lg font-bold hover:from-blue-700 hover:to-blue-600 transition-all shadow-sm"
               loading={isLoading}
               loadingLabel={labels.formImproveResume.uploadBtn.loading}

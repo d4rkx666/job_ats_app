@@ -23,8 +23,12 @@ function Login() {
       setIsLoading(true);
       setError("");
       try {
+         // get current_work in case user haven't login
+         const params = new URLSearchParams(window.location.search);
+         const current_work = params.get('current_work');
+
          // Log in user from firebase
-         await FirebaseLogin(data.email, data.password, login, navigate, labels.error.userNotFound);
+         await FirebaseLogin(data.email, data.password, login, navigate, labels.error.userNotFound, current_work);
       } catch (error) {
          await logout()
          setError(labels.error.userNotFound)

@@ -3,7 +3,7 @@ import { auth, db } from "./firebase"
 import { doc, getDoc } from "firebase/firestore";
 
 // Firebase login function
-export async function FirebaseLogin(email, password, login, navigate, error_message) {
+export async function FirebaseLogin(email, password, login, navigate, error_message, current_work) {
 
    // Log in user from firebase
    const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -16,7 +16,11 @@ export async function FirebaseLogin(email, password, login, navigate, error_mess
    if (userDoc.exists()) {
       const newData = userDoc.data();
       await login(newData, token); // set user info to localstorage
-      await navigate("/dashboard"); // Redirect to the dashboard
+      if(current_work){
+         window.close();
+      }else{
+         await navigate("/dashboard"); // Redirect to the dashboard
+      }
    } else {
       throw new Error(error_message);
    }

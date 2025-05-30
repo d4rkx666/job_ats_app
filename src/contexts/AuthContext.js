@@ -18,10 +18,10 @@ export function AuthProvider({ children }) {
   useEffect(() => {
 
     // Logout users if browser closed
-    const initAuth = async () => {
+    /*const initAuth = async () => {
       await setPersistence(auth, browserSessionPersistence);
     };
-    initAuth();
+    initAuth();*/
 
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
 
@@ -43,19 +43,9 @@ export function AuthProvider({ children }) {
           }
         });
 
-        // Listen to Firestore updates for the user's document
-        const systemRef = doc(db, process.env.REACT_APP_DATABASE_SYSVAR, process.env.REACT_APP_COLLECTION_SYSVAR);
-        const unsubscribeFirestoreSystem = onSnapshot(systemRef, (doc) => {
-          if (doc.exists()) {
-            const systemData = doc.data();
-            updateSystemData(systemData);
-          }
-        });
-
         // Clean up the Firestore listener when the component unmounts
         return () => {
           unsubscribeFirestoreUser();
-          unsubscribeFirestoreSystem();
         };
       }else{
         logout();
@@ -64,6 +54,26 @@ export function AuthProvider({ children }) {
     });
 
     return () => unsubscribe(); // Cleanup subscription
+  }, []);
+
+
+  useEffect(() => {
+    // Set user state after refresh when user is valid
+    preventDataLostRefreshing();
+
+    // Listen to Firestore updates for the user's document
+    const systemRef = doc(db, process.env.REACT_APP_DATABASE_SYSVAR, process.env.REACT_APP_COLLECTION_SYSVAR);
+    const unsubscribeFirestoreSystem = onSnapshot(systemRef, (doc) => {
+      if (doc.exists()) {
+        const systemData = doc.data();
+        updateSystemData(systemData);
+      }
+    });
+
+    // Clean up the Firestore listener when the component unmounts
+    return () => {
+      unsubscribeFirestoreSystem();
+    };
   }, []);
 
 
@@ -179,7 +189,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={{ user, requireAuth, redirectIfAuth, system, auth, verified, improvementsLeft, login, logout, resendVerificationEmail }}>
-      {children}
+      {system ? children : <Loader/>}
     </AuthContext.Provider>
   );
 }
