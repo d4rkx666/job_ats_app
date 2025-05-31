@@ -17,7 +17,7 @@ const routes = [
 
 // Create sitemap
 const stream = new SitemapStream({ 
-  hostname: 'https://jobbooster.vercel.app', // ← Change to your actual domain
+  hostname: 'https://www.perfectocv.com', // ← Change to your actual domain
   lastmodDateOnly: true // ← Better formatting for dates
 });
 

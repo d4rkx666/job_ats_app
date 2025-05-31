@@ -62,11 +62,11 @@ export const config = {
             },
             faq: [
                {
-                  question: 'How does Job Booster work?',
+                  question: 'How does Perfecto CV work?',
                   answer: 'Our speciality is to analyse Job Descriptions. Our advanced Artifitial Intelligence looks for the important keywords and adds/suggests them for your resume to pass automated screening systems.'
                },
                {
-                  question: 'How do Credits work in Job Booster?',
+                  question: 'How do Credits work in Perfecto CV?',
                   answer: "Credits are used to perform each action, i.e., creating or optimizing your Resume, which will cost credits. To view the Action Cost table, visit your Dashboard."
                },
                {
@@ -111,7 +111,7 @@ export const config = {
                   "• Over 75% of large companies use ATS to screen resumes before a human sees them.",
                   "• ATS scans your resume for keywords and ranks candidates based on match percentage.",
                   "• Poorly formatted resumes or missing keywords get automatically rejected.",
-                  "• Job Booster helps you optimize your resume specifically for ATS requirements and stand out for human recruiters.",
+                  "• Perfecto CV helps you optimize your resume specifically for ATS requirements and stand out for human recruiters.",
                ],
                howToBeat: "See how we work"
             },
@@ -223,8 +223,27 @@ export const config = {
          },
          formImproveResume: {
             title: "Let's analyse your resume and get you the best advice to stand out for recruiters",
+            subtitle: "Get assist for your resume in seconds. You have ",
+            credits: "credits!",
+            eg:'e.g. "Sales Force Manager"',
+            show:"See How It Works",
+            hide:"Hide Benefits",
+            step1:{
+               title:"Job Description Insight",
+               description:"Upload your resume and paste the job description. Perfecto AI will handle the rest!",
+            },
+            step2:{
+               title:"Swift, Tailored Results",
+               description:"Perfecto AI delivers targeted suggestions to optimize your resume in no time",
+            },
+            step3:{
+               title:"Ready to Apply with Confidence",
+               description:"Incorporate AI-driven improvements and confidently submit your resume for the job",
+            },
             resumeFile: {
                label: "Upload Your Resume (PDF)",
+               max: "PDF, max 5MB",
+               change:"Click to change file",
                placeholder: "Click to upload or drag and drop",
                required: "Resume file is required",
                invalidType: "Only PDF files are allowed",
@@ -553,11 +572,11 @@ export const config = {
             },
             faq: [
                {
-                  question: '¿Cómo funciona Job Booster?',
+                  question: '¿Cómo funciona Perfecto CV?',
                   answer: 'Nuestra especialidad es analizar las Descripciones de Trabajo. Nuestra Avanzada Inteligencia Artificial busca las palabras clave más importantes y las agrega/o sugiere en tu Curriculum para destacar para los reclutadores de trabajo.'
                },
                {
-                  question: '¿Cómo funcionan los Créditos en Job Booster?',
+                  question: '¿Cómo funcionan los Créditos en Perfecto CV?',
                   answer: 'Los Créditos se utilizan para realizar cada acción, es decir, la creación u optimización de tu CV, costará créditos. Para ver la tabla de Costos de Acción, visita tu Panel de Usuario.'
                },
                {
@@ -602,7 +621,7 @@ export const config = {
                   "• Más del 75% de grandes compañías utilizan el ATS para filtrar los CVs de los candidatos antes de que lleguen a manos de un reclutador humano.",
                   "• El ATS escanea tu CV en búsqueda de Palabras Clave y clasifica a los candidatos basados en el porcentaje de coincidencia.",
                   "• Los CVs con malos formatos o con Palabras Clave faltantes son rechazados automáticamente.",
-                  "• Job Booster te ayuda a optimizar tu CV específicamente para los requerimientos del ATS, y ser destacado entre los candidatos para cuando tu CV llegue a manos de un reclutador humano.",
+                  "• Perfecto CV te ayuda a optimizar tu CV específicamente para los requerimientos del ATS, y ser destacado entre los candidatos para cuando tu CV llegue a manos de un reclutador humano.",
                ],
                howToBeat: "Míra cómo lo hacemos"
             },
@@ -644,7 +663,7 @@ export const config = {
                   },
                   step3: {
                      title: "La magia de IA sucede",
-                     description: "Job Booster analiza y crea un CV EXCLUSIVO para el puesto de trabajo para el que estás aplicando",
+                     description: "Perfecto CV analiza y crea un CV EXCLUSIVO para el puesto de trabajo para el que estás aplicando",
                   },
                   step4: {
                      title: "Descarga y aplica con confianza",
@@ -714,6 +733,23 @@ export const config = {
          },
          formImproveResume: {
             title: "Analicemos tu CV para darte los mejores consejos de cómo destacar para los reclutadores",
+            subtitle: "Obtén asistencia para tu CV en segundos. Tienes ",
+            credits: "créditos!",
+            eg:'Ejemplo: "Asistente de Ventas"',
+            show:"Mira cómo funciona",
+            hide:"Ocultar beneficios",
+            step1:{
+               title:"Descripción del Puesto de Trabajo",
+               description:"Sube tu CV y pega la descripción del trabajo. ¡Perfecto IA se encargará del resto!",
+            },
+            step2:{
+               title:"Resultados Rápido y Personalizados",
+               description:"Perfecto IA ofrece sugerencias específicas para optimizar tu currículum en segundos",
+            },
+            step3:{
+               title:"Listo Para Aplicar Con Confianza",
+               description:"Incorpora las mejoras de Perfecto IA a tu CV y aplica al puesto con total confianza",
+            },
             resumeFile: {
                label: "Sube tu curriculum (PDF)",
                placeholder: "Clic para subir o arrastra y suelta tu archivo",

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { auth, db } from "../services/firebase";
 import { Navigate } from "react-router-dom";
-import { onAuthStateChanged, sendEmailVerification, signOut, reload, getIdToken, setPersistence, browserSessionPersistence  } from "firebase/auth";
+import { onAuthStateChanged, sendEmailVerification, signOut, reload, getIdToken } from "firebase/auth";
 import { doc, onSnapshot } from "firebase/firestore"; // Import Firestore functions
 import Loader from "../components/common/Loader";
 
