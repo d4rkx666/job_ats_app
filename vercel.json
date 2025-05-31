@@ -1,8 +1,8 @@
 {
   "redirects": [
     {
-      "source": "http://perfectocv.com",
-      "destination": "https://perfectocv.com",
+      "source": "/(.*)", 
+      "destination": "https://perfectocv.com/$1",
       "permanent": true
     }
   ]
