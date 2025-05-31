@@ -120,13 +120,11 @@ function CreateResumePage() {
       }
 
       //await new Promise(resolve => setTimeout(resolve, 10000));
-      const startTime = performance.now();
       const response = await set_new_resume(to_insert).catch(error => {
         if (error.status === 500) {// token expired
           logout();
         }
       })
-      const endTime = performance.now();
 
       if (response.success === true) {
         // API completed, 100% and close modal
