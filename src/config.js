@@ -122,7 +122,7 @@ export const config = {
                feature: {
                   one: {
                      name: "AI-Powered Optimization",
-                     description: "Our advanced AI analyzes job descriptions and builds/optimizes your resume to match perfectly",
+                     description: "Perfecto AI analyzes job descriptions and builds/optimizes your resume to match perfectly",
                   },
                   two: {
                      name: "ATS Score Tracking",
@@ -141,7 +141,7 @@ export const config = {
             howItWorks: {
                title: "How It Works",
                title2: "From Blank Page to Interview-Ready in 4 Simple Steps",
-               subtitle: "Our AI does the heavy lifting in while you focus on your job search.",
+               subtitle: "Perfecto AI does the heavy lifting in while you focus on your job search.",
                steps: {
                   step1: {
                      title: "Setup your profile",
@@ -414,7 +414,7 @@ export const config = {
                progress: "Progress",
                step: "Step",
                stepOf: "of",
-               proTipInf: "Our AI is crafting your resume to Stand Out for recruiters and maximize your interview chances! We wil also ensure a high change to beat the Applicant Tracking Systems (ATS).",
+               proTipInf: "Perfecto AI is crafting your resume to Stand Out for recruiters and maximize your interview chances! We wil also ensure a high change to beat the Applicant Tracking Systems (ATS).",
                step1: {
                   title: "Initializing resume creation"
                },
@@ -483,7 +483,7 @@ export const config = {
             login: "Login",
             or: "or",
             continue: "to continue working on this resume.",
-            userVerified: "Our IA is about to analyze your resume",
+            userVerified: "Perfeco AI is about to analyze your resume",
             titleVerified: "You are few seconds away to get the best advice to stand out for recruiters and to beat the ATS!",
             notVerified: "Thank you for your registration",
             titleNotVerified: "Before analysing your resume by our powerful AI, please check your email and active your account. Don't forget to come back to this page!",
@@ -632,7 +632,7 @@ export const config = {
                feature: {
                   one: {
                      name: "Optimización de IA potenciada",
-                     description: "Nuestra IA avanzada analiza las descripciones de trabajo y crea/optimiza tu CV para adaptarlo perfectamente",
+                     description: "Perfecto IA analiza las descripciones de trabajo y crea/optimiza tu CV para adaptarlo perfectamente",
                   },
                   two: {
                      name: "Seguimiento de puntaje ATS",
@@ -651,7 +651,7 @@ export const config = {
             howItWorks: {
                title: "Cómo funciona",
                title2: "De página en blanco a estar listo para la entrevista en 4 sencillos pasos",
-               subtitle: "Nuestra IA hace el trabajo pesado mientras tú te ocupas de la búsqueda de trabajo.",
+               subtitle: "Perfecto IA hace el trabajo pesado mientras tú te ocupas de la búsqueda de trabajo.",
                steps: {
                   step1: {
                      title: "Configura tu Perfil",
@@ -662,7 +662,7 @@ export const config = {
                      description: "Pega el texto de la Descripción del Puesto para el que estás aplicando",
                   },
                   step3: {
-                     title: "La magia de IA sucede",
+                     title: "La magia de Perfecto IA sucede",
                      description: "Perfecto CV analiza y crea un CV EXCLUSIVO para el puesto de trabajo para el que estás aplicando",
                   },
                   step4: {
@@ -918,7 +918,7 @@ export const config = {
                progress: "Progreso",
                step: "Paso",
                stepOf: "de",
-               proTipInf: "¡Nuestra IA está construyendo tu CV para destacarte con los reclutadores y maximizar tus chances de tener entrevistas! También aseguramos un gran chance de pasar los Sistema de Selección Automatizado (ATS).",
+               proTipInf: "¡Perfecto IA está construyendo tu CV para destacarte con los reclutadores y maximizar tus chances de tener entrevistas! También aseguramos un gran chance de pasar los Sistema de Selección Automatizado (ATS).",
                step1: {
                   title: "Inicializando la creación de CV"
                },
@@ -987,7 +987,7 @@ export const config = {
             login: "Inicia sesión",
             or: "o",
             continue: "para continuar trabajando en este CV.",
-            userVerified: "Nuestra IA está apunto de analizar tu CV",
+            userVerified: "Perfeco IA está apunto de analizar tu CV",
             titleVerified: "¡Estás a pocos secondos de obtener los mejores consejos para destacar para los empleadores y derrotar a los sistemas de filtro automático!",
             notVerified: "Gracias por registrar tu cuenta.",
             titleNotVerified: "Antes de que nuestra poderosa IA analice tu CV, por favor revisa tu correo y activa tu cuenta. ¡No olvides regresar a esta página!",
