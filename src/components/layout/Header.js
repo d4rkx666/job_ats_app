@@ -32,10 +32,10 @@ function Header() {
 
         {/* App Name */}
         <div className="text-2xl font-bold">
-          <NavLink to="/" className="hidden md:flex text-blue-700 no-underline hover:text-blue-300 transition duration-300">
-            <span className="name1">{config.appName.split(" ")[0]}</span><span className="name2">{config.appName.split(" ")[1]}</span>
+          <NavLink to="/" className="hidden md:flex text-blue-700 no-underline hover:text-blue-500 transition duration-300">
+            <img src="/perfectocv.svg" alt="logo"/>
           </NavLink>
-          <NavLink to="/" className="md:hidden text-blue-700 no-underline hover:text-blue-300 transition duration-300">
+          <NavLink to="/" className="md:hidden text-blue-700 no-underline hover:text-blue-500 transition duration-300">
             <img src="/logo.svg" alt="logo" className="w-10"/>
           </NavLink>
         </div>

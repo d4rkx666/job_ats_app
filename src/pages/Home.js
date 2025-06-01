@@ -112,7 +112,8 @@ function Home() {
           <img
             className="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full"
             src="/home.jpg"
-            alt="Resume on laptop screen"
+            alt="header img"
+            title='Photo by Christina @ wocintechchat.com Unsplash'
           />
         </div>
       </div>
