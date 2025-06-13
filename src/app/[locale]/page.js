@@ -1,8 +1,9 @@
 import React from 'react';
 import { BoltIcon, ChartBarIcon, CloudArrowDownIcon, CommandLineIcon, DocumentTextIcon, SparklesIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { useTranslations, useLocale } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { getTranslations } from 'next-intl/server';
 
 function Home() {
   // Translation
@@ -247,9 +248,19 @@ function Home() {
 
 export default Home;
 
-export const metadata = {
-  description: "This is the about page",
-  alternates: {
-    canonical: "https://perfectocv.com/es",
-  },
-};
+export async function generateMetadata({ params: { locale } }) {
+  const t = await getTranslations("home");
+  
+  return {
+    title: `${process.env.NEXT_PUBLIC_NAME} - ${t("metadata.title")}`,
+    description: t('metadata.description'),
+    keywords: t('metadata.keywords').split(','),
+    alternates: {
+      canonical: `https://perfectocv.com/${locale}`,
+      languages: {
+        'en': 'https://perfectocv.com/en',
+        'es': 'https://perfectocv.com/es',
+      },
+    }
+  };
+}

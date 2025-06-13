@@ -18,6 +18,11 @@
       "redirecting": "Redirecting to your dashboard..."
    },
    "pricingPage": {
+      "metadata":{
+         "title":"Pricing",
+         "description": "Thinking of job hunters, we got the best deal until you get that job!",
+         "keywords": "cheap,cheapest,price,job,job hunt"
+      },
       "title": "Simple Prices For Bigger Dreams",
       "subtitle": "Whether you are an active or casual job hunter, we have created the best plan designed to take care of your wallet.",
       "faqLabel": "Frequently Asked Questions",
@@ -92,6 +97,11 @@
       "freePlan": "Free Plan"
    },
    "home": {
+      "metadata":{
+         "title":"Home",
+         "description": "Build the Perfecto Resume in seconds with our Perfecto AI",
+         "keywords": "perfect,perfecto,cv,curriculum vitae,resume,artificial intelligence,ai,builder,create,enhance,improve"
+      },
       "header": {
          "title": "Land More Interviews",
          "title2": "With an Applicant Tracking System-Optimized Resume",
@@ -211,6 +221,11 @@
       "loginHere": "Login Here"
    },
    "formImproveResume": {
+      "metadata":{
+         "title":"Resume Advisor",
+         "description": "In just few seconds get personalised advice based on a job description for enhancing your resume and increase your chances to be interviewed up to 90%.",
+         "keywords": "resume advisor,advisor,enhance,improvement,analysis,artificial intelligence,ai"
+      },
       "title": "Let's analyse your resume and get you the best advice to stand out for recruiters",
       "subtitle": "Get assist for your resume in seconds. You have ",
       "credits": "credits!",
@@ -500,8 +515,5 @@
    "msg": {
       "emailSendAgain": "Send again",
       "emailSent": "Email has sent. Send again in: "
-   },
-   "metaTag":{
-      "description": "We optimize your resume for Applicant Tracking Systems (ATS) with our trained AI."
    }
 }
