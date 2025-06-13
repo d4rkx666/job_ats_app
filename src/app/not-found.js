@@ -1,6 +1,5 @@
 "use client"
 import Link from 'next/link';
-import "@/app/globals.css"
 import Head from 'next/head';
 
 const NotFoundPage = () => {
