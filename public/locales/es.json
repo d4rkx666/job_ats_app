@@ -1,0 +1,504 @@
+{
+   "menu": {
+      "home": "Inicio",
+      "login": "Entrar",
+      "signUp": "Regístrate",
+      "logout": "Salir",
+      "mobileMenu": "Menú",
+      "mobileMyAccount": "Mi cuenta",
+      "dashboard": "Mi panel",
+      "resume": "Impulsar CV",
+      "createResume": "Crear currículum",
+      "pricing": "Precios",
+      "profile": "Perfil"
+   },
+   "welcomePro": {
+      "welcome": "¡Bienvenido abordo!",
+      "text": "Gracias por tu suscripción. Tu plan ha sido exitosamente activado.",
+      "redirecting": "Redirigiéndote a tu Panel de Usuario..."
+   },
+   "pricingPage": {
+      "title": "Precios simples para sueños grandes",
+      "subtitle": "Seas un buscador de trabajo activo o casual, tenemos el mejor plan pensado para cuidar de tu bolsillo.",
+      "faqLabel": "Preguntas Frecuentes",
+      "currentPlan": "Plan Actual",
+      "includes": "Esto incluye:",
+      "freeTierPlan": {
+         "plan": "Plan Gratuito",
+         "description": "Sácale provecho a todas las herramientas básicas que te harán destacar para los reclutadores de tabajo.",
+         "price": "MXN 0",
+         "priceRecurrent": "por mes",
+         "cta": "Empieza totalmente GRATIS",
+         "ctaLoading": "Casi listo...",
+         "items": {
+            "kwExtraction": "Extracción de Palabras Clave",
+            "AI": "Potente Inteligencia Artificial de Asistente ",
+            "downloads": "Sólo descargas en formato PDF",
+            "breakdown": "Resúmen detallado del análisis de Currículum",
+            "editor": "Editor de Currículum+",
+            "credits": "+15 Creditos reset / mes",
+            "templates": "Plantillas básicas para Currículums"
+         }
+      },
+      "proTierPlan": {
+         "plan": "Plan Pro",
+         "description": "Desbloquea el potencial de tu carrera con las herramientas de última tecnología para mejorar e impulsar tu Currículum y destacar para los empleadores.",
+         "price": "MXN 249",
+         "priceRecurrent": "por mes",
+         "cta": "¡Prueba 7 Días de Pro Plan Gratis!",
+         "ctaLoading": "Casi listo...",
+         "items": {
+            "kwExtraction": "Extracción de Palabras Clave Pro+",
+            "AI": "SUPER Inteligencia Artificial de Asistente",
+            "downloads": "Descargas en Formado PDF+WORD",
+            "breakdown": "Resumen detallado de análisis de Currículum",
+            "editor": "Editor de Currículum+",
+            "credits": "+50 Créditos reset / mes",
+            "templates": "Plantillas Premium para Currículums"
+         }
+      },
+      "faq": {
+         "one":{
+            "question": "¿Cómo funciona Perfecto CV?",
+            "answer": "Nuestra especialidad es analizar las Descripciones de Trabajo. Nuestra Avanzada Inteligencia Artificial busca las palabras clave más importantes y las agrega/o sugiere en tu Curriculum para destacar para los reclutadores de trabajo."
+         },
+         "two":{
+            "question": "¿Cómo funcionan los Créditos en Perfecto CV?",
+            "answer": "Los Créditos se utilizan para realizar cada acción, es decir, la creación u optimización de tu CV, costará créditos. Para ver la tabla de Costos de Acción, visita tu Panel de Usuario."
+         },
+         "three":{
+            "question": "¿Puedo cambiar mi plan en cualquier momento?",
+            "answer": "Sí, puedes mejorar tu plan, o seguir con el plan gratuito en cualquier momento."
+         },
+         "four":{
+            "question": "¿Hay algún contrato o tengo un compromiso a largo plazo?",
+            "answer": "No, todos los planes son MENSUALES y no incluyen ningun tipo de contrato a largo plazo."
+         },
+         "five":{
+            "question": "¿Qué métodos de pago aceptan?",
+            "answer": "Aceptamos la mayoría de tarjetas de Crédito/Débito, y también pagos mediante Oxxo."
+         },
+         "six":{
+            "question": "¿Almacenan mi información de pago?",
+            "answer": "Nosotros NUNCA almacenamos o interactuamos con tu información de pago. Todo sucede a través de la plataforma de Stripe."
+         },
+         "seven":{
+            "question": "¿Almacenan mis datos de Currículum?",
+            "answer": "Tus datos de perfil se almacenan seguros, y NUNCA los compartimos con terceros. Puedes eliminar tus perfil en cualquier momento."
+         }
+      }
+   },
+   "user": {
+      "proPlan": "Plan Pro",
+      "freePlan": "Plan Gratuito"
+   },
+   "home": {
+      "header": {
+         "title": "Consigue más entrevistas de trabajo",
+         "title2": "Con un Curriculum Vitae optimizado para el Sistema de Selección Automatizado",
+         "subtitle": "Nuestra plataforma de IA potenciada analiza descripciones de trabajo y crea/optimiza tu Currículum Vitae (CV) para vencer al Sistema de Selección Automatizado (ATS).",
+         "seeHowItWorks": "¿Qué es el ATS?"
+      },
+      "whatIsAts": {
+         "title": "Entendiendo al ATS",
+         "subtitle": "¿Qué es el Sistema de Selección Automatizado?",
+         "whatIs": "ATS (Applicant Tracking System o Sistema de Selección Automatizado) es un software usado por los reclutadores y empleadores para gestionar y filtrar las aplicaciones de candidatos automáticamente.",
+         "affects": "¿Cómo el ATS afecta en tu búsqueda de empleo?",
+         "bulletPoints": {
+            "1":"• Más del 75% de grandes compañías utilizan el ATS para filtrar los CVs de los candidatos antes de que lleguen a manos de un reclutador humano.",
+            "2":"• El ATS escanea tu CV en búsqueda de Palabras Clave y clasifica a los candidatos basados en el porcentaje de coincidencia.",
+            "3":"• Los CVs con malos formatos o con Palabras Clave faltantes son rechazados automáticamente.",
+            "4":"• Perfecto CV te ayuda a optimizar tu CV específicamente para los requerimientos del ATS, y ser destacado entre los candidatos para cuando tu CV llegue a manos de un reclutador humano."
+         },
+         "howToBeat": "Míra cómo lo hacemos"
+      },
+      "features": {
+         "featureTitle": "Características",
+         "title": "Todo lo que necesitas para vencer al ATS",
+         "subtitle": "Nuestra plataforma utiliza tecnologías innovadoras para darle a tu CV el mejor chance de ser visto por los reclutadores.",
+         "feature": {
+            "one": {
+               "name": "Optimización de IA potenciada",
+               "description": "Perfecto IA analiza las descripciones de trabajo y crea/optimiza tu CV para adaptarlo perfectamente"
+            },
+            "two": {
+               "name": "Seguimiento de puntaje ATS",
+               "description": "Obtén retroalimentación en tiempo real del desempeño de tu CV para el Sistema de Selección Automatizado"
+            },
+            "three": {
+               "name": "Análisis de Palabras Clave",
+               "description": "Identifica las Palabras Clave más importantes de la descripción de trabajo para incluírlas en tu aplicación"
+            },
+            "four": {
+               "name": "Descargas instantes",
+               "description": "Exporta tu CV en múltiples formatos con un solo clic"
+            }
+         }
+      },
+      "howItWorks": {
+         "title": "Cómo funciona",
+         "title2": "De página en blanco a estar listo para la entrevista en 4 sencillos pasos",
+         "subtitle": "Perfecto IA hace el trabajo pesado mientras tú te ocupas de la búsqueda de trabajo.",
+         "steps": {
+            "step1": {
+               "title": "Configura tu Perfil",
+               "description": "Crea tu Perfil con todas tus habilidades y experiencias de trabajo"
+            },
+            "step2": {
+               "title": "Agrega la descripción de trabajo",
+               "description": "Pega el texto de la Descripción del Puesto para el que estás aplicando"
+            },
+            "step3": {
+               "title": "La magia de Perfecto IA sucede",
+               "description": "Perfecto CV analiza y crea un CV EXCLUSIVO para el puesto de trabajo para el que estás aplicando"
+            },
+            "step4": {
+               "title": "Descarga y aplica con confianza",
+               "description": "¡Y listo, ya puedes aplicar a este puesto de trabajo con tu nuevo CV optimizado y adaptado!"
+            }
+         }
+      },
+      "footer": {
+         "title": "¿Ready para impulsar tu CV?",
+         "title2": "Empieza tu prueba gratis de Pro Plan hoy.",
+         "subtitle": "Obtén 7 días de características Pro para que veas las diferencias por tí mismo. Debido a la sesión de pruebas pre venta, obtén más días gratis de Pro contactando al administrador.",
+         "tryPro": "Prueba 7 días gratis de Pro"
+      },
+      "getStartedBtn": "Inicia - Es gratis"
+   },
+   "formLogin": {
+      "email": {
+         "label": "Correo electrónico",
+         "placeholder": "Escribe tu correo electrónico aquí",
+         "required": "El correo electrónico es obligatorio"
+      },
+      "password": {
+         "label": "Contraseña",
+         "placeholder": "Escribe tu contraseña aquí",
+         "required": "La contraseña es obligatoria"
+      },
+      "loginBtn": {
+         "label": "Iniciar sesión",
+         "loading": "Iniciando sesión..."
+      },
+      "signUpHere": "¡Regístrate aquí!",
+      "forgotPassword": "Olvidé la contraseña"
+   },
+   "formSignup": {
+      "name": {
+         "label": "Nombre",
+         "placeholder": "Escribe tu nombre aquí",
+         "required": "El nombre es requerido"
+      },
+      "country": {
+         "label": "País",
+         "placeholder": "Selecciona tu país",
+         "required": "El país es requerido"
+      },
+      "email": {
+         "label": "Correo electrónico",
+         "placeholder": "Escribe tu correo electrónico aquí",
+         "required": "El correo electrónico es obligatorio"
+      },
+      "password": {
+         "label": "Contraseña",
+         "placeholder": "Escribe tu contraseña aquí",
+         "required": "La contraseña es requerida"
+      },
+      "signupBtn": {
+         "label": "Regístrate",
+         "loading": "Registrando cuenta..."
+      },
+      "loginHere": "Inicia sesión aquí"
+   },
+   "formImproveResume": {
+      "title": "Analicemos tu CV para darte los mejores consejos de cómo destacar para los reclutadores",
+      "subtitle": "Obtén asistencia para tu CV en segundos. Tienes ",
+      "credits": "créditos!",
+      "eg": "Ejemplo: \"Asistente de Ventas\"",
+      "show": "Mira cómo funciona",
+      "hide": "Ocultar beneficios",
+      "step1": {
+         "title": "Descripción del Puesto de Trabajo",
+         "description": "Sube tu CV y pega la descripción del trabajo. ¡Perfecto IA se encargará del resto!"
+      },
+      "step2": {
+         "title": "Resultados Rápido y Personalizados",
+         "description": "Perfecto IA ofrece sugerencias específicas para optimizar tu currículum en segundos"
+      },
+      "step3": {
+         "title": "Listo Para Aplicar Con Confianza",
+         "description": "Incorpora las mejoras de Perfecto IA a tu CV y aplica al puesto con total confianza"
+      },
+      "resumeFile": {
+         "label": "Sube tu curriculum (PDF)",
+         "max": "PDF, max 5MB",
+         "change": "Click para cambiar archivo",
+         "placeholder": "Clic para subir o arrastra y suelta tu archivo",
+         "required": "El archivo de currículum es obligatorio",
+         "invalidType": "Sólo se permiten archivos PDF",
+         "invalidSize": "El tamaño del archivo debe ser menos de 5MB"
+      },
+      "jobTitle": {
+         "label": "Título del puesto",
+         "placeholder": "Pega el título de puesto aquí",
+         "required": "El título del puesto es obligatorio"
+      },
+      "jobDescription": {
+         "label": "Descripción del puesto",
+         "placeholder": "Pega la descripción del puesto aquí",
+         "required": "La descripción del puesto es obligatoria"
+      },
+      "uploadBtn": {
+         "label": "Optimizar",
+         "loading": "Optimizando..."
+      }
+   },
+   "formProfile": {
+      "personalInformation": {
+         "title": "Información Personal",
+         "subtitle": "*Esta información se guardará automáticamente, excepto el nombre.",
+         "subtitle2": "*El campo de Email no es tu usuario para iniciar sesión.",
+         "email": "Correo electrónico",
+         "phone": "Teléfono",
+         "linkedin": "URL de tu Linkedin",
+         "website": "URL de tu sitio web"
+      },
+      "skills": {
+         "title": "Habilidades",
+         "subtitle": "*Esta información se guardará automáticamente.",
+         "addSkill": "Agrega una habilidad",
+         "subtitle2": "Usa la tecla \"Enter\" o \"Coma\" para registrar tu habilidad."
+      },
+      "education": {
+         "title": "Educación",
+         "institution": "Instituto",
+         "degree": "Grado académico / Carrera",
+         "currently": "Actualmente estudio aquí",
+         "btnAdd": "+ Agregar otra educación"
+      },
+      "work": {
+         "title": "Historial de trabajo",
+         "jobTitle": "Nombre del puesto",
+         "company": "Empresa",
+         "responsibilities": "Responsabilidades",
+         "currently": "Actualmente trabajo aquí",
+         "btnAdd": "+ Agregar otro trabajo"
+      },
+      "project": {
+         "title": "Proyectos",
+         "name": "Nombre del proyecto",
+         "description": "Descripción",
+         "technologies": "Tecnologías",
+         "btnAdd": "+ Agregar proyecto"
+      },
+      "saveChanges": "*Guarda todos tus cambios con el botón verde de abajo.",
+      "startDate": "Fecha de inicio",
+      "endDate": "Fecha de terminación",
+      "btnSave": "Guardar todo",
+      "btnSaving": "Guardando...",
+      "btnSaved": "Guardado"
+   },
+   "formFeedback": {
+      "title": "Comentarios",
+      "titleSubmitted": "¡Gracias por tus comentarios!",
+      "titleRate": "¿Cómo calificarías tu experiencia?",
+      "placeholder": "¡Nos encantaría escuchar tus comentarios!",
+      "titleSuggestions": "¿Algún comentario o sugerencias?",
+      "btn": "Enviar comentarios",
+      "btnLoading": "Enviando comentarios..."
+   },
+   "formPatternValidation": {
+      "phone": "El teléfono debe ser de un formato válido (10 digitos).",
+      "email": "El correo debe ser de un formato válido.",
+      "url": "La URL debe tener un formato válido."
+   },
+   "dashboardPage": {
+      "welcome": "Bienvenid@",
+      "subWelcome": "Qué gusto tenerte por aquí.",
+      "monthlyCredits": "Créditos Mensuales",
+      "creditsLeft": "créditos disponibles",
+      "actionCosts": "Costo de Acciones",
+      "atsReoptimization": "Análisis de puntaje de ATS",
+      "keywordOptimization": "Extracción de palabras clave",
+      "resumeOptimization": "Consejos de CV",
+      "resumeCreation": "Creación de CV",
+      "credit": "crédito",
+      "upgrade": "Actualizar a Pro para tener 50 créditos/mes →",
+      "improvements": "Sugerencias de mejora",
+      "creations": "CV creados",
+      "drafts": "Borradores",
+      "noDrafts": "No hay borradores todavía.",
+      "noCreations": "Crea tu primer CV",
+      "noImprovements": "Obtenen tus primeros consejos de CV",
+      "expires": "Expira",
+      "nextReset": "Próximo reset",
+      "quickActions": "Acciones rápidas",
+      "newResume": "Crear CV",
+      "improveCurrent": "Ya tengo un CV",
+      "sort": "Orden",
+      "newest": "Nuevos primero",
+      "oldest": "Viejos primero",
+      "settings": "Administrar mi Plan",
+      "settingsLoading": "Generando administración..."
+   },
+   "createResumePage": {
+      "title": "Completa tu Perfil",
+      "subtitle": "Desbloquea recomendaciones personalizadas y acceso completo a la creación de CVs con Inteligencia Artificial completando tu perfil profesional.",
+      "getStartedBtn": "Empezar",
+      "form": {
+         "jobTitle": "Título de trabajo",
+         "jobTitlePlaceholder": "Ejemplo. 'Ejecutivo de ventas @ Amazon'",
+         "jobDescription": "Descripción del puesto",
+         "jobDescriptionPlaceholder": "Pega aquí la descripción del trabajo",
+         "jobDescriptionMinimumError": "Escribe al menos 10 caracteres",
+         "jobDescriptionMinimum": "Mínimo 10 caracteres",
+         "steps": {
+            "step1": {
+               "step": "Info del puesto",
+               "title": "Platícanos acerca del puesto de trabajo"
+            },
+            "step2": {
+               "step": "Palabras clave",
+               "title": "Análisis de la descripción de trabajo",
+               "title2": "Tus palabras clave",
+               "keywordsAmount": "palabras clave",
+               "withoutKeywords": "No hay palabras clave guardadas con este borrador",
+               "subtitle": "Analiza la descripción de trabajo",
+               "extractInfo": "Extrae las habilidades claves y requerimientos para optimizar tu CV.",
+               "extractBtn": "Analizar descripción de trabajo",
+               "reExtractBtn": "Re-analizar descripción de trabajo"
+            },
+            "step3": {
+               "step": "Dieño",
+               "title": "Elige tu diseño",
+               "preview": "Previsualizar",
+               "popular": "Popular"
+            },
+            "step4": {
+               "step": "Extras",
+               "title": "Toques finales",
+               "coverLetter": "Generar una carta de presentación",
+               "coverLetterInfo": "Crearemos una carta de presentación personalizada utilizando tu perfil y la descripción de trabajo.",
+               "createButton": "Generar mi nuevo CV",
+               "creatingButton": "Generando CV..."
+            },
+            "stepBack": "Retroceder",
+            "stepFoward": "Continuar"
+         },
+         "templates": {
+            "template1": "Clásico",
+            "template2": "Moderno",
+            "template3": "Optimizado para ATS",
+            "template4": "Ejecutivo",
+            "bestScore": "Mejor puntaje"
+         }
+      },
+      "modalLoading": {
+         "title": "Elaborando tu CV",
+         "subtitle": "Usualmente toma 15-30 segundos",
+         "progress": "Progreso",
+         "step": "Paso",
+         "stepOf": "de",
+         "proTipInf": "¡Perfecto IA está construyendo tu CV para destacarte con los reclutadores y maximizar tus chances de tener entrevistas! También aseguramos un gran chance de pasar los Sistema de Selección Automatizado (ATS).",
+         "step1": {
+            "title": "Inicializando la creación de CV"
+         },
+         "step2": {
+            "title": "Analizando la estructura del contenido"
+         },
+         "step3": {
+            "title": "Optimizando para el puntaje de ATS"
+         },
+         "step4": {
+            "title": "Generando el diseño de tu CV"
+         },
+         "step5": {
+            "title": "Chequeos finales de la calidad"
+         },
+         "step6": {
+            "title": "Preparando tu CV"
+         }
+      }
+   },
+   "proLabel": {
+      "proFeature": "Características Pro:",
+      "upgradeToPro": "Actualízate a Pro",
+      "parenthesis": "50 créditos / mes",
+      "proUnlocks": "Desbloqueos de Pro:",
+      "buyExtraCredits": "Comprar Créditos extras",
+      "proTip": "Tip Pro",
+      "unlockFullKwAnalysis": "Desbloquea el análisis completo de Palabras Clave"
+   },
+   "keywordList": {
+      "appears": "Aparece",
+      "time": "tiempo/s en esta descripción de trabajo",
+      "coreRequirements": "Requirementos de Núcleo",
+      "mustInclude": "Debe incluír",
+      "noHardSkills": "Habilidades de peso no encontradas",
+      "toolsAndTech": "Herramientas y Tecnologías",
+      "noTools": "Herramientas o Tecnologías no encontradas",
+      "softSkills": "Habilidades suaves",
+      "noSoftSkills": "Habilidades suaves no encontradas",
+      "certs": "Certificaciones",
+      "proEnabled": "Análisis de Palabras Clave habilitada",
+      "lastExtracted": "Últimas Palabras Clave extraídas",
+      "freeUsersSee": "Usuarios con plan gratuito ven",
+      "freeUsersSeeKw": "Palabras Clave",
+      "proMembersGet": "Miembros Pro obtienen",
+      "proMembersGetMore": "más",
+      "proMembersGetIncluding": "incluyendo"
+   },
+   "creditEmptyModal": {
+      "outOf": "¡Sin Créditos!",
+      "used": "No tienes suficientes créditos para esta acción. Recuerda que tienes ",
+      "thisMonth": "créditos gratuitos cada mes.",
+      "noCredits": "créditos disponibles",
+      "resetIn": "Reseteo de créditos en",
+      "days": "días",
+      "poweredAIKWExtraction": "Super Perfecto IA, Herramientas+",
+      "moreCredits": "x3+ veces más créditos",
+      "proUsed": "Sólo te quedan",
+      "proThisMonth": "créditos para este mes, los cuales no son suficientes para esta acción.",
+      "needMoreCreditsPro": "¿Necesitas Más Créditos?"
+   },
+   "continueLoginModal": {
+      "noUserTitle": "¡Estás a un paso de destacar para los empleadores!",
+      "doNotCloseWindow": "No cierres esta ventana",
+      "noUserSubtitle": "Una vez que inicies sesión, regresa a esta página para que no pierdas este análisis de tu CV.",
+      "please": "Por favor",
+      "signUp": "Regístrate",
+      "login": "Inicia sesión",
+      "or": "o",
+      "continue": "para continuar trabajando en este CV.",
+      "userVerified": "Perfeco IA está apunto de analizar tu CV",
+      "titleVerified": "¡Estás a pocos secondos de obtener los mejores consejos para destacar para los empleadores y derrotar a los sistemas de filtro automático!",
+      "notVerified": "Gracias por registrar tu cuenta.",
+      "titleNotVerified": "Antes de que nuestra poderosa IA analice tu CV, por favor revisa tu correo y activa tu cuenta. ¡No olvides regresar a esta página!",
+      "closingModal": "Cerrando popup en",
+      "seconds": "segundos..."
+   },
+   "previewImprovement": {
+      "title": "Sugerencias de IA",
+      "subtitle": "Aquí tienes tus nuevas sugerencias para impulsar tu búsqueda de empleo. ¡Por favor léalo cuidadosamente y manténgalo actualizado!"
+   },
+   "verifyEmailReminder": {
+      "title": "Por favor verifica tu correo electrónico",
+      "subtitle": "Te hemos enviado un correo a:"
+   },
+   "error": {
+      "userNotFound": "Correo o contraseña incorrecta. Por favor inténtalo de nuevo.",
+      "userAlreadyInUse": "Usuario ya existe, por favor usa uno diferente.",
+      "userNotVerified": "Por favor verifica tu correo electrónico antes de usar este servicio.",
+      "resumeNotUploaded": "Falló al subir curriculum. Por favor inténtalo de nuevo.",
+      "withoutImprovements": "¡No quedan más mejoras :(! Por favor mejora tu plan...",
+      "universalError": "Algo salió mal. Por favor inténtalo más tarde!"
+   },
+   "msg": {
+      "emailSendAgain": "Enviar de nuevo",
+      "emailSent": "Correo enviado. Podrás enviar el correo nuevamente en: "
+   },
+   "metaTag":{
+      "description": "Optimizamos tu CV con Inteligencia Artificial para pasar los sistemas automáticos de selección (ATS)."
+   }
+}
