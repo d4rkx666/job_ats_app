@@ -18,6 +18,11 @@
       "redirecting": "Redirigiéndote a tu Panel de Usuario..."
    },
    "pricingPage": {
+      "metadata":{
+         "title":"Precios",
+         "description": "Pensando en los que buscan un empleo, ¡tenemos el mejor plan hasta que obtengas ese empleo!",
+         "keywords": "barato,el mas barato,precio,empleo,busqueda de empleo,trabajo,busqueda de trabajo"
+      },
       "title": "Precios simples para sueños grandes",
       "subtitle": "Seas un buscador de trabajo activo o casual, tenemos el mejor plan pensado para cuidar de tu bolsillo.",
       "faqLabel": "Preguntas Frecuentes",
@@ -93,6 +98,11 @@
       "freePlan": "Plan Gratuito"
    },
    "home": {
+      "metadata":{
+         "title":"Inicio",
+         "description": "Crea el CV Perfecto en Segundos con nuestra Perfecto IA",
+         "keywords": "perfecto,cv,curriculum vitae,inteligencia artificial,ia,crear,mejorar,impulsar"
+      },
       "header": {
          "title": "Consigue más entrevistas de trabajo",
          "title2": "Con un Curriculum Vitae optimizado para el Sistema de Selección Automatizado",
@@ -212,6 +222,11 @@
       "loginHere": "Inicia sesión aquí"
    },
    "formImproveResume": {
+      "metadata":{
+         "title":"Asesor de CV",
+         "description": "En cuestión de segundos, obtén sugerencias personalizadas con base en la descripción de trabajo para mejorar tu CV e incrementar tus chances de ser entrevistado hasta 90%.",
+         "keywords": "consejero de cv,asistente,mejorar,analisis,inteligencia artificial,ia"
+      },
       "title": "Analicemos tu CV para darte los mejores consejos de cómo destacar para los reclutadores",
       "subtitle": "Obtén asistencia para tu CV en segundos. Tienes ",
       "credits": "créditos!",
@@ -497,8 +512,5 @@
    "msg": {
       "emailSendAgain": "Enviar de nuevo",
       "emailSent": "Correo enviado. Podrás enviar el correo nuevamente en: "
-   },
-   "metaTag":{
-      "description": "Optimizamos tu CV con Inteligencia Artificial para pasar los sistemas automáticos de selección (ATS)."
    }
 }
