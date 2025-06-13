@@ -78,10 +78,10 @@ function Home() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <div className="relative bg-gray-900 overflow-hidden">
+      <div className="relative bg-gray-900/90 lg:bg-gray-900 overflow-hidden">
         <div className="max-w-7xl mx-auto">
-          <div className="relative z-10 pb-8 bg-gray-900 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
-            <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 lg:mt-16 lg:px-8 xl:mt-20">
+          <div className="relative z-10 pb-8 bg-gray-900/70 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 lg:bg-gray-900 xl:pb-32">
+            <main className="pt-10 mx-auto max-w-7xl px-4 sm:px-6 lg:mt-10 lg:pt-0 lg:mt-16 lg:px-8 xl:mt-20 ">
               <div className="sm:text-center lg:text-left">
                 <h1 className="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-5xl">
                   <span className="block">{t("header.title")}</span>
@@ -115,6 +115,7 @@ function Home() {
             src="/home.jpg"
             alt="header img"
             fill
+            priority
             title='Photo by Christina @ wocintechchat.com Unsplash'
           />
         </div>
@@ -248,15 +249,16 @@ function Home() {
 
 export default Home;
 
-export async function generateMetadata({ params: { locale } }) {
+export async function generateMetadata({params}) {
   const t = await getTranslations("home");
+  const p = await params;
   
   return {
     title: `${process.env.NEXT_PUBLIC_NAME} - ${t("metadata.title")}`,
     description: t('metadata.description'),
     keywords: t('metadata.keywords').split(','),
     alternates: {
-      canonical: `https://perfectocv.com/${locale}`,
+      canonical: `https://perfectocv.com/${p.locale}`,
       languages: {
         'en': 'https://perfectocv.com/en',
         'es': 'https://perfectocv.com/es',
