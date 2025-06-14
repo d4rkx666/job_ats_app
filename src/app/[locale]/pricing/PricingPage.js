@@ -118,13 +118,15 @@ const PricingPage = () => {
       if(response.success){
         const session = response.session_id
 
-        const stripe = await loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+        const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
         console.log("passing", session)
         await stripe.redirectToCheckout({
           sessionId: session,
         });
       }
-    } catch {} finally {
+    } catch(error){
+      console.error(error);
+    } finally {
       setIsProLoading(false);
     }
   }
