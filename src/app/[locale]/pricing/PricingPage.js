@@ -212,7 +212,7 @@ const PricingPage = () => {
           </div>
 
         {/* FAQ Section */}
-        <div className="mt-24">
+        <div id="faq" className="pt-24">
           <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">
             {t("faqLabel")}
           </h2>

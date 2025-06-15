@@ -8,9 +8,21 @@
       "mobileMyAccount": "Mi cuenta",
       "dashboard": "Mi panel",
       "resume": "Impulsar CV",
-      "createResume": "Crear currículum",
+      "createResume": "Crear Currículum",
       "pricing": "Precios",
-      "profile": "Perfil"
+      "profile": "Perfil",
+      "faq": "Preguntas Frecuentes"
+   },
+   "footer":{
+      "navigate": "Navegación",
+      "contact": "Contacto",
+      "benefits": "Obtén los beneficios ahora",
+      "createLabel": "¡Crea tu cuenta o inicia sesión para empezar a destacar en tus postulaciones de trabajo!",
+      "create": "Crear una Cuenta",
+      "login": "Iniciar Sesión",
+      "right": "Todos los Derechos Reservados",
+      "privacy": "Políticas de Privacidad",
+      "terms": "Términos de Servicio"
    },
    "welcomePro": {
       "welcome": "¡Bienvenido abordo!",

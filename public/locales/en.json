@@ -5,12 +5,24 @@
       "signUp": "Sign Up",
       "logout": "Logout",
       "mobileMenu": "Menu",
-      "mobileMyAccount": "My account",
+      "mobileMyAccount": "My Account",
       "dashboard": "Dashboard",
       "resume": "Boost Resume",
-      "createResume": "Create new resume",
+      "createResume": "Create New Resume",
       "pricing": "Pricing",
-      "profile": "Profile"
+      "profile": "Profile",
+      "faq": "FAQ"
+   },
+   "footer":{
+      "navigate": "Navigate",
+      "contact": "Contact",
+      "benefits": "Get the benefits now",
+      "createLabel": "Create your account or login to start standing out for employers!",
+      "create": "Create an Account",
+      "login": "Login",
+      "right": "All rights reserved",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service"
    },
    "welcomePro": {
       "welcome": "Welcome Aboard!",
