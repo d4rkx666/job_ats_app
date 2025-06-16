@@ -16,8 +16,8 @@ export default async function RootLayout({
   return (
    <html lang={loc.locale}>
       <body>
-        <NextIntlClientProvider locale={loc.locale} messages={messages}>
-            <AuthProvider sysVar={sysvar.system}>
+        <NextIntlClientProvider key={loc.locale} locale={loc.locale} messages={messages}>
+            <AuthProvider key={loc.locale} sysVar={sysvar.system}>
               <ClientLayout>
                 {children}
               </ClientLayout>

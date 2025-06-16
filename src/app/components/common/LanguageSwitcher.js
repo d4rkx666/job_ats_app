@@ -1,6 +1,4 @@
 "use client"
-
-import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState, useTransition } from "react";
 
 const LanguageSwitcher = (className) => {
@@ -36,7 +34,6 @@ const LanguageSwitcher = (className) => {
   }, [])
 
   const [isPending, startTransition] = useTransition();
-  const router = useRouter();
 
   // run every time user switches the language
   useEffect(()=>{
@@ -48,7 +45,7 @@ const LanguageSwitcher = (className) => {
 
       startTransition(() => {
         const newUrl = `/${language}${window.location.pathname.replace(/^\/[a-zA-Z]{2}/, '')}`;
-        router.replace(`${window.location.origin}${newUrl}`);
+        window.location = `${window.location.origin}${newUrl}`;
       });
     }
   },[language, setLanguage])
