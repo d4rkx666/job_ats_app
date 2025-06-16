@@ -527,5 +527,110 @@
    "msg": {
       "emailSendAgain": "Send again",
       "emailSent": "Email has sent. Send again in: "
+   },
+   "privacy": {
+      "title": "Privacy Policy | Perfecto CV",
+      "description": "Learn how Perfecto CV protects and uses your personal information.",
+      "lastUpdated": "Last Updated",
+      "sections": {
+      "introduction": {
+         "title": "1. Introduction",
+         "content": "Perfecto CV (\"we,\" \"our,\" or \"us\") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our resume-building application."
+      },
+      "informationCollected": {
+         "title": "2. Information We Collect",
+         "intro": "We may collect the following types of information:",
+         "personalInfo": "Personal Information: Name, email address, phone number, work history, education details, and other resume-related information you provide.",
+         "usageData": "Usage Data: How you interact with our app, including templates used, time spent, and features accessed.",
+         "technicalData": "Technical Data: browser type, device information, and operating system such as the device language to auto detect the Perfecto CV language."
+      },
+      "howWeUse": {
+         "title": "3. How We Use Your Information",
+         "intro": "We use the information we collect to:",
+         "provideService": "Provide and maintain our service",
+         "createResume": "Create and customize your resume",
+         "improveApp": "Improve our app and develop new features",
+         "communicate": "Communicate with you about updates and offers",
+         "ensureSecurity": "Ensure security and prevent fraud"
+      },
+      "dataSecurity": {
+         "title": "4. Data Security",
+         "content": "We implement industry-standard security measures to protect your personal information. However, no method of transmission over the Internet is 100% secure, and we cannot guarantee absolute security."
+      },
+      "yourRights": {
+         "title": "5. Your Rights",
+         "intro": "You have the right to:",
+         "accessInfo": "Access, update, or delete your personal information",
+         "optOut": "Opt-out of marketing communications",
+         "requestCopy": "Request a copy of your data",
+         "withdrawConsent": "Withdraw consent for data processing"
+      },
+      "changes": {
+         "title": "6. Changes to This Policy",
+         "content": "We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new policy on this page and updating the \"Last Updated\" date."
+      },
+      "contact": {
+         "title": "7. Contact Us",
+         "content": "If you have questions about this Privacy Policy, please contact us at"
+      }
+      }
+   },
+   "terms": {
+      "title": "Terms of Service | Perfecto CV",
+      "description": "Terms and conditions for using Perfecto CV resume builder.",
+      "lastUpdated": "Last Updated",
+      "sections": {
+      "acceptance": {
+         "title": "1. Acceptance of Terms",
+         "content": "By accessing or using Perfecto CV (\"the Service\"), you agree to be bound by these Terms of Service. If you do not agree, you may not use the Service."
+      },
+      "description": {
+         "title": "2. Description of Service",
+         "content": "Perfecto CV provides an online platform for creating, editing, and downloading professional resumes with Artificial Intelligence, focused on analysing Job Descriptions to provide specific and personalised advice, and also offer tools to assist users in resume creation based on a profile."
+      },
+      "responsibilities": {
+         "title": "3. User Responsibilities",
+         "intro": "You agree to:",
+         "provideInfo": "Provide accurate and complete information for your resume",
+         "checkInfo": "Verify and validate that the created resumes do not have any extra skills or experiences that you do not actually have.",
+         "maintainConfidentiality": "Maintain the confidentiality of your account credentials",
+         "lawfulUse": "Use the Service only for lawful purposes",
+         "noMisuse": "Not misuse or disrupt the Service"
+      },
+      "subscriptions": {
+         "title": "4. Subscription and Payments",
+         "premiumFeatures": "Some features require payment (\"Premium Features\")",
+         "autoRenew": "Subscriptions automatically renew unless canceled",
+         "nonRefundable": "All fees are non-refundable except as required by law",
+         "priceChanges": "We may change pricing with 30 days notice"
+      },
+      "ip": {
+         "title": "5. Intellectual Property",
+         "content": "Perfecto CV owns all rights to the Service and its content. You retain ownership of your resume content and profile, but grant us a license to process it for providing the Service."
+      },
+      "warranties": {
+         "title": "6. Disclaimer of Warranties",
+         "intro": "The Service is provided \"as is\" without warranties of any kind. We do not guarantee that:",
+         "uninterrupted": "The Service will be uninterrupted or error-free",
+         "employment": "Resumes will result in employment",
+         "requirements": "The Service will meet your specific requirements"
+      },
+      "liability": {
+         "title": "7. Limitation of Liability",
+         "content": "Perfecto CV, being a tool that uses Artificial Intelligence, offers the most accurate assistance possible, and is not intended to add additional information to mislead recruiters with skills and/or information that are not specified in your profile, however, no tool on the Internet is 100% accurate, so Perfecto CV will not be responsible for any indirect, incidental or consequential damages arising from the use of the Service."
+      },
+      "termination": {
+         "title": "8. Termination",
+         "content": "We may suspend or terminate your access to the Service at any time for violation of these Terms. You may stop using our Service at any time."
+      },
+      "changes": {
+         "title": "9. Changes to Terms",
+         "content": "We may modify these Terms at any time. Continued use after changes constitutes acceptance of the new Terms."
+      },
+      "contact": {
+         "title": "10. Contact Information",
+         "content": "For questions about these Terms, contact us at"
+      }
+      }
    }
 }

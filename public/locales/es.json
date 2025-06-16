@@ -524,5 +524,110 @@
    "msg": {
       "emailSendAgain": "Enviar de nuevo",
       "emailSent": "Correo enviado. Podrás enviar el correo nuevamente en: "
+   },
+   "privacy": {
+      "title": "Política de Privacidad | Perfecto CV",
+      "description": "Aprende cómo Perfecto CV protege y utiliza tu información personal.",
+      "lastUpdated": "Última actualización",
+      "sections": {
+         "introduction": {
+         "title": "1. Introducción",
+         "content": "Perfecto CV (\"nosotros\", \"nuestro\" o \"nos\") está comprometido con la protección de tu privacidad. Esta Política de Privacidad explica cómo recopilamos, usamos, divulgamos y protegemos tu información cuando utilizas nuestra aplicación para crear currículums."
+         },
+         "informationCollected": {
+         "title": "2. Información que Recopilamos",
+         "intro": "Podemos recopilar los siguientes tipos de información:",
+         "personalInfo": "Información Personal: Nombre, dirección de correo electrónico, número de teléfono, historial laboral, detalles educativos y otra información relacionada con tu currículum que proporciones.",
+         "usageData": "Datos de Uso: Cómo interactúas con nuestra aplicación, incluyendo plantillas utilizadas, tiempo dedicado y funciones accedidas.",
+         "technicalData": "Datos Técnicos: tipo de navegador, información del dispositivo y sistema operativo tales como el idioma de tu dispositivo para autodetectar el lenguage de Perfecto CV."
+         },
+         "howWeUse": {
+         "title": "3. Cómo Utilizamos Tu Información",
+         "intro": "Utilizamos la información que recopilamos para:",
+         "provideService": "Proporcionar y mantener nuestro servicio",
+         "createResume": "Crear y personalizar tu currículum",
+         "improveApp": "Mejorar nuestra aplicación y desarrollar nuevas funciones",
+         "communicate": "Comunicarnos contigo sobre actualizaciones y ofertas",
+         "ensureSecurity": "Garantizar la seguridad y prevenir fraudes"
+         },
+         "dataSecurity": {
+         "title": "4. Seguridad de los Datos",
+         "content": "Implementamos medidas de seguridad estándar en la industria para proteger tu información personal. Sin embargo, ningún método de transmisión por Internet es 100% seguro y no podemos garantizar seguridad absoluta."
+         },
+         "yourRights": {
+         "title": "5. Tus Derechos",
+         "intro": "Tienes derecho a:",
+         "accessInfo": "Acceder, actualizar o eliminar tu información personal",
+         "optOut": "Optar por no recibir comunicaciones de marketing",
+         "requestCopy": "Solicitar una copia de tus datos",
+         "withdrawConsent": "Retirar el consentimiento para el procesamiento de datos"
+         },
+         "changes": {
+         "title": "6. Cambios a Esta Política",
+         "content": "Podemos actualizar nuestra Política de Privacidad periódicamente. Te notificaremos sobre cualquier cambio publicando la nueva política en esta página y actualizando la fecha de \"Última actualización\"."
+         },
+         "contact": {
+         "title": "7. Contáctanos",
+         "content": "Si tienes preguntas sobre esta Política de Privacidad, por favor contáctanos en"
+         }
+      }
+   },
+   "terms": {
+      "title": "Términos de Servicio | Perfecto CV",
+      "description": "Términos y condiciones para usar el creador de currículums Perfecto CV.",
+      "lastUpdated": "Última actualización",
+      "sections": {
+         "acceptance": {
+         "title": "1. Aceptación de los Términos",
+         "content": "Al acceder o usar Perfecto CV (\"el Servicio\"), aceptas estar sujeto a estos Términos de Servicio. Si no estás de acuerdo, no deberías usar el Servicio."
+         },
+         "description": {
+         "title": "2. Descripción del Servicio",
+         "content": "Perfecto CV proporciona una plataforma en línea para crear, editar y descargar currículums profesionales con Inteligencia Artificial, enfocándose en analizar las descripciones de trabajo para ofrecer asesorías específicas y personalizadas, y también permitir la creación de currículums basados en el perfil del usuario."
+         },
+         "responsibilities": {
+         "title": "3. Responsabilidades del Usuario",
+         "intro": "Aceptas:",
+         "provideInfo": "Proporcionar información precisa y completa para tu currículum",
+         "checkInfo": "Verificar y validar que los currículums creados no contengan habilidades o experiencias adicionales al que no tengas.",
+         "maintainConfidentiality": "Mantener la confidencialidad de tus credenciales de cuenta",
+         "lawfulUse": "Usar el Servicio solo para fines legales",
+         "noMisuse": "No hacer mal uso o interrumpir el Servicio"
+         },
+         "subscriptions": {
+         "title": "4. Suscripciones y Pagos",
+         "premiumFeatures": "Algunas funciones requieren pago (\"Funciones Premium\")",
+         "autoRenew": "Las suscripciones se renuevan automáticamente a menos que se cancelen",
+         "nonRefundable": "Todos los pagos no son reembolsables excepto según lo requiera la ley",
+         "priceChanges": "Podemos cambiar los precios con 30 días de aviso"
+         },
+         "ip": {
+         "title": "5. Propiedad Intelectual",
+         "content": "Perfecto CV posee todos los derechos sobre el Servicio y su contenido. Tú conservas la propiedad del contenido de tu currículum y perfil, pero nos otorgas una licencia para procesarlo con el fin de proporcionar el Servicio."
+         },
+         "warranties": {
+         "title": "6. Exención de Garantías",
+         "intro": "El Servicio se proporciona \"tal cual\" sin garantías de ningún tipo. No garantizamos que:",
+         "uninterrupted": "El Servicio será ininterrumpido o libre de errores",
+         "employment": "Los currículums resultarán en empleo",
+         "requirements": "El Servicio cumplirá con tus requisitos específicos"
+         },
+         "liability": {
+         "title": "7. Limitación de Responsabilidad",
+         "content": "Perfecto CV, siendo una herramienta que utiliza Inteligencia Artificial, ofrece la asistencia más precisa posible, y no pretende agregar información adicional para engañar a los reclutadores con habilidades y/o información que no estén especificados en tu perfil, sin embargo, cualquier herramienta en internet no es 100% precisa, por lo que Perfecto CV no será responsable por ningún daño indirecto, incidental o consecuencial que surja del uso del Servicio."
+         },
+         "termination": {
+         "title": "8. Terminación",
+         "content": "Podemos suspender o terminar tu acceso al Servicio en cualquier momento por violación de estos Términos. Puedes dejar de usar nuestro Servicio en cualquier momento."
+         },
+         "changes": {
+         "title": "9. Cambios a los Términos",
+         "content": "Podemos modificar estos Términos en cualquier momento. El uso continuado después de los cambios constituye la aceptación de los nuevos Términos."
+         },
+         "contact": {
+         "title": "10. Información de Contacto",
+         "content": "Para preguntas sobre estos Términos, contáctanos en"
+         }
+      }
    }
 }
